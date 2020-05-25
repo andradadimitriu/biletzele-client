@@ -5,6 +5,7 @@ import NotFound from "./containers/NotFound";
 import Login from "./containers/Login";
 import Signup from "./containers/Signup";
 import NewNote from "./containers/NewNote";
+import {Biletzele} from "./containers/Biletzele";
 import Notes from "./containers/Notes";
 import Settings from "./containers/Settings";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
@@ -24,6 +25,9 @@ export default function Routes() {
         </AuthenticatedRoute>
         <AuthenticatedRoute exact path="/notes/new">
           <NewNote />
+        </AuthenticatedRoute>
+        <AuthenticatedRoute exact path="/biletzele">
+          <Biletzele />
         </AuthenticatedRoute>
         <AuthenticatedRoute exact path="/notes/:id">
           <Notes />

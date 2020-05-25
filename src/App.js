@@ -43,6 +43,9 @@ return (
           <Navbar.Brand>
             <Link to="/">Scratch</Link>
           </Navbar.Brand>
+          <Navbar.Brand>
+            <Link to="/biletzele">Biletzele</Link>
+          </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse>

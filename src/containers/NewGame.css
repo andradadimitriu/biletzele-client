@@ -1,0 +1,10 @@
+@media all and (min-width: 480px) {
+  .New {
+    padding: 60px 0;
+  }
+
+  .NewGame form {
+    margin: 20px;
+    max-width: 320px;
+  }
+}
