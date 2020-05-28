@@ -3,8 +3,8 @@
     padding: 60px 0;
   }
 
-  .NewGame form {
-    margin: 20px;
+  .NewGame{
     max-width: 320px;
+    margin: 20px;
   }
 }

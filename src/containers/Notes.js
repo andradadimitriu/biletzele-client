@@ -2,7 +2,9 @@ import React, { useRef, useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { API, Storage } from "aws-amplify";
 import { onError } from "../libs/errorLib";
-import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Bootstrap from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import config from "../config";
 import "./Notes.css";
@@ -119,32 +121,32 @@ async function handleDelete(event) {
 return (
   <div className="Notes">
     {note && (
-      <form onSubmit={handleSubmit}>
-        <FormGroup controlId="content">
-          <FormControl
-            value={content}
-            componentClass="textarea"
-            onChange={e => setContent(e.target.value)}
-          />
-        </FormGroup>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="content">
+              <Form.Control
+                value={content}
+                componentClass="textarea"
+                onChange={e => setContent(e.target.value)}
+              />
+            </Form.Group>
         {note.attachment && (
-          <FormGroup>
-            <ControlLabel>Attachment</ControlLabel>
-            <FormControl.Static>
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href={note.attachmentURL}
-              >
-                {formatFilename(note.attachment)}
-              </a>
-            </FormControl.Static>
-          </FormGroup>
-        )}
-        <FormGroup controlId="file">
-          {!note.attachment && <ControlLabel>Attachment</ControlLabel>}
-          <FormControl onChange={handleFileChange} type="file" />
-        </FormGroup>
+            <Form.Group>
+              <Form.Label>Attachment</Form.Label>
+              <Form.Control.Static>
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={note.attachmentURL}
+                >
+                  {formatFilename(note.attachment)}
+                </a>
+              </Form.Control.Static>
+            </Form.Group>
+           )}
+        <Form.Group controlId="file">
+          {!note.attachment && <Form.Label>Attachment</Form.Label>}
+          <Form.Control onChange={handleFileChange} type="file" />
+        </Form.Group>
         <LoaderButton
           block
           type="submit"
@@ -164,7 +166,7 @@ return (
         >
           Delete
         </LoaderButton>
-      </form>
+      </Form>
     )}
   </div>
 );

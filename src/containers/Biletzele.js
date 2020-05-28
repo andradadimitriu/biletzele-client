@@ -17,14 +17,14 @@ export class Biletzele extends React.Component {
   render() {
       return (
 
-      <>
+      <div className="margin">
           <ToggleButtonGroup type="radio" value={this.state.value} name="radioAll" onChange={this.handleChange}>
                         <ToggleButton variant="primary" name="radio1" value={1}>New Game</ToggleButton>
-                        <ToggleButton name="radio2" value={2}>Join Game</ToggleButton>
+                        <ToggleButton variant="info" name="radio2" value={2}>Join Game</ToggleButton>
            </ToggleButtonGroup>
            {this.state.value === 1 ? <NewGame/> : <PendingGames/>}
 
-       </>);
+       </div>);
   }
 
 }

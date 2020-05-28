@@ -1,6 +1,8 @@
 import React, { useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Bootstrap from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import { onError } from "../libs/errorLib";
 import config from "../config";
@@ -54,20 +56,22 @@ function createNote(note) {
   return result;
 }
 
-  return (
+return (
     <div className="NewNote">
-      <form onSubmit={handleSubmit}>
-        <FormGroup controlId="content">
-          <FormControl
+      <Form onSubmit={handleSubmit}>
+        <Form.Group controlId="content" bsSize="large">
+          <Form.Control
             value={content}
             componentClass="textarea"
             onChange={e => setContent(e.target.value)}
           />
-        </FormGroup>
-        <FormGroup controlId="file">
-          <ControlLabel>Attachment</ControlLabel>
-          <FormControl onChange={handleFileChange} type="file" />
-        </FormGroup>
+        </Form.Group>
+        <Form.Group controlId="file" bsSize="large">
+          <Form.Label>Attachment</Form.Label>
+          <Form.Control
+            onChange={handleFileChange} type="file"
+          />
+        </Form.Group>
         <LoaderButton
           block
           type="submit"
@@ -78,7 +82,8 @@ function createNote(note) {
         >
           Create
         </LoaderButton>
-      </form>
+      </Form>
     </div>
   );
+
 }

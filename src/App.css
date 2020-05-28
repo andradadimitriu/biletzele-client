@@ -1,7 +1,9 @@
-.App {
-  margin-top: 15px;
+.bar{
+   margin-down: 15px;
 }
-
-.App .navbar-brand {
-  font-weight: bold;
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px white inset !important;
+}
+.margin{
+   margin: 20px;
 }

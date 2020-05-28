@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Nav, Navbar, NavItem } from "react-bootstrap";
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
 import { LinkContainer } from "react-router-bootstrap";
+import Button from 'react-bootstrap/Button';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import Form from 'react-bootstrap/Form';
 import "./App.css";
 import Routes from "./Routes";
 import { AppContext } from "./libs/contextLib";
 import { Auth } from "aws-amplify";
 import { Link, useHistory } from "react-router-dom";
 import { onError } from "./libs/errorLib";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
     const history = useHistory();
@@ -37,45 +42,35 @@ function App() {
     }
 return (
   !isAuthenticating && (
-    <div className="App container">
-      <Navbar fluid collapseOnSelect>
-        <Navbar.Header>
-          <Navbar.Brand>
-            <Link to="/">Scratch</Link>
-          </Navbar.Brand>
-          <Navbar.Brand>
-            <Link to="/biletzele">Biletzele</Link>
-          </Navbar.Brand>
-          <Navbar.Toggle />
-        </Navbar.Header>
-        <Navbar.Collapse>
-          <Nav pullRight>
-            {isAuthenticated ? (
-              <>
-                <LinkContainer to="/settings">
-                  <NavItem>Settings</NavItem>
-                </LinkContainer>
-                <NavItem onClick={handleLogout}>Logout</NavItem>
-              </>
-            ) : (
-              <>
-                <LinkContainer to="/signup">
-                  <NavItem>Signup</NavItem>
-                </LinkContainer>
-                <LinkContainer to="/login">
-                  <NavItem>Login</NavItem>
-                </LinkContainer>
-              </>
-            )}
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
+    <>
+        <div className="bar">
+            <Navbar bg="light" variant="light">
+              <Navbar.Brand href="#home">Biletzele</Navbar.Brand>
+              <Nav className="mr-auto">
+                <Nav.Link href="/biletzele">Home</Nav.Link>
+                <Nav.Link href="#features">Features</Nav.Link>
+                <Nav.Link href="#pricing">Pricing</Nav.Link>
+              </Nav>
+              <Nav className="justify-content-end">
+                {isAuthenticated ? (
+                              <>
+                                <Nav.Item onClick={handleLogout}>Logout</Nav.Item>
+                              </>
+                            ) : (
+                              <>
+                                <Nav.Link href="/signup">Signup</Nav.Link>
+                                <Nav.Link href="/login">Login</Nav.Link>
+                              </>
+                            )}
+              </Nav>
+            </Navbar>
+      </div>
       <AppContext.Provider
         value={{ isAuthenticated, userHasAuthenticated }}
       >
         <Routes />
       </AppContext.Provider>
-    </div>
+    </>
   )
 );
 }

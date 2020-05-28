@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Bootstrap from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import { useAppContext } from "../libs/contextLib";
 import { useFormFields } from "../libs/hooksLib";
@@ -32,45 +34,44 @@ export default function NewGame() {
   }
 
   return (
-    <div className="NewGame">
-      <form onSubmit={handleSubmit}>
-        <FormGroup controlId="gameName" bsSize="large">
-          <ControlLabel>Game Name:</ControlLabel>
-          <FormControl
-            autoFocus
-            type="gameName"
-            value={fields.gameName}
-            onChange={handleFieldChange}
-          />
-        </FormGroup>
-                <FormGroup controlId="team1Name" bsSize="large">
-                  <ControlLabel>Team 1 Name:</ControlLabel>
-                  <FormControl
-                    autoFocus
-                    type="team1Name"
-                    value={fields.team1Name}
-                    onChange={handleFieldChange}
-                  />
-                </FormGroup>
-                                <FormGroup controlId="team2Name" bsSize="large">
-                                  <ControlLabel>Team 2 Name:</ControlLabel>
-                                  <FormControl
-                                    autoFocus
-                                    type="team2Name"
-                                    value={fields.team2Name}
-                                    onChange={handleFieldChange}
-                                  />
-                                </FormGroup>
-        <LoaderButton
-          block
-          type="submit"
-          bsSize="large"
-          isLoading={isLoading}
-          disabled={!validateForm()}
-        >
-          Create
-        </LoaderButton>
-      </form>
-    </div>
-      );
+      <div className="NewGame">
+        <Form onSubmit={handleSubmit}>
+          <Form.Label>Game Name</Form.Label>
+          <Form.Group controlId="gameName">
+            <Form.Control
+              autoFocus
+              type="gameName"
+              value={fields.gameName}
+              onChange={handleFieldChange}
+            />
+          </Form.Group>
+          <Form.Label>Team 1 Name</Form.Label>
+          <Form.Group controlId="team1Name">
+            <Form.Control
+              value={fields.team1Name}
+              onChange={handleFieldChange}
+              type="team1Name"
+            />
+          </Form.Group>
+          <Form.Label>Team 2 Name</Form.Label>
+          <Form.Group controlId="team2Name">
+            <Form.Control
+              value={fields.team1Name}
+              onChange={handleFieldChange}
+              type="team2Name"
+            />
+          </Form.Group>
+          <LoaderButton
+            block
+           
+            disabled={!validateForm()}
+            type="submit"
+            isLoading={isLoading}
+          >
+            Login
+          </LoaderButton>
+
+        </Form>
+      </div>
+    );
 }
