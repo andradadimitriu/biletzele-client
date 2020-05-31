@@ -1,0 +1,13 @@
+.game-button {
+    color: white;
+    margin-right: 10px;
+}
+
+.game-button .card-link{
+    color: white;
+}
+
+.bordered-box {
+    padding: 2px;
+    border: solid 1px;
+}

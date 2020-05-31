@@ -2,7 +2,7 @@ import React from "react";
 import {ToggleButton, ButtonGroup, ToggleButtonGroup} from "react-bootstrap";
 import NewGame from "./NewGame";
 import {PendingGames} from "./PendingGames";
-
+import {useParams} from "react-router-dom";
 export class Biletzele extends React.Component {
   constructor(props) {
     super(props);
@@ -19,8 +19,8 @@ export class Biletzele extends React.Component {
 
       <div className="margin">
           <ToggleButtonGroup type="radio" value={this.state.value} name="radioAll" onChange={this.handleChange}>
-                        <ToggleButton variant="primary" name="radio1" value={1}>New Game</ToggleButton>
-                        <ToggleButton variant="info" name="radio2" value={2}>Join Game</ToggleButton>
+                        <ToggleButton variant="light" name="radio1" value={1}>New Game</ToggleButton>
+                        <ToggleButton variant="light" name="radio2" value={2}>Join Game</ToggleButton>
            </ToggleButtonGroup>
            {this.state.value === 1 ? <NewGame/> : <PendingGames/>}
 
