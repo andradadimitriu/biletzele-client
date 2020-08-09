@@ -24,7 +24,7 @@ export class PendingGames extends React.Component {
 
   componentWillMount(){
 
-    this.setState({pendingGames: [game1]});
+    this.setState({pendingGames: JSON.parse(window.localStorage.getItem("games"))});
   }
 
   render() {

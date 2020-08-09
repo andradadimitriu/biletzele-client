@@ -17,7 +17,7 @@ export default function NewGame() {
   });
 
   function validateForm() {
-    return fields.gameName.length > 0 && fields.game.length > 0 ;
+    return fields.gameName.length > 0 && fields.team1Name.length > 0 && fields.team2Name.length > 0;
   }
 
   async function handleSubmit(event) {
@@ -26,12 +26,28 @@ export default function NewGame() {
     setIsLoading(true);
 
     try {
-
+        const games = JSON.parse(window.localStorage.getItem("games"));
+        games.push({
+                       gameName: fields.gameName,
+                       words: 0,
+                       gameId: games.length,
+                       team1: {
+                         name: fields.team1Name,
+                         members: []
+                       },
+                       team2: {
+                         name: fields.team2Name,
+                         members: []
+                       }
+                   });
+        window.localStorage.setItem('games', JSON.stringify(games));
     } catch (e) {
       onError(e);
-      setIsLoading(false);
     }
+    setIsLoading(false);
+
   }
+
 
   return (
       <div className="NewGame">
@@ -56,7 +72,7 @@ export default function NewGame() {
           <Form.Label>Team 2 Name</Form.Label>
           <Form.Group controlId="team2Name">
             <Form.Control
-              value={fields.team1Name}
+              value={fields.team2Name}
               onChange={handleFieldChange}
               type="team2Name"
             />
@@ -68,7 +84,7 @@ export default function NewGame() {
             type="submit"
             isLoading={isLoading}
           >
-            Login
+            Create Game
           </LoaderButton>
 
         </Form>
