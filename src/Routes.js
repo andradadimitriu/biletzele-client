@@ -5,10 +5,11 @@ import NotFound from "./containers/NotFound";
 import Login from "./containers/Login";
 import Signup from "./containers/Signup";
 import NewNote from "./containers/NewNote";
-import BiletzelePathResolver from "./containers/BiletzelePathResolver";
 import Notes from "./containers/Notes";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
+import {Biletzele} from "./containers/Biletzele";
+import BiletzeleWrite from "./containers/BiletzeleWrite";
 
 export default function Routes() {
   return (
@@ -23,10 +24,10 @@ export default function Routes() {
           <NewNote />
         </AuthenticatedRoute>
         <AuthenticatedRoute exact path="/biletzele">
-          <BiletzelePathResolver />
+            <Biletzele/>
         </AuthenticatedRoute>
         <AuthenticatedRoute exact path="/biletzele/:gameId/:teamName">
-          <BiletzelePathResolver/>
+            <BiletzeleWrite/>
         </AuthenticatedRoute>
         <AuthenticatedRoute exact path="/notes/:id">
           <Notes />

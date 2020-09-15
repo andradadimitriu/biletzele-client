@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Bootstrap from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
-import { useAppContext } from "../libs/contextLib";
 import { useFormFields } from "../libs/hooksLib";
 import { onError } from "../libs/errorLib";
 import "./NewGame.css";
@@ -30,15 +27,15 @@ export default function NewGame() {
         games.push({
                        gameName: fields.gameName,
                        words: 0,
-                       gameId: games.length,
-                       team1: {
+                       gameId: games.length.toString(),
+                       teams: [{
                          name: fields.team1Name,
                          members: []
                        },
-                       team2: {
+                       {
                          name: fields.team2Name,
                          members: []
-                       }
+                       }]
                    });
         window.localStorage.setItem('games', JSON.stringify(games));
     } catch (e) {

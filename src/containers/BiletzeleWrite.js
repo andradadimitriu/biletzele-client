@@ -5,11 +5,12 @@ import LoaderButton from "../components/LoaderButton";
 import { useAppContext } from "../libs/contextLib";
 import { useFormFields } from "../libs/hooksLib";
 import { onError } from "../libs/errorLib";
-import { useHistory } from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
 import "./Forms.css";
 const NO_WORDS = 5;
 
 export default function BiletzeleWrite(props) {
+  let { gameId, teamName } = useParams();
   const history = useHistory();
   const noWords = props.noWords ? props.noWords : NO_WORDS;
   const wordFields = Array.from({length: noWords},(v,k)=>`word${k+1}`);
@@ -21,17 +22,34 @@ export default function BiletzeleWrite(props) {
   });
 
   function validateForm() {
-    return fields.every(field => field.length > 0);
+    if(Object.values(fields).some(field => field.length === 0))
+      return false;
+    if(wordFields.map(wordField => fields[wordField]).some(word => word.includes(" ")
+                                                                || /[A-Z]/.test(word)))
+      return false;
+    return true;
   }
   
-  function addWords(words){
-    //TODO
+  function addPlayerAndWords(playerName, words){
+    //TODO change to getGame which will call to api query;
+    const games = getGames();
+
+    const game = games.find(game => game.gameId === gameId);
+    const team = game.teams.find(team => team.name === teamName);
+    //TODO check if player already exists(after you add player by id)
+    team.members.push({player:"", playerName});
+    game.words.push(...words);
+    window.localStorage.setItem('games', JSON.stringify(games));
   }
 
-  async function handleSubmit(event) {
+  function getGames(){
+    return JSON.parse(window.localStorage.getItem("games"));
+  }
+
+  async function handleSubmit() {
     const words = wordFields.map(fieldName => fields[fieldName]);
-    addWords(words);
-    history.push("/waiting-room", { params: {gameId: props.gameId, playerName: fields.playerName} })
+    addPlayerAndWords(fields.playerName, words);
+    history.push("/waiting-room", { params: {gameId, playerName: fields.playerName} })
   }
 
   return (
@@ -62,6 +80,7 @@ export default function BiletzeleWrite(props) {
           block
           bsSize="large"
           type="submit"
+          disabled={!validateForm()}
           isLoading={isLoading}
         >
           Submit

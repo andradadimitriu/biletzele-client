@@ -1,8 +1,7 @@
 import React from "react";
-import {ToggleButton, ButtonGroup, ToggleButtonGroup} from "react-bootstrap";
+import {ToggleButton, ToggleButtonGroup} from "react-bootstrap";
 import NewGame from "./NewGame";
 import {PendingGames} from "./PendingGames";
-import {useParams} from "react-router-dom";
 export class Biletzele extends React.Component {
   constructor(props) {
     super(props);
@@ -11,7 +10,7 @@ export class Biletzele extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
   handleChange(value) {
-        this.setState({value});
+      this.setState({value});
   }
 
   render() {
