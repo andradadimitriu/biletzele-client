@@ -64,8 +64,8 @@ export default function BiletzeleWrite(props) {
               />
           </Form.Group>
           <Form.Label>Words</Form.Label>
-          {wordFields.map(wordField =>
-            <Form.Group controlId={wordField}>
+          {wordFields.map((wordField, id) =>
+            <Form.Group key={id} controlId={wordField}>
               <Form.Control
                 autoFocus
                 type="text"
@@ -78,7 +78,6 @@ export default function BiletzeleWrite(props) {
 
         <LoaderButton
           block
-          bsSize="large"
           type="submit"
           disabled={!validateForm()}
           isLoading={isLoading}
