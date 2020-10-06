@@ -10,6 +10,7 @@ import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 import {Biletzele} from "./containers/Biletzele";
 import BiletzeleWrite from "./containers/BiletzeleWrite";
+import WaitingRoom from "./containers/WaitingRoom";
 
 export default function Routes() {
   return (
@@ -26,8 +27,11 @@ export default function Routes() {
         <AuthenticatedRoute exact path="/biletzele">
             <Biletzele/>
         </AuthenticatedRoute>
-        <AuthenticatedRoute exact path="/biletzele/:gameId/:teamName">
+        <AuthenticatedRoute exact path="/biletzele/new-player/:gameId/:teamName">
             <BiletzeleWrite/>
+        </AuthenticatedRoute>
+        <AuthenticatedRoute exact path="/waiting-room/:gameId">
+            <WaitingRoom/>
         </AuthenticatedRoute>
         <AuthenticatedRoute exact path="/notes/:id">
           <Notes />

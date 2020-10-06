@@ -38,7 +38,7 @@ return (
 };
 
 function TeamDisplay({gameId, team, teamColor}){
-    return <Card.Link href={`biletzele/${gameId}/${team.name}`}>
+    return <Card.Link href={`biletzele/new-player/${gameId}/${team.name}`}>
         <Button variant={teamColor} className="game-button">
             {`${team.name} `}
             <span className="bordered-box">{team.members.length}/10</span>
