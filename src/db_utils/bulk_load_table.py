@@ -8,8 +8,7 @@ table = dynamodb.Table('biletzele')
 items = []
 
 with open('biletzele.json', 'r') as f:
-    for row in f:
-        items.append(json.loads(row))
+        items = json.loads(f)
 
 with table.batch_writer() as batch:
     for item in items:
