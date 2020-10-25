@@ -1,0 +1,57 @@
+{"PK": "USER#andradaradarada@gmail.com", "SK": "#METADATA#andradaradarada@gmail.com", "email": "andradaradarada@gmail.com", "name": "Andrada Rada Rada"}
+{"PK": "USER#andr2@example.com", "SK": "#METADATA#andr2@example.com", "email": "andr2@example.com", "name": "Andr2"}
+{"PK": "USER#andrada.dimitriu@gmail.com", "SK": "#METADATA#andrada.dimitriu@gmail.com", "email": "andrada.dimitriu@gmail.com", "name": "Andrada Dimitriu"}
+{"PK": "USER#andradeea00@gmail.com", "SK": "#METADATA#andradeea00@gmail.com", "email": "andradeea00@gmail.com", "name": "Andra Deea"}
+
+{"PK": "GAME#000001", "type_name": "biletzele", "status": "active"}
+{"PK": "GAME#000001#AAAA",
+  "SK": "#METADATA#000001#AAAA",
+  "game_type":"000001",
+  "game_id": "AAAA",
+  "game_name": "Swing Battle",
+  "creator": "andradaradarada@gmail.com",
+  "words": ["unu", "doi", "trei", "patru", "cinci", "sase", "sapte", "opt", "noua", "zece", "unspe", "doispe", "treispe", "paispe", "cinspe", "saispe", "saptaspe", "optaspe", "nouaspe", "douazeci"],
+  "teams": [{
+    "name": "Fetele",
+    "members": [{"id" :"andr2@example.com", "playerName": "Andr 22", status: "Ready"}, {"id" :"andradaradarada@gmail.com", "playerName": "Rada"}],
+    "score": 5,
+  }, {
+    "name": "Baietii",
+    "members": [{"id" :"andrada.dimitriu@gmail.com", "playerName": "Andrada Dim"}, {"id" :"andradeea00@gmail.com", "playerName": "Deea"}],
+    "score": 0
+  }],
+  "turn": 0,
+  "no_rounds": 4,
+  "status": "Pending",
+  "rounds": [{
+    "round_no": 2,
+    "status": "in progress",
+    "words_left": ["dfdgfdfdg"],
+    "score": [{"team": "Fetele", "score": 0}, {"team": "Baietii", "score": 5}]]
+  },
+    {
+      "round_no": 1,
+      "status": "in progress",
+      "words_left": ["dfdgfdfdg"],
+      "score": [{"team": "Fetele", "score": 20}, {"team": "Baietii", "score": 0}]
+    }
+  ]
+}
+{"PK": "#USER#andr2@example.com", "SK": "GAME#000001#AAAA",  "gameStatus":"Pending", "addedWords":["unu", "doi", "trei", "patru", "cinci"]}
+{"PK": "#USER#andradaradarada@gmail.com", "SK": "GAME#000001#AAAA", "gameStatus":"Pending", "addedWords":["sase", "sapte", "opt", "noua", "zece"]}
+{"PK": "#USER#andrada.dimitriu@gmail.com", "SK": "GAME#000001#AAAA", "gameStatus":"Pending", "addedWords":["unspe", "doispe", "treispe", "paispe", "cinspe"]}
+{"PK": "#USER#andradeea00@gmail.com", "SK": "GAME#000001#AAAA", "gameStatus":"Pending", "addedWords":["saispe", "saptaspe", "optaspe", "nouaspe", "douazeci"]}
+
+{"PK": "GAME#000001#AAAA#playerName", "SK": "Andr 22"}
+{"PK": "GAME#000001#AAAA#playerName", "SK": "Rada"}
+{"PK": "GAME#000001#AAAA#playerName", "SK": "Andrada Dim"}
+{"PK": "GAME#000001#AAAA#playerName", "SK": "Deea"}
+
+{"PK": "GAME#000001#AAAA#playerEmail", "SK": "andr2@example.com"}
+{"PK": "GAME#000001#AAAA#playerEmail", "SK": "andradaradarada@gmail.com"}
+{"PK": "GAME#000001#AAAA#playerEmail", "SK": "andrada.dimitriu@gmail.com"}
+{"PK": "GAME#000001#AAAA#playerEmail", "SK": "andradeea00@gmail.com"}
+
+{"PK": "GAME#000001#AAAA#moves", moves:{
+  1:[{"user": "andr2@example.com", "words_guessed": ["unu", "doi", "trei", "patru", "cinci", "sase", "sapte", "opt", "noua", "zece", "unspe", "doispe", "treispe", "paispe", "cinspe", "saispe", "saptaspe", "optaspe", "nouaspe", "douazeci"]}],
+  2:[{"user": "andrada.dimitriu@gmail.com", "words_guessed": ["unu", "doi", "trei", "patru", "cinci"], "word_not_guessed": "sase"}]}}
