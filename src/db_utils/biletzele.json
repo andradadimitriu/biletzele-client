@@ -1,8 +1,8 @@
-[{"PK": "USER#andradaradarada@gmail.com", "SK": "#METADATA#andradaradarada@gmail.com", "email": "andradaradarada@gmail.com", "name": "Andrada Rada Rada"},
+[
 {"PK": "USER#andr2@example.com", "SK": "#METADATA#andr2@example.com", "email": "andr2@example.com", "name": "Andr2"},
 {"PK": "USER#andrada.dimitriu@gmail.com", "SK": "#METADATA#andrada.dimitriu@gmail.com", "email": "andrada.dimitriu@gmail.com", "name": "Andrada Dimitriu"},
 {"PK": "USER#andradeea00@gmail.com", "SK": "#METADATA#andradeea00@gmail.com", "email": "andradeea00@gmail.com", "name": "Andra Deea"},
-{"PK": "GAME#000001", "type_name": "biletzele", "status": "active"},
+{"PK": "GAME#000001", "SK":"#METADATA#GAMETYPE", "type_name": "biletzele", "status": "active"},
 {"PK": "GAME#000001#AAAA",
   "SK": "#METADATA#000001#AAAA",
   "game_type":"000001",
@@ -48,7 +48,7 @@
 {"PK": "GAME#000001#AAAA#playerEmail", "SK": "andradaradarada@gmail.com"},
 {"PK": "GAME#000001#AAAA#playerEmail", "SK": "andrada.dimitriu@gmail.com"},
 {"PK": "GAME#000001#AAAA#playerEmail", "SK": "andradeea00@gmail.com"},
-{"PK": "GAME#000001#AAAA#moves", "moves":{
+{"PK": "GAME#000001#AAAA#moves", "SK": "#METADATA#moves", "moves":{
   "1":[{"user": "andr2@example.com", "words_guessed": ["unu", "doi", "trei", "patru", "cinci", "sase", "sapte", "opt", "noua", "zece", "unspe", "doispe", "treispe", "paispe", "cinspe", "saispe", "saptaspe", "optaspe", "nouaspe", "douazeci"]}],
   "2":[{"user": "andrada.dimitriu@gmail.com", "words_guessed": ["unu", "doi", "trei", "patru", "cinci"], "word_not_guessed": "sase"}]}}
   ]
