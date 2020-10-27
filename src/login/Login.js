@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Auth } from "aws-amplify";
 import Form from 'react-bootstrap/Form';
-import LoaderButton from "../components/LoaderButton";
+import LoaderButton from "../utils_components/LoaderButton";
 import { useAppContext } from "../libs/contextLib";
 import { useFormFields } from "../libs/hooksLib";
 import { onError } from "../libs/errorLib";
-import "./Forms.css";
+import "../biletzele/game_room/Forms.css";
 
 export default function Login() {
   const { userHasAuthenticated } = useAppContext();

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Form from 'react-bootstrap/Form';
-import LoaderButton from "../components/LoaderButton";
-import { useFormFields } from "../libs/hooksLib";
-import { onError } from "../libs/errorLib";
+import LoaderButton from "../../utils_components/LoaderButton";
+import { useFormFields } from "../../libs/hooksLib";
+import { onError } from "../../libs/errorLib";
 import "./NewGame.css";
 
 export default function NewGame() {

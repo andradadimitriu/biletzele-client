@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {ListGroup, ListGroupItem } from "react-bootstrap";
-import { useAppContext } from "../libs/contextLib";
-import { onError } from "../libs/errorLib";
+import { useAppContext } from "../../libs/contextLib";
+import { onError } from "../../libs/errorLib";
 import "./Home.css";
 import { API } from "aws-amplify";
 import { LinkContainer } from "react-router-bootstrap";

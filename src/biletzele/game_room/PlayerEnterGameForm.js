@@ -1,17 +1,17 @@
 import React, {useEffect, useState} from "react";
 import { Auth } from "aws-amplify";
 import Form from 'react-bootstrap/Form';
-import LoaderButton from "../components/LoaderButton";
-import { useAppContext } from "../libs/contextLib";
-import { useFormFields } from "../libs/hooksLib";
-import { onError } from "../libs/errorLib";
+import LoaderButton from "../../utils_components/LoaderButton";
+import { useAppContext } from "../../libs/contextLib";
+import { useFormFields } from "../../libs/hooksLib";
+import { onError } from "../../libs/errorLib";
 import {useHistory, useParams} from "react-router-dom";
-import { getGames } from "../libs/utils";
+import { getGames } from "../../libs/utils";
 
 import "./Forms.css";
 const NO_WORDS = 5;
 
-export default function BiletzeleWrite(props) {
+export default function PlayerEnterGameForm(props) {
   let { gameId, teamName } = useParams();
   const history = useHistory();
   const noWords = props.noWords ? props.noWords : NO_WORDS;

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import { getGame } from "../libs/utils";
+import { getGame } from "../../libs/utils";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useParams } from "react-router-dom";

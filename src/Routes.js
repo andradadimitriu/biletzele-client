@@ -1,16 +1,16 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import Home from "./containers/Home";
-import NotFound from "./containers/NotFound";
-import Login from "./containers/Login";
-import Signup from "./containers/Signup";
-import NewNote from "./containers/NewNote";
-import Notes from "./containers/Notes";
-import AuthenticatedRoute from "./components/AuthenticatedRoute";
-import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
-import {Biletzele} from "./containers/Biletzele";
-import BiletzeleWrite from "./containers/BiletzeleWrite";
-import WaitingRoom from "./containers/WaitingRoom";
+import Home from "./notesapp/containers/Home";
+import NotFound from "./utils_components/NotFound";
+import Login from "./login/Login";
+import Signup from "./login/Signup";
+import NewNote from "./notesapp/containers/NewNote";
+import Notes from "./notesapp/containers/Notes";
+import AuthenticatedRoute from "./utils_components/AuthenticatedRoute";
+import UnauthenticatedRoute from "./utils_components/UnauthenticatedRoute";
+import {Biletzele} from "./biletzele/game_room/Biletzele";
+import PlayerEnterGameForm from "./biletzele/game_room/PlayerEnterGameForm";
+import WaitingRoom from "./biletzele/game_room/WaitingRoom";
 
 export default function Routes() {
   return (
@@ -28,7 +28,7 @@ export default function Routes() {
             <Biletzele/>
         </AuthenticatedRoute>
         <AuthenticatedRoute exact path="/biletzele/new-player/:gameId/:teamName">
-            <BiletzeleWrite/>
+            <PlayerEnterGameForm/>
         </AuthenticatedRoute>
         <AuthenticatedRoute exact path="/waiting-room/:gameId">
             <WaitingRoom/>
