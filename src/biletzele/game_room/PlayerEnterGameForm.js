@@ -1,14 +1,12 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import { Auth } from "aws-amplify";
 import Form from 'react-bootstrap/Form';
 import LoaderButton from "../../utils_components/LoaderButton";
-import { useAppContext } from "../../libs/contextLib";
 import { useFormFields } from "../../libs/hooksLib";
-import { onError } from "../../libs/errorLib";
 import {useHistory, useParams} from "react-router-dom";
-import { getGames } from "../../libs/utils";
 
 import "./Forms.css";
+import {addPlayerToGame} from "../service/biletzele-service";
 const NO_WORDS = 5;
 
 export default function PlayerEnterGameForm(props) {
@@ -16,7 +14,6 @@ export default function PlayerEnterGameForm(props) {
   const history = useHistory();
   const noWords = props.noWords ? props.noWords : NO_WORDS;
   const wordFields = Array.from({length: noWords},(v,k)=>`word${k+1}`);
-  const { userHasAuthenticated } = useAppContext();
   const [isLoading, setIsLoading] = useState(false);
   const [playerAlreadyRegistered, setPlayerAlreadyRegistered] = useState(false);
   const [fields, handleFieldChange] = useFormFields({
@@ -27,55 +24,33 @@ export default function PlayerEnterGameForm(props) {
   function validateForm() {
     if(Object.values(fields).some(field => field.length === 0))
       return false;
-    if(wordFields.map(wordField => fields[wordField]).some(word => word.includes(" ")
-                                                                || /[A-Z]/.test(word)))
-      return false;
-    return true;
+    return !wordFields.map(wordField => fields[wordField]).some(word => word.includes(" ")
+        || /[A-Z]/.test(word));
+
   }
-  function userAlreadyInGame(teams, user){
-    return teams.some(team => team.members.some(player => player.player === user.attributes.email));
-  }
+
   async function addPlayerAndWords(playerName, words){
-    //TODO change to getGame which will call to api query;
-    const games = getGames();
-    const game = games.find(game => game.gameId === gameId);
-    const team = game.teams.find(team => team.name === teamName);
-    const currentUser = await Auth.currentAuthenticatedUser();
-    if(userAlreadyInGame(game.teams, currentUser)){
-      return false;
-    }
-    team.members.push({player: currentUser.attributes.email, playerName});
-    game.words.push(...words);
-    window.localStorage.setItem('games', JSON.stringify(games));
-    return true;
+    const currentUser = await Auth.currentCredentials();
+    return await addPlayerToGame(gameId, teamName, {playerId: currentUser.identityId, playerName}, words);
   }
 
-  async function handleSubmit() {
+  async function handleSubmit(e) {
+    e.preventDefault();
     const words = wordFields.map(fieldName => fields[fieldName]);
-    const playerAdded = await addPlayerAndWords(fields.playerName, words);
-    if(!playerAdded) {
-      setPlayerAlreadyRegistered(true);
+    try {
+      await addPlayerAndWords(fields.playerName, words);
+      history.push(`/waiting-room/${gameId}`);
     }
-    history.push("/waiting-room", {params: {gameId, playerName: fields.playerName}})
-  }
-
-  useEffect(() => {
-    (async function (){
-      const games = getGames();
-      const game = games.find(game => game.gameId === gameId);
-      const currentUser = await Auth.currentAuthenticatedUser();
-      console.log(currentUser);
-      if(userAlreadyInGame(game.teams, currentUser)){
+    catch(e){
+      if(e.response.status === 520) {
         setPlayerAlreadyRegistered(true);
+        setIsLoading(false);
       }
-    })();
-  }, []);
-
+    }
+  }
 
   return (
     <div className="center-form">
-      {playerAlreadyRegistered && <PlayerAlreadyRegistered/>}
-      {!playerAlreadyRegistered &&
       <Form onSubmit={handleSubmit}>
           <Form.Label>Player Name</Form.Label>
             <Form.Group controlId="playerName">
@@ -97,7 +72,7 @@ export default function PlayerEnterGameForm(props) {
             </Form.Group>
             )
           }
-
+        {playerAlreadyRegistered && <PlayerAlreadyRegistered/>}
         <LoaderButton
           block
           type="submit"
@@ -108,11 +83,10 @@ export default function PlayerEnterGameForm(props) {
         </LoaderButton>
 
       </Form>
-      }
     </div>
   );
 }
 
 function PlayerAlreadyRegistered(){
-  return <div> Player already registered in this game.</div>;
+  return <div style={{color: "red"}}> User already registered in this game or playername already in use.</div>;
 }

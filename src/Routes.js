@@ -11,6 +11,7 @@ import UnauthenticatedRoute from "./utils_components/UnauthenticatedRoute";
 import {Biletzele} from "./biletzele/game_room/Biletzele";
 import PlayerEnterGameForm from "./biletzele/game_room/PlayerEnterGameForm";
 import WaitingRoom from "./biletzele/game_room/WaitingRoom";
+import JoinGame from "./biletzele/game_room/JoinGame";
 
 export default function Routes() {
   return (
@@ -27,10 +28,13 @@ export default function Routes() {
         <AuthenticatedRoute exact path="/biletzele">
             <Biletzele/>
         </AuthenticatedRoute>
+        <AuthenticatedRoute exact path="/biletzele/join-game/:gameId">
+            <JoinGame/>
+        </AuthenticatedRoute>
         <AuthenticatedRoute exact path="/biletzele/new-player/:gameId/:teamName">
             <PlayerEnterGameForm/>
         </AuthenticatedRoute>
-        <AuthenticatedRoute exact path="/waiting-room/:gameId">
+        <AuthenticatedRoute exact path="/biletzele/waiting-room/:gameId">
             <WaitingRoom/>
         </AuthenticatedRoute>
         <AuthenticatedRoute exact path="/notes/:id">

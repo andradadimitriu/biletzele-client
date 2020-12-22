@@ -1,18 +1,22 @@
+
 import React, { useState } from "react";
 import Form from 'react-bootstrap/Form';
 import LoaderButton from "../../utils_components/LoaderButton";
 import { useFormFields } from "../../libs/hooksLib";
 import { onError } from "../../libs/errorLib";
 import "./NewGame.css";
+import {useHistory} from "react-router-dom";
+import {createGame} from "../service/biletzele-service";
 
 export default function NewGame() {
+  const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
   const [fields, handleFieldChange] = useFormFields({
     gameName: "",
     team1Name: "",
     team2Name: "",
+    selectedTeam: undefined
   });
-
   function validateForm() {
     return fields.gameName.length > 0 && fields.team1Name.length > 0 && fields.team2Name.length > 0;
   }
@@ -21,23 +25,12 @@ export default function NewGame() {
     event.preventDefault();
 
     setIsLoading(true);
-
     try {
-        const games = JSON.parse(window.localStorage.getItem("games"));
-        games.push({
-                       gameName: fields.gameName,
-                       words: 0,
-                       gameId: games.length.toString(),
-                       teams: [{
-                         name: fields.team1Name,
-                         members: []
-                       },
-                       {
-                         name: fields.team2Name,
-                         members: []
-                       }]
-                   });
-        window.localStorage.setItem('games', JSON.stringify(games));
+      const createdGame = await createGame(fields.gameName,
+          fields.team1Name,
+          fields.team2Name);
+      //TODO error message if created game does not exist
+      history.push(`/biletzele/new-player/${createdGame}/${fields.selectedTeam}`);
     } catch (e) {
       onError(e);
     }
@@ -74,9 +67,18 @@ export default function NewGame() {
               type="team2Name"
             />
           </Form.Group>
+            <Form.Label>Choose your team:</Form.Label>
+            <Form.Group controlId="selectedTeam">
+              <Form.Control as="select"
+                            onChange={handleFieldChange}
+              >
+                <option selected disabled>Select a team to play in</option>
+                {fields.team1Name && <option>{fields.team1Name}</option>}
+                {fields.team2Name && <option>{fields.team2Name}</option>}
+              </Form.Control>
+          </Form.Group>
           <LoaderButton
             block
-           
             disabled={!validateForm()}
             type="submit"
             isLoading={isLoading}

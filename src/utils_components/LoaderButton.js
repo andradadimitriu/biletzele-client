@@ -1,8 +1,8 @@
 import React from "react";
 import { Button } from "react-bootstrap";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import "./LoaderButton.css";
+import Loading from "./Loading";
 
 export default function LoaderButton({
   isLoading,
@@ -16,7 +16,7 @@ export default function LoaderButton({
       disabled={disabled || isLoading}
       {...props}
     >
-      {isLoading && <FontAwesomeIcon icon="spinner" size="xs" />}
+      {isLoading && <Loading/>}
       {props.children}
     </Button>
   );

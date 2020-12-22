@@ -8,6 +8,11 @@ import { Auth } from "aws-amplify";
 import { useHistory } from "react-router-dom";
 import { onError } from "./libs/errorLib";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { library } from '@fortawesome/fontawesome-svg-core';
+// import { fas } from '@fortawesome/free-brands-svg-icons';
+import { faSpinner} from '@fortawesome/free-solid-svg-icons';
+
+library.add( faSpinner);
 
 function App() {
     const history = useHistory();

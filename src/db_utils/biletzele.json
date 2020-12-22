@@ -50,5 +50,10 @@
 {"PK": "GAME#000001#AAAA#playerEmail", "SK": "andradeea00@gmail.com"},
 {"PK": "GAME#000001#AAAA#moves", "SK": "#METADATA#moves", "moves":{
   "1":[{"user": "andr2@example.com", "words_guessed": ["unu", "doi", "trei", "patru", "cinci", "sase", "sapte", "opt", "noua", "zece", "unspe", "doispe", "treispe", "paispe", "cinspe", "saispe", "saptaspe", "optaspe", "nouaspe", "douazeci"]}],
-  "2":[{"user": "andrada.dimitriu@gmail.com", "words_guessed": ["unu", "doi", "trei", "patru", "cinci"], "word_not_guessed": "sase"}]}}
-  ]
+  "2":[{"user": "andrada.dimitriu@gmail.com", "words_guessed": ["unu", "doi", "trei", "patru", "cinci"], "word_not_guessed": "sase"}]}
+},
+  {"PK": "GAME_ID",
+    "SK": "LATEST",
+    "gameId": "AAAA"
+  }
+]
