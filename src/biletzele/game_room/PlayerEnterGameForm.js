@@ -39,7 +39,7 @@ export default function PlayerEnterGameForm(props) {
     const words = wordFields.map(fieldName => fields[fieldName]);
     try {
       await addPlayerAndWords(fields.playerName, words);
-      history.push(`/waiting-room/${gameId}`);
+      history.push(`/biletzele/waiting-room/${gameId}`);
     }
     catch(e){
       if(e.response.status === 520) {

@@ -71,7 +71,8 @@ export default function NewGame() {
             <Form.Group controlId="selectedTeam">
               <Form.Control as="select"
                             onChange={handleFieldChange}
-              >
+                            >
+              {/*TODO fix warning here for selected */}
                 <option selected disabled>Select a team to play in</option>
                 {fields.team1Name && <option>{fields.team1Name}</option>}
                 {fields.team2Name && <option>{fields.team2Name}</option>}

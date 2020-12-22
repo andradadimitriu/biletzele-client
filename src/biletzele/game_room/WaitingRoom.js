@@ -8,6 +8,8 @@ import {getGame} from "../service/biletzele-service";
 import LoaderButton from "../../utils_components/LoaderButton";
 import Loading from "../../utils_components/Loading";
 import {GAME_STATUSES} from "../utils/statuses";
+import "../utils/utils.css";
+
 const STATUS_COLOR = {
   Ready: "success",
   Wait: "danger"
@@ -39,6 +41,11 @@ export default function WaitingRoom() {
       {game ?
           (game.gameExists ?
             <div>
+              <div style={{margin: 20}}>
+                <Row className="centered-content"><strong>Game link</strong></Row>
+                {/*TODO variable hostname*/}
+                <Row className="centered-content">http://localhost:3000/biletzele/join-game/{gameId}</Row>
+              </div>
               <Row>
                 {//TODO add loading screen when game is still loading
                    Object.keys(game.teams).map((teamName, id) =>
@@ -47,8 +54,7 @@ export default function WaitingRoom() {
                   </Col>)
                 }
               </Row>
-              <div style={{alignSelf:"center", display: "flex",
-                justifyContent: "center"}}>
+              <div className="centered-content">
                 {
                   game.gameStatus ?
                   <LoaderButton variant="danger" className="game-button"
