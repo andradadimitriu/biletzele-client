@@ -1,7 +1,7 @@
 import React from "react";
 import GameTile from "./GameTile";
 import {API} from "aws-amplify";
-import {GAME_STATUSES} from "../utils/statuses";
+import {GAME_STATUSES} from "../utils/constants";
 
 export class PendingGames extends React.Component {
 

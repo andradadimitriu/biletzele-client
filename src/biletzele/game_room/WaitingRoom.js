@@ -1,30 +1,47 @@
 import React, {useEffect, useState} from "react";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import {Auth} from "aws-amplify";
 import Button from "react-bootstrap/Button";
-import {getGame} from "../service/biletzele-service";
-import LoaderButton from "../../utils_components/LoaderButton";
+import {getGame, startGame} from "../service/biletzele-service";
 import Loading from "../../utils_components/Loading";
-import {GAME_STATUSES} from "../utils/statuses";
+import {GAME_STATUSES} from "../utils/constants";
 import "../utils/utils.css";
+import LoaderButton from "../../utils_components/LoaderButton";
 
 const STATUS_COLOR = {
   Ready: "success",
   Wait: "danger"
 };
-
 export default function WaitingRoom() {
+  const history = useHistory();
   const [game, setGame] = useState(undefined);
   const [user, setUser] = useState(undefined);
+  const [startsOrJoinsGame, setStartsOrJoinsGame] = useState(undefined);
   let { gameId } = useParams();
 
+  function getCreatorPlayerName() {
+    const playerIdIndex = game.players.ids.findIndex(player => player === game.creator);
+    if(playerIdIndex === -1){
+      return "The creator of this game did not join yet. Wait for them to start the game.";
+    }
+    return game.players.playerNames[playerIdIndex];
+  }
   function canStartGame(){
     return (user && game && game.gameStatus === GAME_STATUSES.PENDING &&
         user.identityId === game.creator) ||
         game.gameStatus === GAME_STATUSES.ACTIVE;
   }
+  async function startOrJoinGame(){
+    if(game.gameStatus === GAME_STATUSES.PENDING) {
+      setStartsOrJoinsGame(true);
+      await startGame(gameId);
+      setStartsOrJoinsGame(false);
+    }
+    history.push(`/biletzele/game/${gameId}`);
+  }
+
   useEffect(() => {
     ( async function updateGameAndUser(){
       const currentUser = await Auth.currentCredentials();
@@ -46,6 +63,7 @@ export default function WaitingRoom() {
                 {/*TODO variable hostname*/}
                 <Row className="centered-content">http://localhost:3000/biletzele/join-game/{gameId}</Row>
               </div>
+              <Row style={{margin: 10}}>Creator: {getCreatorPlayerName()}</Row>
               <Row>
                 {//TODO add loading screen when game is still loading
                    Object.keys(game.teams).map((teamName, id) =>
@@ -58,7 +76,10 @@ export default function WaitingRoom() {
                 {
                   game.gameStatus ?
                   <LoaderButton variant="danger" className="game-button"
-                    disabled={!canStartGame()}>
+                          disabled={!canStartGame()}
+                                isLoading={startsOrJoinsGame}
+                          onClick={()=>{startOrJoinGame()}}
+                  >
                     {game.gameStatus === GAME_STATUSES.PENDING ?
                         "Start game" :
                         "Join game"

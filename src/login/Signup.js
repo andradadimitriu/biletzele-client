@@ -107,6 +107,7 @@ export default function Signup() {
             />
           </Form.Group>
           <Form.Group controlId="password" bsSize="large">
+            <Form.Label>Password</Form.Label>
             <Form.Control
               value={fields.password}
               onChange={handleFieldChange}
@@ -114,7 +115,8 @@ export default function Signup() {
             />
             </Form.Group>
             <Form.Group controlId="confirmPassword" bsSize="large">
-            <Form.Control
+              <Form.Label>Confirm Password</Form.Label>
+              <Form.Control
               value={fields.confirmPassword}
               onChange={handleFieldChange}
               type="password"

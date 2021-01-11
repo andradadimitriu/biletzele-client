@@ -12,6 +12,7 @@ import {Biletzele} from "./biletzele/game_room/Biletzele";
 import PlayerEnterGameForm from "./biletzele/game_room/PlayerEnterGameForm";
 import WaitingRoom from "./biletzele/game_room/WaitingRoom";
 import JoinGame from "./biletzele/game_room/JoinGame";
+import GamePlay from "./biletzele/game_play/GamePlay";
 
 export default function Routes() {
   return (
@@ -36,6 +37,9 @@ export default function Routes() {
         </AuthenticatedRoute>
         <AuthenticatedRoute exact path="/biletzele/waiting-room/:gameId">
             <WaitingRoom/>
+        </AuthenticatedRoute>
+        <AuthenticatedRoute exact path="/biletzele/game/:gameId">
+            <GamePlay/>
         </AuthenticatedRoute>
         <AuthenticatedRoute exact path="/notes/:id">
           <Notes />
