@@ -6,7 +6,7 @@ export class Biletzele extends React.Component {
   constructor(props) {
     super(props);
     // Don't call this.setState() here!
-    this.state = { value: 1 };
+    this.state = { value: "join" };
     this.handleChange = this.handleChange.bind(this);
   }
   handleChange(value) {
@@ -18,10 +18,10 @@ export class Biletzele extends React.Component {
 
       <div className="margin">
           <ToggleButtonGroup type="radio" value={this.state.value} name="radioAll" onChange={this.handleChange}>
-                        <ToggleButton variant="light" name="radio1" value={1}>New Game</ToggleButton>
-                        <ToggleButton variant="light" name="radio2" value={2}>Join Game</ToggleButton>
+                        <ToggleButton variant="light" name="radio1" value={"new"}>New Game</ToggleButton>
+                        <ToggleButton variant="light" name="radio2" value={"join"}>Join Game</ToggleButton>
            </ToggleButtonGroup>
-           {this.state.value === 1 ? <NewGame/> : <PendingGames/>}
+           {this.state.value === "new" ? <NewGame/> : <PendingGames/>}
 
        </div>);
   }

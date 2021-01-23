@@ -4,6 +4,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import "./PendingGameTile.css";
+import {isPlayerInGame} from "../utils/playerUtils";
 const teamColors = (id) => id % 2 === 0 ? "primary" : "info";
 
 export default function GameTile (props)  {
@@ -12,7 +13,11 @@ return (
       <Card.Body>
         <Row>
           <Col xs={8}><Card.Title style={{paddingRight: 0}}>{props.game.gameName}</Card.Title></Col>
-          <Col xs={4} style={{paddingRight: 0}}><Button variant="danger" className="game-button"><Card.Link href="#">Join</Card.Link></Button></Col>
+          <Col xs={4} style={{paddingRight: 0}}>
+              {isPlayerInGame(props.game, props.user) && <Button variant="danger" className="game-button">
+                <Card.Link href={`/biletzele/waiting-room/${props.game.gameId}`}>Join</Card.Link>
+              </Button>}
+          </Col>
        </Row>
 
         <Card.Subtitle className="mb-2 text-muted">{props.game.gameStatus}</Card.Subtitle>
@@ -26,7 +31,7 @@ return (
         </Card.Text>
         <div>
             {Object.keys(props.game.teams).map((teamName, id) =>
-                <TeamDisplay gameId={props.game.gameId} teamName={teamName} team={props.game.teams[teamName]} teamColor={teamColors(id)}/>
+                <TeamDisplay key={id} gameId={props.game.gameId} teamName={teamName} team={props.game.teams[teamName]} teamColor={teamColors(id)}/>
                 )}
         </div>
         <div>
@@ -38,7 +43,7 @@ return (
 };
 
 function TeamDisplay({gameId, teamName, team, teamColor}){
-    return <Card.Link href={`biletzele/new-player/${gameId}/${teamName}`}>
+    return <Card.Link href={`/biletzele/new-player/${gameId}/${teamName}`}>
         <Button variant={teamColor} className="game-button">
             {`${teamName} `}
             <span className="bordered-box">{team.members.length}/10</span>

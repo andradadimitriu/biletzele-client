@@ -4,6 +4,10 @@ export async function getGame(gameId) {
     return await API.get("notes", `/biletzele/getgame/${gameId}`);
 }
 
+export async function getGamesByStatus(status){
+    return await API.get("notes", `/biletzele/getgames/${status}`);
+}
+
 export async function addPlayerToGame(gameId, teamName, player, words) {
     return await API.post("notes", `/biletzele/addplayer`, {
         body: {
@@ -25,29 +29,44 @@ export async function createGame(gameName, team1Name, team2Name) {
 }
 
 export async function startGame(gameId) {
+    //TODO get startgame to call new round function
     return await API.post("notes", `/biletzele/startgame/${gameId}`);
 }
 
-export async function endRound(gameId, roundNumber) {
-    return await API.post("notes", `/biletzele/endround/${gameId}`, {
-        body: {
-            roundNumber
-        }});
-}
-
-export async function newRound(gameId, round, wordsLeft) {
+export async function newRound(gameId, roundNo) {
     return await API.post("notes", `/biletzele/newround/${gameId}`, {
         body: {
-            roundNo: round.roundNo,
-            wordsLeft,
-            changedBody: true
+            roundNo
         }});
 }
 
-export async function updateRound(gameId, round, wordsLeft) {
-    return await API.post("notes", `/biletzele/updateround/${gameId}`, {
+export async function endRound(gameId, roundNo, turnNo) {
+    return await API.post("notes", `/biletzele/endround/${gameId}`, {
         body: {
-            ...round,
-            wordsLeft
+            roundNo,
+            turnNo
+        }});
+}
+
+export async function newTurn(gameId, turnNo, startTime, wordIndex) {
+    return await API.post("notes", `/biletzele/newturn/${gameId}`, {
+        body: {
+           turnNo,
+            startTime,
+            wordIndex
+        }});
+}
+
+export async function endTurn(gameId, turnNo) {
+    return await API.post("notes", `/biletzele/endturn/${gameId}`, {
+        body: {
+            turnNo
+        }});
+}
+
+export async function nextWordToGuess(gameId, turnNo, roundNo, wordIndex) {
+    return await API.post("notes", `/biletzele/wordtoguess/${gameId}`, {
+        body: {
+            roundNo, turnNo, wordIndex
         }});
 }

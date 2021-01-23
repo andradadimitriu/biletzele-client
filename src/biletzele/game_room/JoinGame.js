@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import GameTile from "./GameTile";
 import {useParams} from "react-router-dom";
 import {getGame} from "../service/biletzele-service";
+import Loading from "../../utils_components/Loading";
 
 
 export default function JoinGame() {
@@ -15,5 +16,5 @@ export default function JoinGame() {
         })();
     });
 
-  return game ? <GameTile game={game}/> : <div/>;
+  return game ? <GameTile game={game}/> : <Loading/>;
 }

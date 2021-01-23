@@ -17,3 +17,9 @@ export function myTurnToGuess(team, userId){
 export function myTurnToAct(player, user){
     return player.playerId === user.identityId;
 }
+
+export function getTurn(game){
+    if(game.turn && game.turnNumber === game.turn.turnNo){
+        return game.turn;
+    }
+}

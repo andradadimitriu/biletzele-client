@@ -9,6 +9,7 @@ import Loading from "../../utils_components/Loading";
 import {GAME_STATUSES} from "../utils/constants";
 import "../utils/utils.css";
 import LoaderButton from "../../utils_components/LoaderButton";
+import config from '../../config';
 
 const STATUS_COLOR = {
   Ready: "success",
@@ -61,7 +62,7 @@ export default function WaitingRoom() {
               <div style={{margin: 20}}>
                 <Row className="centered-content"><strong>Game link</strong></Row>
                 {/*TODO variable hostname*/}
-                <Row className="centered-content">http://localhost:3000/biletzele/join-game/{gameId}</Row>
+                <Row className="centered-content">`{config.hostname}/biletzele/join-game/{gameId}`</Row>
               </div>
               <Row style={{margin: 10}}>Creator: {getCreatorPlayerName()}</Row>
               <Row>

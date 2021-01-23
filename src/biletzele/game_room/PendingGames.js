@@ -1,24 +1,28 @@
 import React from "react";
 import GameTile from "./GameTile";
-import {API} from "aws-amplify";
 import {GAME_STATUSES} from "../utils/constants";
+import {getGamesByStatus} from "../service/biletzele-service";
+import Loading from "../../utils_components/Loading";
+import {Auth} from "aws-amplify";
 
 export class PendingGames extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { pendingGames: [] };
+    this.state = { pendingGames: [], isLoading: true, currentUser: undefined};
   }
 
   async componentWillMount(){
-    const pendingGames = await API.get("notes", `/biletzele/getgames/${GAME_STATUSES.PENDING}`);
-    this.setState({pendingGames});
+      const pendingGames = await getGamesByStatus(GAME_STATUSES.PENDING);
+      //TODO might be able to get it in props
+      const currentUser = await Auth.currentCredentials();
+      this.setState({currentUser, pendingGames, isLoading: false});
   }
 
   render() {
       return (
       <div>
-        {this.state.pendingGames.map(game => <GameTile game={game}/>)}
+        {this.state.isLoading ? <Loading/> : this.state.pendingGames.map((game, id) => <GameTile key={id} game={game} user={this.state.currentUser}/>)}
       </div>
       );
   }

@@ -1,46 +1,57 @@
 import React, {useEffect, useState} from "react";
 
-import {getRound} from "./utils/rounds";
+import {getTurn} from "./utils/turns";
 import {Row, Col,Button} from "react-bootstrap";
-import {newRound, updateRound} from "../service/biletzele-service";
-import {getStartTime, getWordsLeft, addStartTimeToStorage, updateWordsLeftToStorage} from "../utils/localStorageUtils";
+import {endRound, endTurn, newTurn} from "../service/biletzele-service";
 import moment from "moment";
 const COUNTDOWN_SECONDS = 60;
 export default function Act(props) {
-  const round = getRound(props.game);
-  const [wordsLeft, setWordsLeft] = useState(getWordsLeft(props.game, round));
-  const [wordToAct, setWordToAct] = useState(undefined);
-  const [timer, setTimer] = useState(undefined);
+  const turn = getTurn(props.game);
+  const [wordsLeft, setWordsLeft] = useState(props.round.wordsLeft);
+  const [wordToAct, setWordToAct] = useState((turn && turn.wordIndex && wordsLeft[turn.wordIndex]) || undefined);
+  const [timer, setTimer] = useState((turn && turn.startTime && moment.utc(turn.startTime)) || undefined);
   const [outOfTime, setOutOfTime] = useState(false);
+
+  async function startGuessing(){
+    if(wordsLeft.length === 0){
+      return;
+    }
+    const startTime = moment.utc();
+    setTimer({startTime, countDown: getCountDown(startTime)});
+
+    const index = Math.floor(Math.random() * wordsLeft.length);
+    setWordToAct({word:wordsLeft[index], index});
+    // addStartTimeToStorage(props.game, startTime);
+    await newTurn(props.game.gameId, props.game.turnNumber, startTime.toString(), index);
+  }
 
   function nextWord(){
     if(wordsLeft.length === 0){
       return;
     }
-    if(!wordToAct){
-      const startTime = getStartTime(props.game);
-      setTimer({startTime, countDown: getCountDown(startTime)});
-      addStartTimeToStorage(props.game, startTime);
-
-    }
-    if(wordToAct){
-      wordsLeft.splice(wordToAct.index, 1);
-      setWordsLeft(wordsLeft);
-      updateWordsLeftToStorage(props.game, wordsLeft);
-    }
+    wordsLeft.splice(wordToAct.index, 1);
+    setWordsLeft(wordsLeft);
+    // updateWordsLeftToStorage(props.game, wordsLeft);
     const index = Math.floor(Math.random() * wordsLeft.length);
     setWordToAct({word:wordsLeft[index], index});
   }
 
   useEffect(() => {
     (async function finishTurn(){
-      if(wordToAct && (wordsLeft.length === 0 || outOfTime)){
-        debugger;
-        if (round.newRound) await newRound (props.game.gameId, round, wordsLeft);
-        else await updateRound(props.game.gameId, round, wordsLeft);
+      if(wordToAct){
+        let updatedGame;
+        if(wordsLeft.length === 0) {
+          updatedGame = await endRound(props.game.gameId, props.round.roundNo, turn.turnNo);
+        }
+        else if(outOfTime){
+          updatedGame = await endTurn(props.game.gameId, turn.turnNo);
+        }
+        if(wordsLeft.length === 0 || outOfTime){
+          props.setGame(updatedGame);
+        }
       }
     })();
-  }, [wordToAct, wordsLeft, outOfTime, props.game.gameId, round]);
+  }, [wordToAct, wordsLeft, outOfTime, props, turn]);
 
   useEffect(() => {
     (function updateCountDown(){
@@ -62,10 +73,11 @@ export default function Act(props) {
   }, [timer]);
 
   return <div>
-    {round && wordsLeft.length > 0 ?
+    {wordsLeft.length > 0 ?
       <Row style={{margin: 10}}>
         <Col>{wordToAct && wordToAct.word}</Col>
-        <Col> <Button onClick={nextWord}>{wordToAct ? "Next" : "Start"}</Button> </Col>
+        <Col> {wordToAct ?<Button onClick={nextWord}> Next </Button>:
+            <Button onClick={startGuessing}> Start </Button> }</Col>
         <Col> {timer && timer.countDown} </Col>
       </Row>:
         <div>Round ended</div>

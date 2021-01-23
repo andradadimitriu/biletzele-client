@@ -72,7 +72,7 @@ export default function NewGame() {
               <Form.Control as="select"
                             onChange={handleFieldChange}
                             >
-              {/*TODO fix warning here for selected */}
+              {/*TODO fix warning here for selected. there is an issue when using the suggested with bootstrap form.control */}
                 <option selected disabled>Select a team to play in</option>
                 {fields.team1Name && <option>{fields.team1Name}</option>}
                 {fields.team2Name && <option>{fields.team2Name}</option>}

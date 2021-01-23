@@ -1,11 +1,8 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
-import Home from "./notesapp/containers/Home";
+import { Redirect, Route, Switch } from "react-router-dom";
 import NotFound from "./utils_components/NotFound";
 import Login from "./login/Login";
 import Signup from "./login/Signup";
-import NewNote from "./notesapp/containers/NewNote";
-import Notes from "./notesapp/containers/Notes";
 import AuthenticatedRoute from "./utils_components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./utils_components/UnauthenticatedRoute";
 import {Biletzele} from "./biletzele/game_room/Biletzele";
@@ -23,9 +20,6 @@ export default function Routes() {
         <UnauthenticatedRoute exact path="/signup">
           <Signup />
         </UnauthenticatedRoute>
-        <AuthenticatedRoute exact path="/notes/new">
-          <NewNote />
-        </AuthenticatedRoute>
         <AuthenticatedRoute exact path="/biletzele">
             <Biletzele/>
         </AuthenticatedRoute>
@@ -41,11 +35,8 @@ export default function Routes() {
         <AuthenticatedRoute exact path="/biletzele/game/:gameId">
             <GamePlay/>
         </AuthenticatedRoute>
-        <AuthenticatedRoute exact path="/notes/:id">
-          <Notes />
-        </AuthenticatedRoute>
       <Route exact path="/">
-        <Home />
+          <Redirect to="/biletzele" />
       </Route>
 
       {/* Finally, catch all unmatched routes */}
