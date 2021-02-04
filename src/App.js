@@ -9,7 +9,6 @@ import { useHistory } from "react-router-dom";
 import { onError } from "./libs/errorLib";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { library } from '@fortawesome/fontawesome-svg-core';
-// import { fas } from '@fortawesome/free-brands-svg-icons';
 import { faSpinner} from '@fortawesome/free-solid-svg-icons';
 
 library.add( faSpinner);
@@ -49,8 +48,6 @@ return (
               <Navbar.Brand href="#home">Biletzele</Navbar.Brand>
               <Nav className="mr-auto">
                 <Nav.Link href="/biletzele">Home</Nav.Link>
-                <Nav.Link href="#features">Features</Nav.Link>
-                <Nav.Link href="#pricing">Pricing</Nav.Link>
               </Nav>
               <Nav className="justify-content-end">
                 {isAuthenticated ? (

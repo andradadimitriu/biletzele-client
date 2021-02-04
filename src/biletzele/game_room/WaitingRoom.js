@@ -6,7 +6,7 @@ import {Auth} from "aws-amplify";
 import Button from "react-bootstrap/Button";
 import {getGame, startGame} from "../service/biletzele-service";
 import Loading from "../../utils_components/Loading";
-import {GAME_STATUSES} from "../utils/constants";
+import {GAME_STATUS} from "../utils/constants";
 import "../utils/utils.css";
 import LoaderButton from "../../utils_components/LoaderButton";
 import config from '../../config';
@@ -30,12 +30,12 @@ export default function WaitingRoom() {
     return game.players.playerNames[playerIdIndex];
   }
   function canStartGame(){
-    return (user && game && game.gameStatus === GAME_STATUSES.PENDING &&
+    return (user && game && game.gameStatus === GAME_STATUS.PENDING &&
         user.identityId === game.creator) ||
-        game.gameStatus === GAME_STATUSES.ACTIVE;
+        game.gameStatus === GAME_STATUS.ACTIVE;
   }
   async function startOrJoinGame(){
-    if(game.gameStatus === GAME_STATUSES.PENDING) {
+    if(game.gameStatus === GAME_STATUS.PENDING) {
       setStartsOrJoinsGame(true);
       await startGame(gameId);
       setStartsOrJoinsGame(false);
@@ -81,7 +81,7 @@ export default function WaitingRoom() {
                                 isLoading={startsOrJoinsGame}
                           onClick={()=>{startOrJoinGame()}}
                   >
-                    {game.gameStatus === GAME_STATUSES.PENDING ?
+                    {game.gameStatus === GAME_STATUS.PENDING ?
                         "Start game" :
                         "Join game"
                     }

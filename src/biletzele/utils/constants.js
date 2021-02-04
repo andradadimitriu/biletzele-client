@@ -1,10 +1,6 @@
-export const GAME_STATUSES = {
+export const GAME_STATUS = {
     PENDING: "Pending",
-    ACTIVE: "Active"
-
-};
-export const ROUND_STATUSES = {
-    ENDED: "Ended",
-    ACTIVE: "Active"
+    ACTIVE: "Active",
+    ENDED: "Ended"
 };
 

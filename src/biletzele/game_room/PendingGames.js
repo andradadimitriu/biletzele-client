@@ -1,6 +1,6 @@
 import React from "react";
 import GameTile from "./GameTile";
-import {GAME_STATUSES} from "../utils/constants";
+import {GAME_STATUS} from "../utils/constants";
 import {getGamesByStatus} from "../service/biletzele-service";
 import Loading from "../../utils_components/Loading";
 import {Auth} from "aws-amplify";
@@ -13,7 +13,7 @@ export class PendingGames extends React.Component {
   }
 
   async componentWillMount(){
-      const pendingGames = await getGamesByStatus(GAME_STATUSES.PENDING);
+      const pendingGames = await getGamesByStatus(GAME_STATUS.PENDING);
       //TODO might be able to get it in props
       const currentUser = await Auth.currentCredentials();
       this.setState({currentUser, pendingGames, isLoading: false});

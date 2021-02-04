@@ -5,14 +5,14 @@ export function who_sTurnToAct(teams, turn){
     const teamTurnCount = turn % noOfTeams;
     const playerTurnCount = Math.floor(turn/noOfTeams);
     const teamTurn = teamNames[teamTurnCount];
-    const playerTurn = teams[teamTurn].members[playerTurnCount];
+    const playersInTeam = teams[teamTurn].members;
+    const playerTurn = playersInTeam[playerTurnCount % playersInTeam.length];
     return {teamTurn, playerTurn};
 }
 
-export function myTurnToGuess(team, userId){
-   return team.members.some(player => player.playerId === userId);
+export function myTurnToGuess(team, user){
+    return team.members.some(player => player.playerId === user.identityId);
 }
-
 
 export function myTurnToAct(player, user){
     return player.playerId === user.identityId;

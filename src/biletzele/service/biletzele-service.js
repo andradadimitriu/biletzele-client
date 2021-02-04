@@ -1,4 +1,5 @@
 import {API} from "aws-amplify";
+import moment from "moment";
 
 export async function getGame(gameId) {
     return await API.get("notes", `/biletzele/getgame/${gameId}`);
@@ -48,13 +49,23 @@ export async function endRound(gameId, roundNo, turnNo) {
         }});
 }
 
+export async function endGame(gameId, roundNo, turnNo) {
+    return await API.post("notes", `/biletzele/endgame/${gameId}`, {
+        body: {
+            roundNo,
+            turnNo
+        }});
+}
+
 export async function newTurn(gameId, turnNo, startTime, wordIndex) {
-    return await API.post("notes", `/biletzele/newturn/${gameId}`, {
+    const turn = await API.post("notes", `/biletzele/newturn/${gameId}`, {
         body: {
            turnNo,
-            startTime,
+            startTime: startTime.toISOString(),
             wordIndex
         }});
+    turn.startTime = moment(turn.startTime);
+    return turn;
 }
 
 export async function endTurn(gameId, turnNo) {
@@ -64,9 +75,9 @@ export async function endTurn(gameId, turnNo) {
         }});
 }
 
-export async function nextWordToGuess(gameId, turnNo, roundNo, wordIndex) {
+export async function nextWordToGuess(gameId, turnNo, roundNo, teamTurn, oldWordIndex, newWordIndex) {
     return await API.post("notes", `/biletzele/wordtoguess/${gameId}`, {
         body: {
-            roundNo, turnNo, wordIndex
+            roundNo, turnNo, oldWordIndex, newWordIndex, teamTurn
         }});
 }

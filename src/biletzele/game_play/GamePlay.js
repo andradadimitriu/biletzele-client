@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {GAME_STATUSES, ROUND_STATUSES} from "../utils/constants";
+import {GAME_STATUS} from "../utils/constants";
 import {useParams} from "react-router-dom";
 import {Auth} from "aws-amplify";
 import {getGame} from "../service/biletzele-service";
@@ -10,12 +10,18 @@ import {getRound} from "./utils/rounds";
 import RoundRest from "./RoundRest";
 
 export default function GamePlay(props) {
-  const round = getRound(props.game);
+  const [round, setRound] = useState(undefined);
   const [game, setGame] = useState(undefined);
   const [user, setUser] = useState(undefined);
   const [teamTurn, setTeamTurn] = useState(undefined);
   const [playerTurn, setPlayerTurn] = useState(undefined);
   let { gameId } = useParams();
+
+  async function reloadGame(){
+    setGame(undefined);
+    const updatedGame = await getGame(gameId)
+    setGame(updatedGame);
+  }
 
   useEffect(() => {
     (async function updateGameAndUser(){
@@ -23,23 +29,31 @@ export default function GamePlay(props) {
       setUser(currentUser);
       //TODO would it be a good idea to get it from props when possible?
       const game = await getGame(gameId || props.gameId);
-      const {teamTurn, playerTurn} = who_sTurnToAct(game.teams, game.turnNumber);
-      setTeamTurn(teamTurn);
-      setPlayerTurn(playerTurn);
       setGame(game);
     })();
   }, [gameId, props.gameId]);
 
-  return user && game ?
-      (game.gameStatus === GAME_STATUSES.ACTIVE ?
-          round && round.roundStatus === ROUND_STATUSES.ACTIVE?
+  useEffect(() => {
+    (async function updateRoundAndTurn(){
+      if(!game){
+        return;
+      }
+      const round = getRound(game);
+      const {teamTurn, playerTurn} = who_sTurnToAct(game.teams, game.turnNumber);
+      setTeamTurn(teamTurn);
+      setPlayerTurn(playerTurn);
+      setRound(round);
+    })();
+  }, [game]);
+
+  return (user && game && round) ?
+          (round.roundStatus === GAME_STATUS.ACTIVE ?
             (myTurnToAct(playerTurn, user) ?
-              <Act game={game} round={round} setGame={setGame}/>:
-              myTurnToGuess(game.teams[teamTurn], playerTurn) ?
+              <Act game={game} round={round} reloadGame={reloadGame} teamTurn={teamTurn}/>:
+              myTurnToGuess(game.teams[teamTurn], user) ?
                   <Guess/>:
                   <Standby/>):
-          <RoundRest/>:
-          <GameEnded game={game} round={round} setGame={setGame}/>):
+            <RoundRest round={round} game={game} reloadGame={reloadGame}/>):
       <Loading/>;
 }
 
@@ -49,8 +63,4 @@ function Guess() {
 
 function Standby() {
   return "The other team is playing. Pay attention to them";
-}
-
-function GameEnded() {
-  return "Game Ended";
 }
