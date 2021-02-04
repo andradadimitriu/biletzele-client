@@ -9,7 +9,7 @@ const teamColors = (id) => id % 2 === 0 ? "primary" : "info";
 
 export default function GameTile (props)  {
 return (
-    <Card className="margin" style={{ width: '20rem'}}>
+    <Card className="margin" style={{ width: '24rem'}}>
       <Card.Body>
         <Row>
           <Col xs={8}><Card.Title style={{paddingRight: 0}}>{props.game.gameName}</Card.Title></Col>
@@ -26,7 +26,9 @@ return (
         </div>
         <br/>
         <br/>
-        <Card.Text>
+        {!isPlayerInGame(props.game, props.user) &&
+            <>
+          <Card.Text>
           Choose your team.
         </Card.Text>
         <div>
@@ -35,8 +37,9 @@ return (
                 )}
         </div>
         <div>
-          <Card.Link href="#!">Randomly allocate me.</Card.Link>
+          <Card.Link href="#!">Choose team for me.</Card.Link>
         </div>
+          </>}
       </Card.Body>
     </Card>
 )

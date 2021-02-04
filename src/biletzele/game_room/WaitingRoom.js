@@ -9,7 +9,6 @@ import Loading from "../../utils_components/Loading";
 import {GAME_STATUS} from "../utils/constants";
 import "../utils/utils.css";
 import LoaderButton from "../../utils_components/LoaderButton";
-import config from '../../config';
 
 const STATUS_COLOR = {
   Ready: "success",
@@ -19,6 +18,7 @@ export default function WaitingRoom() {
   const history = useHistory();
   const [game, setGame] = useState(undefined);
   const [user, setUser] = useState(undefined);
+  const [canStartGame, setCanStartGame] = useState(false);
   const [startsOrJoinsGame, setStartsOrJoinsGame] = useState(undefined);
   let { gameId } = useParams();
 
@@ -29,7 +29,7 @@ export default function WaitingRoom() {
     }
     return game.players.playerNames[playerIdIndex];
   }
-  function canStartGame(){
+  function canUserStartGame(){
     return (user && game && game.gameStatus === GAME_STATUS.PENDING &&
         user.identityId === game.creator) ||
         game.gameStatus === GAME_STATUS.ACTIVE;
@@ -46,11 +46,13 @@ export default function WaitingRoom() {
   useEffect(() => {
     ( async function updateGameAndUser(){
       const currentUser = await Auth.currentCredentials();
-      setUser(currentUser);
       //TODO would it be a good idea to get it from props when possible?
-
       const game = await getGame(gameId);
+      setUser(currentUser);
       setGame(game);
+      if(user && game) {
+        setCanStartGame(canUserStartGame());
+      }
     })();
   }, [gameId]);
 
@@ -62,7 +64,7 @@ export default function WaitingRoom() {
               <div style={{margin: 20}}>
                 <Row className="centered-content"><strong>Game link</strong></Row>
                 {/*TODO variable hostname*/}
-                <Row className="centered-content">`{config.hostname}/biletzele/join-game/{gameId}`</Row>
+                <Row className="centered-content">{window.location.origin}/biletzele/join-game/{gameId}</Row>
               </div>
               <Row style={{margin: 10}}>Creator: {getCreatorPlayerName()}</Row>
               <Row>
@@ -76,8 +78,8 @@ export default function WaitingRoom() {
               <div className="centered-content">
                 {
                   game.gameStatus ?
-                  <LoaderButton variant="danger" className="game-button"
-                          disabled={!canStartGame()}
+                  <LoaderButton variant={canStartGame ? "danger" : "outline-secondary"} className="game-button"
+                          disabled={!canStartGame}
                                 isLoading={startsOrJoinsGame}
                           onClick={()=>{startOrJoinGame()}}
                   >
