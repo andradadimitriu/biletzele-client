@@ -37,7 +37,7 @@ return (
                 )}
         </div>
         <div>
-          <Card.Link href="#!">Choose team for me.</Card.Link>
+          <Card.Link href={`/biletzele/new-player/${props.game.gameId}/${chooseTeam(props.game.teams)}`}>Choose team for me.</Card.Link>
         </div>
           </>}
       </Card.Body>
@@ -52,4 +52,10 @@ function TeamDisplay({gameId, teamName, team, teamColor}){
             <span className="bordered-box">{team.members.length}/10</span>
         </Button>
     </Card.Link>;
+}
+
+function chooseTeam(teams){
+    return Object.keys(teams).reduce((smallestTeamName, teamName) =>
+        teams[teamName].members.length < teams[smallestTeamName].members.length ? teamName : smallestTeamName
+        , Object.keys(teams)[0]);
 }

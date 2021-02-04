@@ -30,7 +30,6 @@ export async function createGame(gameName, team1Name, team2Name) {
 }
 
 export async function startGame(gameId) {
-    //TODO get startgame to call new round function
     return await API.post("notes", `/biletzele/startgame/${gameId}`);
 }
 
