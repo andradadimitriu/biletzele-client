@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import { Auth } from "aws-amplify";
-import { useHistory } from "react-router-dom";
 import Form from 'react-bootstrap/Form';
 import LoaderButton from "../utils_components/LoaderButton";
-import { useAppContext } from "../libs/contextLib";
 import { useFormFields } from "../libs/hooksLib";
-import { onError } from "../libs/errorLib";
+import Confirm from './Confirm';
 import "./Signup.css";
 
 export default function Signup() {
@@ -13,11 +11,9 @@ export default function Signup() {
     email: "",
     password: "",
     confirmPassword: "",
-    confirmationCode: "",
   });
-  const history = useHistory();
   const [newUser, setNewUser] = useState(null);
-  const { userHasAuthenticated } = useAppContext();
+  const [userExists, setUserExists] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   function validateForm() {
@@ -28,9 +24,6 @@ export default function Signup() {
     );
   }
 
-  function validateConfirmationForm() {
-    return fields.confirmationCode.length > 0;
-  }
     async function handleSubmit(event) {
       event.preventDefault();
 
@@ -44,60 +37,17 @@ export default function Signup() {
         setIsLoading(false);
         setNewUser(newUser);
       } catch (e) {
-        onError(e);
+        if(e.code === "UsernameExistsException"){
+          setUserExists(true);
+        }
         setIsLoading(false);
       }
     }
-
-    async function handleConfirmationSubmit(event) {
-      event.preventDefault();
-
-      setIsLoading(true);
-
-      try {
-        await Auth.confirmSignUp(fields.email, fields.confirmationCode);
-        await Auth.signIn(fields.email, fields.password);
-
-        userHasAuthenticated(true);
-        history.push("/");
-      } catch (e) {
-        onError(e);
-        setIsLoading(false);
-      }
-    }
-  function renderConfirmationForm() {
-    return (
-        <Form onSubmit={handleConfirmationSubmit}>
-          <Form.Group controlId="confirmationCode" bsSize="large">
-            <Form.Label>Confirmation Code</Form.Label>
-
-            <Form.Control
-              autoFocus
-              type="tel"
-              value={fields.confirmationCode}
-              onChange={handleFieldChange}
-            />
-            <p class="help-block"> Please check your email for the code.</p>
-          </Form.Group>
-
-        <LoaderButton
-          block
-          type="submit"
-          bsSize="large"
-          isLoading={isLoading}
-          disabled={!validateConfirmationForm()}
-        >
-          Verify
-        </LoaderButton>
-
-        </Form>
-    );
-  }
 
   function renderForm() {
     return (
         <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="email" bsSize="large">
+          <Form.Group controlId="email">
             <Form.Label>Email</Form.Label>
             <Form.Control
               autoFocus
@@ -105,8 +55,9 @@ export default function Signup() {
               value={fields.email}
               onChange={handleFieldChange}
             />
+            {userExists && <Form.Text className="text-danger">User already exists.</Form.Text>}
           </Form.Group>
-          <Form.Group controlId="password" bsSize="large">
+          <Form.Group controlId="password">
             <Form.Label>Password</Form.Label>
             <Form.Control
               value={fields.password}
@@ -114,7 +65,7 @@ export default function Signup() {
               type="password"
             />
             </Form.Group>
-            <Form.Group controlId="confirmPassword" bsSize="large">
+            <Form.Group controlId="confirmPassword">
               <Form.Label>Confirm Password</Form.Label>
               <Form.Control
               value={fields.confirmPassword}
@@ -124,7 +75,6 @@ export default function Signup() {
           </Form.Group>
           <LoaderButton
             block
-            bsSize="large"
             disabled={!validateForm()}
             type="submit"
             isLoading={isLoading}
@@ -138,7 +88,7 @@ export default function Signup() {
 
   return (
     <div className="Signup">
-      {newUser === null ? renderForm() : renderConfirmationForm()}
+      {newUser === null ? renderForm() : <Confirm email={fields.email} password={fields.password}/>}
     </div>
   );
 }

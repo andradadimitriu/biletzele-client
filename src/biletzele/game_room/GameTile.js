@@ -5,6 +5,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import "./PendingGameTile.css";
 import {isPlayerInGame} from "../utils/playerUtils";
+import {GAME_STATUS} from "../utils/constants";
 const teamColors = (id) => id % 2 === 0 ? "primary" : "info";
 
 export default function GameTile (props)  {
@@ -26,7 +27,8 @@ return (
         </div>
         <br/>
         <br/>
-        {!isPlayerInGame(props.game, props.user) &&
+        {props.game.gameStatus === GAME_STATUS.PENDING ?
+            (!isPlayerInGame(props.game, props.user) &&
             <>
           <Card.Text>
           Choose your team.
@@ -39,7 +41,7 @@ return (
         <div>
           <Card.Link href={`/biletzele/new-player/${props.game.gameId}/${chooseTeam(props.game.teams)}`}>Choose team for me.</Card.Link>
         </div>
-          </>}
+          </>): <div>Game cannot be joined anymore. </div>}
       </Card.Body>
     </Card>
 )

@@ -9,6 +9,7 @@ import Loading from "../../utils_components/Loading";
 import {GAME_STATUS} from "../utils/constants";
 import "../utils/utils.css";
 import LoaderButton from "../../utils_components/LoaderButton";
+import {isPlayerInGame} from "../utils/playerUtils";
 
 const STATUS_COLOR = {
   Ready: "success",
@@ -29,11 +30,7 @@ export default function WaitingRoom() {
     }
     return game.players.playerNames[playerIdIndex];
   }
-  function canUserStartGame(){
-    return (user && game && game.gameStatus === GAME_STATUS.PENDING &&
-        user.identityId === game.creator) ||
-        game.gameStatus === GAME_STATUS.ACTIVE;
-  }
+
   async function startOrJoinGame(){
     if(game.gameStatus === GAME_STATUS.PENDING) {
       setStartsOrJoinsGame(true);
@@ -45,16 +42,19 @@ export default function WaitingRoom() {
 
   useEffect(() => {
     ( async function updateGameAndUser(){
+      function canUserStartGame(){
+        return (user && game && game.gameStatus === GAME_STATUS.PENDING &&
+            user.identityId === game.creator) ||
+            game.gameStatus === GAME_STATUS.ACTIVE ;
+      }
       const currentUser = await Auth.currentCredentials();
       //TODO would it be a good idea to get it from props when possible?
       const game = await getGame(gameId);
       setUser(currentUser);
       setGame(game);
-      if(user && game) {
-        setCanStartGame(canUserStartGame());
-      }
+      setCanStartGame(canUserStartGame());
     })();
-  }, [gameId]);
+  }, [gameId, user]);
 
   return (
     <div style={{margin: 10}}>
@@ -77,7 +77,8 @@ export default function WaitingRoom() {
               </Row>
               <div className="centered-content">
                 {
-                  game.gameStatus ?
+                  game.gameStatus ? ( isPlayerInGame(game, user) ?
+
                   <LoaderButton variant={canStartGame ? "danger" : "outline-secondary"} className="game-button"
                           disabled={!canStartGame}
                                 isLoading={startsOrJoinsGame}
@@ -85,9 +86,10 @@ export default function WaitingRoom() {
                   >
                     {game.gameStatus === GAME_STATUS.PENDING ?
                         "Start game" :
-                        "Join game"
+                        "Enter game"
                     }
                   </LoaderButton>:
+                    "User not registered in game"):
                       "Game has ended"
                 }
               </div>
@@ -130,10 +132,3 @@ function Status({status}){
 function NoGame(){
   return <div>This game does not exist</div>;
 }
-
-
-
-//TODO Add score to teams
-//TODO change player to email or id
-//TODO Add rounds, usedWords
-//TODO Add status to waiting room

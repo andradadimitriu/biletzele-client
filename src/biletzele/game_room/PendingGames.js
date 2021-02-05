@@ -12,7 +12,7 @@ export class PendingGames extends React.Component {
     this.state = { pendingGames: [], isLoading: true, currentUser: undefined};
   }
 
-  async componentWillMount(){
+  async componentDidMount(){
       const pendingGames = await getGamesByStatus(GAME_STATUS.PENDING);
       //TODO might be able to get it in props
       const currentUser = await Auth.currentCredentials();

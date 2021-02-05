@@ -6,10 +6,12 @@ import { useAppContext } from "../libs/contextLib";
 import { useFormFields } from "../libs/hooksLib";
 import { onError } from "../libs/errorLib";
 import "../biletzele/game_room/Forms.css";
+import Confirm from "./Confirm";
 
 export default function Login() {
   const { userHasAuthenticated } = useAppContext();
   const [isLoading, setIsLoading] = useState(false);
+  const [userUnconfirmed, setUserUnconfirmed] = useState(false);
   const [fields, handleFieldChange] = useFormFields({
     email: "",
     password: ""
@@ -28,41 +30,49 @@ export default function Login() {
       await Auth.signIn(fields.email, fields.password);
       userHasAuthenticated(true);
     } catch (e) {
-      onError(e);
+      if(e.code === "UserNotConfirmedException"){
+        setUserUnconfirmed(true);
+      }
+      else{
+        onError(e);
+      }
       setIsLoading(false);
     }
   }
-
-  return (
-    <div className="center-form">
-      <Form onSubmit={handleSubmit}>
-        <Form.Label>Email</Form.Label>
-        <Form.Group controlId="email">
-          <Form.Control
+  function LoginForm(){
+    return <Form onSubmit={handleSubmit}>
+      <Form.Label>Email</Form.Label>
+      <Form.Group controlId="email">
+        <Form.Control
             autoFocus
             type="email"
             value={fields.email}
             onChange={handleFieldChange}
-          />
-        </Form.Group>
-        <Form.Label>Password</Form.Label>
-        <Form.Group controlId="password">
-          <Form.Control
+        />
+      </Form.Group>
+      <Form.Label>Password</Form.Label>
+      <Form.Group controlId="password">
+        <Form.Control
             value={fields.password}
             onChange={handleFieldChange}
             type="password"
-          />
-        </Form.Group>
-        <LoaderButton
+        />
+      </Form.Group>
+      <LoaderButton
           block
           type="submit"
           disabled={!validateForm()}
           isLoading={isLoading}
-        >
-          Login
-        </LoaderButton>
+      >
+        Login
+      </LoaderButton>
 
-      </Form>
+    </Form>
+  }
+
+  return (
+    <div className="center-form">
+      {userUnconfirmed ? <Confirm email={fields.email} password={fields.password}/>:<LoginForm/>}
     </div>
   );
 }
