@@ -80,3 +80,7 @@ export async function nextWordToGuess(gameId, turnNo, roundNo, teamTurn, oldWord
             roundNo, turnNo, oldWordIndex, newWordIndex, teamTurn
         }});
 }
+
+export async function deleteGame(gameId) {
+    return await API.post("notes", `/biletzele/deleteone/${gameId}`);
+}

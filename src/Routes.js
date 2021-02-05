@@ -10,6 +10,7 @@ import PlayerEnterGameForm from "./biletzele/game_room/PlayerEnterGameForm";
 import WaitingRoom from "./biletzele/game_room/WaitingRoom";
 import JoinGame from "./biletzele/game_room/JoinGame";
 import GamePlay from "./biletzele/game_play/GamePlay";
+import DeleteGame from "./biletzele/cleanup/DeleteGame";
 
 export default function Routes() {
   return (
@@ -34,6 +35,9 @@ export default function Routes() {
         </AuthenticatedRoute>
         <AuthenticatedRoute exact path="/biletzele/game/:gameId">
             <GamePlay/>
+        </AuthenticatedRoute>
+        <AuthenticatedRoute exact path="/biletzele/delete-one-game/:gameId">
+            <DeleteGame/>
         </AuthenticatedRoute>
       <Route exact path="/">
           <Redirect to="/biletzele" />

@@ -52,7 +52,6 @@ export default function Act(props) {
     })();
   }, [wordsLeft, outOfTime, props, turn]);
 
-  debugger;
   return <div>
     {wordsLeft.length > 0 ?
       <Row style={{margin: 10}}>
