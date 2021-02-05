@@ -8,12 +8,14 @@ import Act from "./Act";
 import Loading from "../../utils_components/Loading";
 import {getRound} from "./utils/rounds";
 import RoundRest from "./RoundRest";
+import CouldNotFindGame from "../utils/CouldNotFindGame";
 
 export default function GamePlay(props) {
   const [round, setRound] = useState(undefined);
   const [game, setGame] = useState(undefined);
   const [user, setUser] = useState(undefined);
   const [teamTurn, setTeamTurn] = useState(undefined);
+
   const [playerTurn, setPlayerTurn] = useState(undefined);
   let { gameId } = useParams();
 
@@ -35,7 +37,7 @@ export default function GamePlay(props) {
 
   useEffect(() => {
     (async function updateRoundAndTurn(){
-      if(!game){
+      if(!(game && game.gameExists)){
         return;
       }
       const round = getRound(game);
@@ -46,14 +48,15 @@ export default function GamePlay(props) {
     })();
   }, [game]);
 
-  return (user && game && round) ?
-          (round.roundStatus === GAME_STATUS.ACTIVE ?
+  return (user && game) ?
+          game.gameExists ? (round && round.roundStatus === GAME_STATUS.ACTIVE ?
             (myTurnToAct(playerTurn, user) ?
               <Act game={game} round={round} reloadGame={reloadGame} teamTurn={teamTurn}/>:
               myTurnToGuess(game.teams[teamTurn], user) ?
                   <Guess/>:
                   <Standby/>):
             <RoundRest round={round} game={game} reloadGame={reloadGame}/>):
+              <CouldNotFindGame/>:
       <Loading/>;
 }
 

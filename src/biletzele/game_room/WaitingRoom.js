@@ -10,6 +10,7 @@ import {GAME_STATUS} from "../utils/constants";
 import "../utils/utils.css";
 import LoaderButton from "../../utils_components/LoaderButton";
 import {isPlayerInGame} from "../utils/playerUtils";
+import CouldNotFindGame from "../utils/CouldNotFindGame";
 
 const STATUS_COLOR = {
   Ready: "success",
@@ -94,7 +95,7 @@ export default function WaitingRoom() {
                 }
               </div>
             </div>
-            : <NoGame/>)
+            : <CouldNotFindGame/>)
           :<Loading/>}
     </div>
   );
@@ -127,8 +128,4 @@ function Status({status}){
   return <Button variant={STATUS_COLOR[status]} className="game-button">
       {status}
   </Button>
-}
-
-function NoGame(){
-  return <div>This game does not exist</div>;
 }

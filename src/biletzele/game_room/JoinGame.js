@@ -4,6 +4,7 @@ import {useParams} from "react-router-dom";
 import {getGame} from "../service/biletzele-service";
 import Loading from "../../utils_components/Loading";
 import {Auth} from "aws-amplify";
+import CouldNotFindGame from "../utils/CouldNotFindGame";
 
 
 export default function JoinGame() {
@@ -20,5 +21,5 @@ export default function JoinGame() {
         })();
     },[currentUser, gameId]);
 
-  return game && currentUser ? <GameTile game={game} user={currentUser}/> : <Loading/>;
+  return game && currentUser ? (game.gameExists ? <GameTile game={game} user={currentUser}/> : <CouldNotFindGame/>) : <Loading/>;
 }
