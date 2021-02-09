@@ -18,11 +18,12 @@ const STATUS_COLOR = {
 };
 export default function WaitingRoom() {
   const history = useHistory();
+  let { gameId } = useParams();
+  const joinGameLink = `${window.location.origin}/biletzele/join-game/${gameId}`
   const [game, setGame] = useState(undefined);
   const [user, setUser] = useState(undefined);
   const [canStartGame, setCanStartGame] = useState(false);
   const [startsOrJoinsGame, setStartsOrJoinsGame] = useState(undefined);
-  let { gameId } = useParams();
 
   function getCreatorPlayerName() {
     const playerIdIndex = game.players.ids.findIndex(player => player === game.creator);
@@ -65,7 +66,10 @@ export default function WaitingRoom() {
               <div style={{margin: 20}}>
                 <Row className="centered-content"><strong>Game link</strong></Row>
                 {/*TODO variable hostname*/}
-                <Row className="centered-content">{window.location.origin}/biletzele/join-game/{gameId}</Row>
+                <Row className="centered-content">
+                  <span className="center-text-vertically">{joinGameLink}</span>
+                  <Button variant="light" style={{marginLeft: 5}} onClick={()=>{navigator.clipboard.writeText(joinGameLink)}}>Copy</Button>
+                </Row>
               </div>
               <Row style={{margin: 10}}>Creator: {getCreatorPlayerName()}</Row>
               <Row>
