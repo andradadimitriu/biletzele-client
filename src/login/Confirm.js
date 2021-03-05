@@ -29,7 +29,6 @@ export default function Confirm({email, password}) {
         await Auth.confirmSignUp(email, fields.confirmationCode);
         if(password) {
           await Auth.signIn(email, password);
-          await Auth.signIn(email, password);
           userHasAuthenticated(true);
         }
         else history.push("/login");

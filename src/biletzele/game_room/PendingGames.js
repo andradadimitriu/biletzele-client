@@ -10,7 +10,7 @@ export class PendingGames extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { pendingGames: [], isLoading: true, currentUser: undefined};
+    this.state = { pendingGames: [], isLoading: true, currentUser: undefined, searchText: ""};
   }
 
   async componentDidMount(){
