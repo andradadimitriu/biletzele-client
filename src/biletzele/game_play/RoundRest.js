@@ -75,7 +75,7 @@ function WinnerMessage({game}){
     // TODO this needs to be universal, for 3 teams as well
     if (teamsScore[0] === teamsScore[1])
     {
-        return `Same score. Equality!`;
+        return <div className="centered-content"> It's a tie! </div>;
     }
     const winnerTeam = teamsScore[0] > teamsScore[1] ? teams[0] : teams[1];
     return <div className="centered-content"> <p>Team <strong> {` ${winnerTeam} `} </strong> has won!</p></div>;
