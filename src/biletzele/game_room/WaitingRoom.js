@@ -11,7 +11,7 @@ import "../utils/utils.css";
 import LoaderButton from "../../utils_components/LoaderButton";
 import {isPlayerInGame} from "../utils/playerUtils";
 import CouldNotFindGame from "../utils/CouldNotFindGame";
-
+const MIN_PLAYERS_PER_TEAM = 2;
 const STATUS_COLOR = {
   Ready: "success",
   Wait: "danger"
@@ -45,9 +45,14 @@ export default function WaitingRoom() {
   useEffect(() => {
     ( async function updateGameAndUser(){
       function canUserStartGame(){
-        return (user && game && game.gameStatus === GAME_STATUS.PENDING &&
-            user.identityId === game.creator) ||
-            game.gameStatus === GAME_STATUS.ACTIVE ;
+        if(!(user && game)){
+          return false;
+        }
+        const pending = game.gameStatus === GAME_STATUS.PENDING;
+        const rightUser = user.identityId === game.creator;
+        const active = game.gameStatus === GAME_STATUS.ACTIVE ;
+        const enoughUsers = Object.keys(game.teams).every(teamName => game.teams[teamName].members.length >= MIN_PLAYERS_PER_TEAM);
+        return (pending && rightUser && enoughUsers)  || active;
       }
       const currentUser = await Auth.currentCredentials();
       //TODO would it be a good idea to get it from props when possible?

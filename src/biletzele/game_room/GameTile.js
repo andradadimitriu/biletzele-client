@@ -41,7 +41,7 @@ return (
         <div>
           <Card.Link href={`/biletzele/new-player/${props.game.gameId}/${chooseTeam(props.game.teams)}`}>Choose team for me.</Card.Link>
         </div>
-          </>): <div>Game cannot be joined anymore. </div>}
+          </>): <div>New players cannot join anymore. </div>}
       </Card.Body>
     </Card>
 )

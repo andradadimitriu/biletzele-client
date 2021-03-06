@@ -9,6 +9,7 @@ import Loading from "../../utils_components/Loading";
 import {getRound} from "./utils/rounds";
 import RoundRest from "./RoundRest";
 import CouldNotFindGame from "../utils/CouldNotFindGame";
+import {Row} from "react-bootstrap";
 
 export default function GamePlay(props) {
   const [round, setRound] = useState(undefined);
@@ -50,20 +51,24 @@ export default function GamePlay(props) {
 
   return (user && game && round) ?
           game.gameExists ? (round.roundStatus === GAME_STATUS.ACTIVE ?
-            (myTurnToAct(playerTurn, user) ?
+            <div>
+              <Row style={{margin: 10}}>Player turn: {playerTurn.playerName}</Row>
+              {myTurnToAct(playerTurn, user) ?
               <Act game={game} round={round} reloadGame={reloadGame} teamTurn={teamTurn}/>:
               myTurnToGuess(game.teams[teamTurn], user) ?
                   <Guess/>:
-                  <Standby/>):
+                  <Standby/>
+              }
+            </div>:
             <RoundRest round={round} game={game} reloadGame={reloadGame}/>):
               <CouldNotFindGame/>:
       <Loading/>;
 }
 
 function Guess() {
-  return "Time to guess";
+  return <Row style={{margin: 10}}>Time to guess</Row>;
 }
 
 function Standby() {
-  return "The other team is playing. Pay attention to them";
+  return <Row style={{margin: 10}}>The other team is playing. Pay attention to them.</Row>;
 }

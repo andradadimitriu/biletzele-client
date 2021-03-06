@@ -55,9 +55,9 @@ export default function Act(props) {
   return <div>
     {wordsLeft.length > 0 ?
       <Row style={{margin: 10}}>
-        <Col>{turn && (turn.wordIndex !== undefined) && wordsLeft[turn.wordIndex]}</Col>
         <Col> {(turn && (turn.wordIndex !== undefined)) ? <Button onClick={nextWord}> Next </Button>:
             <Button onClick={startGuessing}> Start </Button> }</Col>
+        <Col>{turn && (turn.wordIndex !== undefined) && wordsLeft[turn.wordIndex]}</Col>
         <Col> {startTime && <Timer startTime={startTime} setOutOfTime={setOutOfTime} outOfTime={outOfTime}/>}</Col>
       </Row>:
         <div>Round ended</div>
