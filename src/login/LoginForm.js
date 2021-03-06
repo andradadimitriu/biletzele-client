@@ -4,11 +4,11 @@ import Form from 'react-bootstrap/Form';
 import LoaderButton from "../utils_components/LoaderButton";
 import { useAppContext } from "../libs/contextLib";
 import { useFormFields } from "../libs/hooksLib";
-import { onError } from "../libs/errorLib";
 import "../biletzele/game_room/Forms.css";
 
 export default function LoginForm(props) {
   const { userHasAuthenticated } = useAppContext();
+  const [failedLogin, setFailedLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [fields, handleFieldChange] = useFormFields({
     email: "",
@@ -33,7 +33,7 @@ export default function LoginForm(props) {
         props.setUserUnconfirmed(true);
       }
       else{
-        onError(e);
+        setFailedLogin(true);
       }
       setIsLoading(false);
     }
@@ -59,6 +59,7 @@ export default function LoginForm(props) {
                 type="password"
             />
           </Form.Group>
+          {failedLogin && <Form.Text className="text-danger">Incorrect login details.</Form.Text>}
           <LoaderButton
               block
               type="submit"
@@ -67,8 +68,8 @@ export default function LoginForm(props) {
           >
             Login
           </LoaderButton>
-
         </Form>
+
       </div>
   );
 }
