@@ -23,6 +23,7 @@ export default function RoundRest(props) {
               <Row style={{margin: 10}}><Button onClick={startRound}> Start round {props.round.roundNo + 1}</Button></Row>
           </div>}
       <ScoreTable game={props.game}/>
+      {(props.round.roundNo === props.game.noRounds) && <WinnerMessage game={props.game}/>}
   </div>;
 }
 
@@ -64,5 +65,18 @@ function ScoreTable({game}){
             </tbody>
         </table>
     </div>;
+}
 
+function WinnerMessage({game}){
+    const teams = Object.keys(game.teams);
+    const teamsScore = teams.map(teamName =>
+        game.rounds.reduce((scoreSummed, round) => scoreSummed + round.score[teamName], 0)
+    );
+    // TODO this needs to be universal, for 3 teams as well
+    if (teamsScore[0] === teamsScore[1])
+    {
+        return `Same score. Equality!`;
+    }
+    const winnerTeam = teamsScore[0] > teamsScore[1] ? teams[0] : teams[1];
+    return <div className="centered-content"> <p>Team <strong> {` ${winnerTeam} `} </strong> has won!</p></div>;
 }

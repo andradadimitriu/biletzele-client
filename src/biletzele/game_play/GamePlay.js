@@ -48,8 +48,8 @@ export default function GamePlay(props) {
     })();
   }, [game]);
 
-  return (user && game) ?
-          game.gameExists ? (round && round.roundStatus === GAME_STATUS.ACTIVE ?
+  return (user && game && round) ?
+          game.gameExists ? (round.roundStatus === GAME_STATUS.ACTIVE ?
             (myTurnToAct(playerTurn, user) ?
               <Act game={game} round={round} reloadGame={reloadGame} teamTurn={teamTurn}/>:
               myTurnToGuess(game.teams[teamTurn], user) ?
