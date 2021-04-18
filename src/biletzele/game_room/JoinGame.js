@@ -7,10 +7,16 @@ import {Auth} from "aws-amplify";
 import CouldNotFindGame from "../utils/CouldNotFindGame";
 
 
-export default function JoinGame() {
+export default function JoinGame({setAppLevelGameId}) {
     let { gameId } = useParams();
     const [game, setGame] = useState(undefined);
     const [currentUser, setCurrentUser] = useState(undefined);
+
+    useEffect(() => {
+        (async function () {
+            setAppLevelGameId(gameId);
+        })();
+    },[setAppLevelGameId, gameId]);
 
     useEffect(() => {
         (async function () {

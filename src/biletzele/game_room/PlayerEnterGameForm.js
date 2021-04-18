@@ -1,19 +1,20 @@
 import React, {useState} from "react";
-import { Auth } from "aws-amplify";
+import {Auth} from "aws-amplify";
 import Form from 'react-bootstrap/Form';
 import LoaderButton from "../../utils_components/LoaderButton";
-import { useFormFields } from "../../libs/hooksLib";
+import {useFormFields} from "../../libs/hooksLib";
 import {useHistory, useParams} from "react-router-dom";
 
 import "./Forms.css";
-import {addPlayerToGame} from "../service/biletzele-service";
+import {addPlayerToGame} from "../service/biletzele-websocket-service";
+
 const NO_WORDS = 5;
 
-export default function PlayerEnterGameForm(props) {
+export default function PlayerEnterGameForm({websocket}) {
   let { gameId, teamName } = useParams();
   const history = useHistory();
-  const noWords = props.noWords ? props.noWords : NO_WORDS;
-  const wordFields = Array.from({length: noWords},(v,k)=>`word${k+1}`);
+  // const noWords = props.noWords ? props.noWords : NO_WORDS;
+  const wordFields = Array.from({length: NO_WORDS},(v, k)=>`word${k+1}`);
   const [isLoading, setIsLoading] = useState(false);
   const [playerAlreadyRegistered, setPlayerAlreadyRegistered] = useState(false);
   const [fields, handleFieldChange] = useFormFields({
@@ -31,7 +32,7 @@ export default function PlayerEnterGameForm(props) {
 
   async function addPlayerAndWords(playerName, words){
     const currentUser = await Auth.currentCredentials();
-    return await addPlayerToGame(gameId, teamName, {playerId: currentUser.identityId, playerName}, words);
+    return await addPlayerToGame(websocket, gameId, teamName, {playerId: currentUser.identityId, playerName}, words);
   }
 
   async function handleSubmit(e) {

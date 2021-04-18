@@ -16,7 +16,7 @@ const STATUS_COLOR = {
   Ready: "success",
   Wait: "danger"
 };
-export default function WaitingRoom() {
+export default function WaitingRoom({setAppLevelGameId, websocket}) {
   const history = useHistory();
   let { gameId } = useParams();
   const joinGameLink = `${window.location.origin}/biletzele/join-game/${gameId}`
@@ -41,6 +41,12 @@ export default function WaitingRoom() {
     }
     history.push(`/biletzele/game/${gameId}`);
   }
+
+  useEffect(() => {
+    (async function () {
+      setAppLevelGameId(gameId);
+    })();
+  },[setAppLevelGameId, gameId]);
 
   useEffect(() => {
     ( async function updateGameAndUser(){

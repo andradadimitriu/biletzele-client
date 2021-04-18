@@ -1,6 +1,7 @@
 //TODO change this shit to each env on one file
 const dev = {
   hostname: "http://localhost:3000",
+  websocketHostname: "wss://a2d765ch40.execute-api.eu-west-2.amazonaws.com/dev",
   s3: {
     REGION: "eu-west-2",
     BUCKET: "notes-app-uploadsw" // might be notes-app-uploadsq
@@ -19,6 +20,7 @@ const dev = {
 
 const local = {
   hostname: "http://localhost:3000",
+  websocketHostname: "wss://a2d765ch40.execute-api.eu-west-2.amazonaws.com/dev",
   s3: {
     REGION: "eu-west-2",
     BUCKET: "notes-app-uploadsw" // might be notes-app-uploadsq

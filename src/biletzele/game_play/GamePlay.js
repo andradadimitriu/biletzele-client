@@ -11,7 +11,7 @@ import RoundRest from "./RoundRest";
 import CouldNotFindGame from "../utils/CouldNotFindGame";
 import {Row} from "react-bootstrap";
 
-export default function GamePlay(props) {
+export default function GamePlay({setAppLevelGameId}) {
   const [round, setRound] = useState(undefined);
   const [game, setGame] = useState(undefined);
   const [user, setUser] = useState(undefined);
@@ -27,14 +27,19 @@ export default function GamePlay(props) {
   }
 
   useEffect(() => {
+    (async function () {
+      setAppLevelGameId(gameId);
+    })();
+  },[setAppLevelGameId, gameId]);
+
+  useEffect(() => {
     (async function updateGameAndUser(){
       const currentUser = await Auth.currentCredentials();
       setUser(currentUser);
-      //TODO would it be a good idea to get it from props when possible?
-      const game = await getGame(gameId || props.gameId);
+      const game = await getGame(gameId);
       setGame(game);
     })();
-  }, [gameId, props.gameId]);
+  }, [gameId]);
 
   useEffect(() => {
     (async function updateRoundAndTurn(){
