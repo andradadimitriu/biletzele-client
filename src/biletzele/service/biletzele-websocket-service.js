@@ -6,3 +6,10 @@ export async function addPlayerToGame(websocket, gameId, teamName, player, words
         words
     }}));
 }
+
+export async function endTurn(websocket, gameId, turnNo) {
+    return await websocket.send(JSON.stringify({ action: "endturn", data: {
+            gameId,
+            turnNo
+        }}));
+}

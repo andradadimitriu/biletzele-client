@@ -38,18 +38,12 @@ function App() {
         if (!clientRef.current) {
             const client = new WebSocket(config.websocketHostname);
             clientRef.current = client;
-//TODO don't think this is needed; remove
-         //   window.client = client;
-
             client.onerror = (e) => console.error(e);
-
             client.onopen = () => {
                 setIsOpen(true);
                 console.log('ws opened');
             };
-
             client.onclose = () => {
-
                 if (clientRef.current) {
                     // Connection failed
                     console.log('ws closed by server');
@@ -76,11 +70,9 @@ function App() {
 
 
             return () => {
-
                 console.log('Cleanup');
                 // Dereference, so it will set up next time
                 clientRef.current = null;
-
                 client.close();
             }
         }

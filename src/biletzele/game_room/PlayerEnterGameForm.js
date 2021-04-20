@@ -43,6 +43,8 @@ export default function PlayerEnterGameForm({websocket}) {
       history.push(`/biletzele/waiting-room/${gameId}`);
     }
     catch(e){
+      debugger;
+      console.log(`e: ${e}`);
       if(e.response.status === 520) {
         setPlayerAlreadyRegistered(true);
         setIsLoading(false);

@@ -67,13 +67,6 @@ export async function newTurn(gameId, turnNo, startTime, wordIndex) {
     return turn;
 }
 
-export async function endTurn(gameId, turnNo) {
-    return await API.post("notes", `/biletzele/endturn/${gameId}`, {
-        body: {
-            turnNo
-        }});
-}
-
 export async function nextWordToGuess(gameId, turnNo, roundNo, teamTurn, oldWordIndex, newWordIndex) {
     return await API.post("notes", `/biletzele/wordtoguess/${gameId}`, {
         body: {
