@@ -11,6 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSpinner} from '@fortawesome/free-solid-svg-icons';
 import config from './config';
+import {messageBasedAction} from "./biletzele/utils/receiveMessageUtils";
 // import { useWhatChanged } from '@simbathesailor/use-what-changed';
 
 library.add( faSpinner);
@@ -74,6 +75,8 @@ function App() {
             client.onmessage = message => {
                 console.log('received message', message);
                 addMessage(`received '${message.data}'`);
+                debugger;
+                messageBasedAction(message.data.type)();
             };
 
 

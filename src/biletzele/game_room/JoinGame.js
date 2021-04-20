@@ -27,5 +27,5 @@ export default function JoinGame({setAppLevelGameId}) {
         })();
     },[currentUser, gameId]);
 
-  return game && currentUser ? (game.gameExists ? <GameTile game={game} user={currentUser}/> : <CouldNotFindGame/>) : <Loading/>;
+  return game && currentUser ? (game.gameNotFound ? <CouldNotFindGame/> : <GameTile game={game} user={currentUser}/>) : <Loading/>;
 }

@@ -6,7 +6,7 @@ import {Auth} from "aws-amplify";
 import Button from "react-bootstrap/Button";
 import {getGame, startGame} from "../service/biletzele-service";
 import Loading from "../../utils_components/Loading";
-import {GAME_STATUS} from "../utils/constants";
+import {GAME_STATUS, MESSAGE_TYPE} from "../utils/constants";
 import "../utils/utils.css";
 import LoaderButton from "../../utils_components/LoaderButton";
 import {isPlayerInGame} from "../utils/playerUtils";
@@ -49,6 +49,22 @@ export default function WaitingRoom({setAppLevelGameId, websocket}) {
   },[setAppLevelGameId, gameId]);
 
   useEffect(() => {
+    (async function () {
+      if(websocket) {
+        debugger;
+        websocket.onmessage = (message) => {
+          const data = JSON.parse(message.data);
+          debugger;
+          console.log(`message received: ${message}`);
+          if (data.type === MESSAGE_TYPE.NEW_PLAYER) {
+            setGame(data.game);
+          }
+        }
+      }
+    })();
+  },[websocket]);
+
+  useEffect(() => {
     ( async function updateGameAndUser(){
       function canUserStartGame(){
         if(!(user && game)){
@@ -72,7 +88,7 @@ export default function WaitingRoom({setAppLevelGameId, websocket}) {
   return (
     <div style={{margin: 10}}>
       {game ?
-          (game.gameExists ?
+          (game.gameNotFound ? <CouldNotFindGame/> :
             <div>
               <div style={{margin: 20}}>
                 <Row className="centered-content"><strong>Game link</strong></Row>
@@ -110,7 +126,7 @@ export default function WaitingRoom({setAppLevelGameId, websocket}) {
                 }
               </div>
             </div>
-            : <CouldNotFindGame/>)
+            )
           :<Loading/>}
     </div>
   );

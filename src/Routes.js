@@ -12,7 +12,7 @@ import JoinGame from "./biletzele/game_room/JoinGame";
 import GamePlay from "./biletzele/game_play/GamePlay";
 import DeleteGame from "./biletzele/cleanup/DeleteGame";
 
-export default function Routes({setAppLevelGameId, websocket}) {
+export default function Routes({setAppLevelGameId, websocket, refreshGameStatus}) {
   return (
     <Switch>
         <UnauthenticatedRoute exact path="/login">
@@ -31,7 +31,7 @@ export default function Routes({setAppLevelGameId, websocket}) {
             <PlayerEnterGameForm websocket={websocket}/>
         </AuthenticatedRoute>
         <AuthenticatedRoute exact path="/biletzele/waiting-room/:gameId">
-            <WaitingRoom setAppLevelGameId={setAppLevelGameId} websocket={websocket}/>
+            <WaitingRoom setAppLevelGameId={setAppLevelGameId} websocket={websocket} refreshGameStatus={refreshGameStatus}/>
         </AuthenticatedRoute>
         <AuthenticatedRoute exact path="/biletzele/game/:gameId">
             <GamePlay setAppLevelGameId={setAppLevelGameId}/>

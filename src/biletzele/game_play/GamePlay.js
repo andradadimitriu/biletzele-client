@@ -43,7 +43,7 @@ export default function GamePlay({setAppLevelGameId}) {
 
   useEffect(() => {
     (async function updateRoundAndTurn(){
-      if(!(game && game.gameExists)){
+      if(!game || game.gameNotFound){
         return;
       }
       const round = getRound(game);
@@ -55,7 +55,8 @@ export default function GamePlay({setAppLevelGameId}) {
   }, [game]);
 
   return (user && game && round) ?
-          game.gameExists ? (round.roundStatus === GAME_STATUS.ACTIVE ?
+          game.gameNotFound ? <CouldNotFindGame/> :
+              (round.roundStatus === GAME_STATUS.ACTIVE ?
             <div>
               <Row style={{margin: 10}}>Player turn: {playerTurn.playerName}</Row>
               {myTurnToAct(playerTurn, user) ?
@@ -66,7 +67,6 @@ export default function GamePlay({setAppLevelGameId}) {
               }
             </div>:
             <RoundRest round={round} game={game} reloadGame={reloadGame}/>):
-              <CouldNotFindGame/>:
       <Loading/>;
 }
 
