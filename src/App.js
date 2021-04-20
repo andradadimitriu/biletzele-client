@@ -11,8 +11,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSpinner} from '@fortawesome/free-solid-svg-icons';
 import config from './config';
-import {messageBasedAction} from "./biletzele/utils/receiveMessageUtils";
-// import { useWhatChanged } from '@simbathesailor/use-what-changed';
 
 library.add( faSpinner);
 
@@ -28,9 +26,7 @@ function App() {
     const [isOpen, setIsOpen] = useState(false);
     const [gameId, setGameId] = useState(undefined);
 
-    // useWhatChanged([waitingToReconnect, messages]);
     useEffect(() => {
-        console.log("[waitingToReconnect, messages]");
         function addMessage(message) {
             setMessages([...messages, message]);
         }
@@ -43,7 +39,7 @@ function App() {
             const client = new WebSocket(config.websocketHostname);
             clientRef.current = client;
 //TODO don't think this is needed; remove
-            window.client = client;
+         //   window.client = client;
 
             client.onerror = (e) => console.error(e);
 
@@ -76,7 +72,6 @@ function App() {
                 console.log('received message', message);
                 addMessage(`received '${message.data}'`);
                 debugger;
-                messageBasedAction(message.data.type)();
             };
 
 
@@ -92,7 +87,6 @@ function App() {
 
     }, [waitingToReconnect, messages]);
 
-    // useWhatChanged([gameId, isOpen]);
     useEffect(() => {
         console.log("[gameId, isOpen]");
         //TODO should trigger a reconnect now if no clientRef?
