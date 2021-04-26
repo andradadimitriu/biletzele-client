@@ -10,7 +10,7 @@ import {addPlayerToGame} from "../service/biletzele-websocket-service";
 
 const NO_WORDS = 5;
 
-export default function PlayerEnterGameForm({websocket}) {
+export default function PlayerEnterGameForm() {
   let { gameId, teamName } = useParams();
   const history = useHistory();
   // const noWords = props.noWords ? props.noWords : NO_WORDS;
@@ -32,7 +32,7 @@ export default function PlayerEnterGameForm({websocket}) {
 
   async function addPlayerAndWords(playerName, words){
     const currentUser = await Auth.currentCredentials();
-    return await addPlayerToGame(websocket, gameId, teamName, {playerId: currentUser.identityId, playerName}, words);
+    return await addPlayerToGame(gameId, teamName, {playerId: currentUser.identityId, playerName}, words);
   }
 
   async function handleSubmit(e) {

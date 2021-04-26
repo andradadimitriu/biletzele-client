@@ -1,6 +1,6 @@
 import React from "react";
 import {Row, Button} from "react-bootstrap";
-import {newRound} from "../service/biletzele-service";
+import {newRound} from "../service/biletzele-websocket-service";
 import {GAME_STATUS} from "../utils/constants";
 
 export default function RoundRest(props) {
@@ -13,7 +13,7 @@ export default function RoundRest(props) {
               throw e;
           }
       }
-      props.reloadGame();
+      // props.reloadGame();
   }
   return <div>
       {props.round.roundNo === props.game.noRounds ?

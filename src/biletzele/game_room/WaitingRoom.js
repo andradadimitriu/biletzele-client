@@ -11,12 +11,15 @@ import "../utils/utils.css";
 import LoaderButton from "../../utils_components/LoaderButton";
 import {isPlayerInGame} from "../utils/playerUtils";
 import CouldNotFindGame from "../utils/CouldNotFindGame";
+import websocket from '../service/reconnecting-websocket';
+
 const MIN_PLAYERS_PER_TEAM = 2;
 const STATUS_COLOR = {
   Ready: "success",
   Wait: "danger"
 };
-export default function WaitingRoom({setAppLevelGameId, websocket}) {
+
+const WaitingRoom = ({setAppLevelGameId}) => {
   const history = useHistory();
   let { gameId } = useParams();
   const joinGameLink = `${window.location.origin}/biletzele/join-game/${gameId}`
@@ -49,20 +52,16 @@ export default function WaitingRoom({setAppLevelGameId, websocket}) {
   },[setAppLevelGameId, gameId]);
 
   useEffect(() => {
-    (async function () {
-      if(websocket) {
-        debugger;
-        websocket.onmessage = (message) => {
-          const data = JSON.parse(message.data);
-          debugger;
-          console.log(`message received: ${message}`);
-          if (data.type === MESSAGE_TYPE.NEW_PLAYER) {
-            setGame(data.game);
-          }
-        }
+    function handleMessage(message) {
+      debugger;
+      const data = JSON.parse(message);
+      console.log(`message received: ${message}`);
+      if (data.type === MESSAGE_TYPE.NEW_PLAYER) {
+        setGame(data.game);
       }
-    })();
-  },[websocket]);
+    }
+    websocket.on(handleMessage);
+  },[]);
 
   useEffect(() => {
     ( async function updateGameAndUser(){
@@ -160,3 +159,5 @@ function Status({status}){
       {status}
   </Button>
 }
+
+export default WaitingRoom;

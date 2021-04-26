@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import "./App.css";
@@ -10,83 +10,45 @@ import { onError } from "./libs/errorLib";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSpinner} from '@fortawesome/free-solid-svg-icons';
-import config from './config';
+import websocket from './biletzele/service/reconnecting-websocket';
 
 library.add( faSpinner);
 
-function App() {
-    const history = useHistory();
-
-  const [isAuthenticating, setIsAuthenticating] = useState(true);
-  const [isAuthenticated, userHasAuthenticated] = useState(false);
-
-    const clientRef = useRef(null);
-    const [waitingToReconnect, setWaitingToReconnect] = useState(null);
+function useMessages() {
     const [messages, setMessages] = useState([]);
-    const [isOpen, setIsOpen] = useState(false);
-    const [gameId, setGameId] = useState(undefined);
 
     useEffect(() => {
-        function addMessage(message) {
+        function handleMessage(message) {
             setMessages([...messages, message]);
         }
-        if (waitingToReconnect) {
-            return;
-        }
+        websocket.on(handleMessage);
+        return () => websocket.off(handleMessage);
+    }, [messages, setMessages]);
 
-        // Only set up the websocket once
-        if (!clientRef.current) {
-            const client = new WebSocket(config.websocketHostname);
-            clientRef.current = client;
-            client.onerror = (e) => console.error(e);
-            client.onopen = () => {
-                setIsOpen(true);
-                console.log('ws opened');
-            };
-            client.onclose = () => {
-                if (clientRef.current) {
-                    // Connection failed
-                    console.log('ws closed by server');
-                } else {
-                    // Cleanup initiated from app side, can return here, to not attempt a reconnect
-                    console.log('ws closed by app component unmount');
-                    return;
-                }
+    return messages;
+}
 
-                if (waitingToReconnect) {
-                    return;
-                }
-                setIsOpen(false);
-                console.log('ws closed');
-                setWaitingToReconnect(true);
-                setTimeout(() => setWaitingToReconnect(null), 5000);
-            };
+function App() {
+    const history = useHistory();
+    const [isAuthenticating, setIsAuthenticating] = useState(true);
+    const [isAuthenticated, userHasAuthenticated] = useState(false);
+    const [gameId, setGameId] = useState(undefined);
 
-            client.onmessage = message => {
-                console.log('received message', message);
-                addMessage(`received '${message.data}'`);
-                debugger;
-            };
-
-
-            return () => {
-                console.log('Cleanup');
-                // Dereference, so it will set up next time
-                clientRef.current = null;
-                client.close();
-            }
-        }
-
-    }, [waitingToReconnect, messages]);
+    const messages = useMessages();
+    const [isConnected, setIsConnected] = useState(websocket.isConnected());
 
     useEffect(() => {
-        console.log("[gameId, isOpen]");
-        //TODO should trigger a reconnect now if no clientRef?
-        if(!gameId || !clientRef || !clientRef.current) return;
-        if(isOpen) {
-            clientRef.current.send(JSON.stringify({ action: "enterroom", data: gameId}));
+        return websocket.onStateChange(setIsConnected);
+    }, [setIsConnected]);
+
+    useEffect(() => {
+
+        if(!gameId || !websocket) return;
+        if(isConnected) {
+            console.log(`enter room: ${gameId}`);
+            websocket.send(JSON.stringify({ action: "enterroom", data: gameId}));
         }
-    }, [gameId, isOpen]);
+    }, [gameId, isConnected]);
 
   useEffect(() => {
     onLoad();
@@ -141,11 +103,9 @@ return (
       <AppContext.Provider
         value={{ isAuthenticated, userHasAuthenticated }}
       >
-        <Routes setAppLevelGameId={setAppLevelGameId} websocket={clientRef.current}/>
+        <Routes setAppLevelGameId={setAppLevelGameId}/>
           <div>
-              <h1>Websocket {isOpen ? 'Connected' : 'Disconnected'}</h1>
-              {clientRef && clientRef.current && <h1>Websocket {clientRef.current.readyState === WebSocket.OPEN ? 'Connected' : 'Disconnected'}</h1>}
-              {waitingToReconnect && <p>Reconnecting momentarily...</p>}
+              <h1>Websocket {isConnected ? 'Connected' : 'Disconnected'}</h1>
               {messages.map(m => <p>{JSON.stringify(m, null, 2)}</p>)}
           </div>
       </AppContext.Provider>

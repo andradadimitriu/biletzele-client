@@ -2,10 +2,10 @@ import React, {useEffect, useState} from "react";
 
 import {getTurn} from "./utils/turns";
 import {Row, Col,Button} from "react-bootstrap";
-import {endGame, endRound, newTurn, nextWordToGuess} from "../service/biletzele-service";
+import {newTurn, nextWordToGuess} from "../service/biletzele-service";
 import moment from "moment";
 import Timer, {getCountDown} from "./Timer";
-import {endTurn} from "../service/biletzele-websocket-service";
+import {endTurn, endRound, endGame} from "../service/biletzele-websocket-service";
 export default function Act(props) {
 
   const [turn, setTurn] = useState(getTurn(props.game));
@@ -45,7 +45,7 @@ export default function Act(props) {
                 await endRound(props.game.gameId, props.round.roundNo, turn.turnNo);
           }
           else if(outOfTime){
-            await endTurn(props.websocket, props.game.gameId, turn.turnNo);
+            await endTurn(props.game.gameId, turn.turnNo);
           }
           // props.reloadGame();
         }
