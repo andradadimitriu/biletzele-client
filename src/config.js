@@ -5,7 +5,7 @@
 const config = {
   websocketHostname: "wss://a2d765ch40.execute-api.eu-west-2.amazonaws.com/dev",
   apiGateway: {
-    API_NAME: "notes",
+    API_NAME: "dev-biletzele-api",
     REGION: "eu-west-2",
     URL: "https://gghofhd4lk.execute-api.eu-west-2.amazonaws.com/dev"
   },
