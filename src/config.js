@@ -7,6 +7,7 @@ const dev = {
     BUCKET: "notes-app-uploadsw" // might be notes-app-uploadsq
   },
   apiGateway: {
+    API_NAME: "notes",
     REGION: "eu-west-2",
     URL: "https://gghofhd4lk.execute-api.eu-west-2.amazonaws.com/dev"
   },
@@ -26,6 +27,7 @@ const local = {
     BUCKET: "notes-app-uploadsw" // might be notes-app-uploadsq
   },
   apiGateway: {
+    API_NAME: "notes",
     REGION: "eu-west-2",
     URL: "https://gghofhd4lk.execute-api.eu-west-2.amazonaws.com/dev"
   },
