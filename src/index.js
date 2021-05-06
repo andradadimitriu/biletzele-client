@@ -24,7 +24,7 @@ Amplify.configure({
   API: {
     endpoints: [
       {
-        name: "notes", //sau notes https://serverless-stack.com/chapters/configure-aws-amplify.html
+        name: "dev-biletzele-api", //sau notes https://serverless-stack.com/chapters/configure-aws-amplify.html
         endpoint: config.apiGateway.URL,
         region: config.apiGateway.REGION
       },
