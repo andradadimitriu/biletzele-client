@@ -19,7 +19,7 @@ Amplify.configure({
   API: {
     endpoints: [
       {
-        name: config.apiGateway.API_NAME, //sau notes https://serverless-stack.com/chapters/configure-aws-amplify.html
+        name: config.apiGateway.API_NAME,
         endpoint: config.apiGateway.URL,
         region: config.apiGateway.REGION
       },
