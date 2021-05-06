@@ -16,15 +16,10 @@ Amplify.configure({
     identityPoolId: config.cognito.IDENTITY_POOL_ID,
     userPoolWebClientId: config.cognito.APP_CLIENT_ID
   },
-  Storage: {
-    region: config.s3.REGION,
-    bucket: config.s3.BUCKET,
-    identityPoolId: config.cognito.IDENTITY_POOL_ID
-  },
   API: {
     endpoints: [
       {
-        name: "dev-biletzele-api", //sau notes https://serverless-stack.com/chapters/configure-aws-amplify.html
+        name: config.apiGateway.API_NAME,
         endpoint: config.apiGateway.URL,
         region: config.apiGateway.REGION
       },

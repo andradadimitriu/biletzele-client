@@ -1,6 +1,9 @@
 import {API} from "aws-amplify";
-import moment from "moment";
-const API_NAME="dev-biletzele-api"
+import moment from "moment"
+import config from '../../config';
+
+const API_NAME = config.apiGateway.API_NAME;
+
 export async function getGame(gameId) {
     return await API.get(API_NAME, `/biletzele/getgame/${gameId}`);
 }
