@@ -1,76 +1,60 @@
 import React from 'react';
-import { shallow, mount, render } from 'enzyme';
-import { faSpinner} from '@fortawesome/free-solid-svg-icons';
-import { unmountComponentAtNode } from "react-dom";
-import { act } from "react-dom/test-utils";
-import * as biletzeleService from "../../../biletzele/service/biletzele-service";
+import { act, render, waitForElement } from '@testing-library/react';
 import { Auth } from 'aws-amplify';
 
-library.add( faSpinner);
-
+import {reactRouterMock} from '../../mocks/moduleMocks';
+import * as dataService from '../../../biletzele/service/biletzele-service';
 import WaitingRoom from "../../../biletzele/game_room/WaitingRoom";
-import {library} from "@fortawesome/fontawesome-svg-core";
-import {mockedGame} from "../../mocks/GameMocks";
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'), // use actual for all non-hook parts
-  useParams: () => ({
-    gameId: 'AAAA',
-  })
-}));
-Auth.currentCredentials = jest.fn().mockImplementation(
-    () => ({
-      "identityId": "eu-west-2:1ce41008-3355-4013-aa65-dd7b393d661e",
-    }));
-biletzeleService.getGame = jest.fn((_)=> mockedGame);
-let container = null;
-beforeEach(() => {
-  console.log("before test");
-  // setup a DOM element as a render target
-  container = document.createElement("div");
-  document.body.appendChild(container);
-  console.log("before test end");
+import {mockedGame, mockedUser, mockGameId, nonExistentGame} from "../../mocks/GameMocks";
+import {shallow} from "enzyme";
 
-});
+const credentialsMock = jest.spyOn(Auth, "currentCredentials");
 
-afterEach(() => {
-  // cleanup on exiting
-  console.log("after test");
+const getGameMock = jest.spyOn(dataService, "getGame");
 
-  unmountComponentAtNode(container);
-  container.remove();
-  container = null;
-  console.log("after test end");
+describe('<WaitingRoom/> tests', () => {
 
-});
+ it('shows loading button only on first render', () => {
+  const wrapper = shallow(<WaitingRoom setAppLevelGameId={()=>undefined}/>);
+  expect(wrapper.find('Loading')).toHaveLength(1);
+  expect(wrapper.find('CouldNotFindGame')).toHaveLength(0);
+  expect(wrapper.find('WaitingRoomContent')).toHaveLength(0);
 
+ });
 
-describe('<WaitingRoom />', () => {
-
-  it('shows loading button only on first load', () => {
-    const wrapper = shallow(<WaitingRoom setAppLevelGameId={()=>undefined}/>);
-    expect(wrapper.find('Loading')).toHaveLength(1);
-    expect(wrapper.find('CouldNotFindGame')).toHaveLength(0);
-    expect(wrapper.find('WaitingRoomContent')).toHaveLength(0);
-
+ it('gets game and user', async () => {
+  getGameMock.mockImplementation(() => mockedGame);
+  credentialsMock.mockImplementation(
+      () => mockedUser);
+  await act(async () => {
+   render(<WaitingRoom setAppLevelGameId={()=>undefined}/>);
   });
+  expect(getGameMock).toHaveBeenCalledTimes(1);
+  expect(getGameMock).toHaveBeenCalledWith(mockGameId);
+  expect(credentialsMock).toHaveBeenCalledTimes(1);
+ });
 
-  it('shows waiting room content after game and user was set', async () => {
-    await act(async () => {
-      render(
-          <WaitingRoom
-              setAppLevelGameId={()=>undefined}
-          />
-      , container)
-    });
-    const wrc = container.querySelector("WaitingRoomContent");
-    console.log(`container: ${container}`);
-    console.log(`container body: ${container.body}`);
-    // console.log(`container: ${JSON.stringify(container)}`);
-    // console.log(`container t: ${container.textContent}`);
-    // console.log(`container text type: ${typeof container.textContent}`);
-    console.log(`wrc: ${wrc}`);
-    expect(container.querySelector("WaitingRoomContent")).toHaveLength(1);
+ it('game does not exist', async () => {
+  getGameMock.mockImplementation(() => nonExistentGame);
+  credentialsMock.mockImplementation(
+      () => mockedUser);
+  const wrapper = render(<WaitingRoom setAppLevelGameId={()=>undefined}/>);
+  await waitForElement(() => wrapper.getByText("Could Not Find Game"));
 
+ });
 
+ it('game exists; loads elements', async () => {
+  getGameMock.mockImplementation(() => mockedGame);
+  credentialsMock.mockImplementation(
+      () => mockedUser);
+  let wrapper;
+  await act(async () => {
+   wrapper = render(<WaitingRoom setAppLevelGameId={()=>undefined}/>);
   });
-});
+  expect(wrapper.container.textContent).toContain("Game link");
+  expect(wrapper.container.textContent).toContain(`join-game/${mockGameId}`);
+  expect(wrapper.container.querySelectorAll("table")).toHaveLength(Object.keys(mockedGame.teams).length);
+  expect(wrapper.container.querySelectorAll("table").item(0).textContent).toContain(Object.keys(mockedGame.teams)[0]);
+  expect(wrapper.container.querySelectorAll("table").item(1).textContent).toContain(Object.keys(mockedGame.teams)[1]);
+
+ }); });

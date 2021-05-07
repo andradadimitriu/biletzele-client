@@ -1,3 +1,8 @@
+export const mockedUser={
+  "identityId": "eu-west-2:1ce41008-3355-4013-aa65-dd7b393d661e",
+};
+export const mockGameId = "AAAA";
+export const nonExistentGame = {gameNotFound: true};
 export const mockedGame = {
   gameStatus: "Active",
       creator: "eu-west-2:93a24318-132b-4188-86ca-b8e96208cb4f",
@@ -101,7 +106,7 @@ export const mockedGame = {
   "SK": "#METADATA#000001#HTAP",
     "PK": "GAME#000001#HTAP",
     "gameType": "000001",
-    "gameId": "HTAP",
+    "gameId": mockGameId,
     "words": [
   "hmm1",
   "hmm2",

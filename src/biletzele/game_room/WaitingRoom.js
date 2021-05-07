@@ -64,9 +64,25 @@ const WaitingRoom = ({setAppLevelGameId}) => {
   },[]);
 
   useEffect(() => {
-    ( async function updateGameAndUser(){
+    ( async function updateUser(){
+      const currentUser = await Auth.currentCredentials();
+      setUser(currentUser);
+    })();
+  }, []);
+
+  useEffect(() => {
+    ( async function updateGame(){
+      //TODO would it be a good idea to get it from props when possible?
+      const game = await getGame(gameId);
+      debugger;
+      setGame(game);
+    })();
+  }, [gameId]);
+
+  useEffect(() => {
+    ( async function updateCanStartGame(){
       function canUserStartGame(){
-        if(!(user && game)){
+        if(!user || !game || game.gameNotFound){
           return false;
         }
         const pending = game.gameStatus === GAME_STATUS.PENDING;
@@ -75,15 +91,9 @@ const WaitingRoom = ({setAppLevelGameId}) => {
         const enoughUsers = Object.keys(game.teams).every(teamName => game.teams[teamName].members.length >= MIN_PLAYERS_PER_TEAM);
         return (pending && rightUser && enoughUsers)  || active;
       }
-      const currentUser = await Auth.currentCredentials();
-      //TODO would it be a good idea to get it from props when possible?
-      const game = await getGame(gameId);
-      setUser(currentUser);
-      setGame(game);
       setCanStartGame(canUserStartGame());
     })();
-  }, [gameId, user]);
-
+  }, [game, user]);
   return (
     <div style={{margin: 10}}>
       {game ?
@@ -91,7 +101,6 @@ const WaitingRoom = ({setAppLevelGameId}) => {
             <div>
               <div style={{margin: 20}}>
                 <Row className="centered-content"><strong>Game link</strong></Row>
-                {/*TODO variable hostname*/}
                 <Row className="centered-content">
                   <span className="center-text-vertically">{joinGameLink}</span>
                   <Button variant="light" style={{marginLeft: 5}} onClick={()=>{navigator.clipboard.writeText(joinGameLink)}}>Copy</Button>
