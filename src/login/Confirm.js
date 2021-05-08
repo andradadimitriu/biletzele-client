@@ -7,6 +7,8 @@ import { useAppContext } from "../libs/contextLib";
 import { useFormFields } from "../libs/hooksLib";
 import { onError } from "../libs/errorLib";
 import "./Signup.css";
+import Button from "react-bootstrap/Button";
+import {Alert} from "react-bootstrap";
 
 export default function Confirm({email, password}) {
   const [fields, handleFieldChange] = useFormFields({
@@ -15,11 +17,20 @@ export default function Confirm({email, password}) {
   const history = useHistory();
   const { userHasAuthenticated } = useAppContext();
   const [isLoading, setIsLoading] = useState(false);
+  const [emailResent, setEmailResent] = useState({resent: false, error: null});
 
   function validateConfirmationForm() {
     return fields.confirmationCode.length > 0;
   }
+  async function resendEmail(){
+    try {
+      await Auth.resendSignUp(email);
+      setEmailResent({resent: true, error: null})
 
+    } catch (e) {
+      setEmailResent({resent: false, error: e})
+    }
+  }
   async function handleConfirmationSubmit(event) {
       event.preventDefault();
 
@@ -51,7 +62,15 @@ export default function Confirm({email, password}) {
               value={fields.confirmationCode}
               onChange={handleFieldChange}
           />
-          <p className="help-block"> Please check your email for the code.</p>
+          <p className="help-block"> Please check your email for the code.
+            <Button variant="link" style={{margin:0, padding:0}} onClick={resendEmail}>Resend email</Button>
+          </p>
+          {emailResent.resent && <Alert variant="success" className="p-1" style={{fontSize: "0.8rem"}}>
+            A new code has been sent to your email.
+          </Alert>}
+          {emailResent.error && <Alert variant="danger" className="p-1" style={{fontSize: "0.8rem"}}>
+            Something went wrong when trying to resend code. Please try again.
+          </Alert>}
         </Form.Group>
 
         <LoaderButton
@@ -62,6 +81,7 @@ export default function Confirm({email, password}) {
         >
           Verify
         </LoaderButton>
+
 
       </Form>
     </div>
