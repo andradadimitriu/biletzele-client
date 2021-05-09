@@ -42,8 +42,8 @@ export default function LoginForm(props) {
   return (
       <div className="center-form">
         <Form onSubmit={handleSubmit}>
-          <Form.Label>Email</Form.Label>
           <Form.Group controlId="email">
+            <Form.Label>Email</Form.Label>
             <Form.Control
                 autoFocus
                 type="email"
@@ -51,8 +51,8 @@ export default function LoginForm(props) {
                 onChange={handleFieldChange}
             />
           </Form.Group>
-          <Form.Label>Password</Form.Label>
           <Form.Group controlId="password">
+            <Form.Label>Password</Form.Label>
             <Form.Control
                 value={fields.password}
                 onChange={handleFieldChange}
