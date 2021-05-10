@@ -53,7 +53,6 @@ const WaitingRoom = ({setAppLevelGameId}) => {
 
   useEffect(() => {
     function handleMessage(message) {
-      debugger;
       const data = JSON.parse(message);
       console.log(`message received: ${message}`);
       if (data.type === MESSAGE_TYPE.NEW_PLAYER) {
@@ -74,7 +73,6 @@ const WaitingRoom = ({setAppLevelGameId}) => {
     ( async function updateGame(){
       //TODO would it be a good idea to get it from props when possible?
       const game = await getGame(gameId);
-      debugger;
       setGame(game);
     })();
   }, [gameId]);

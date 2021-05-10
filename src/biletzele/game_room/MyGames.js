@@ -16,7 +16,6 @@ export class MyGames extends React.Component {
   async componentDidMount(){
       const activeGames = await getGamesByStatus(GAME_STATUS.ACTIVE);
       const pendingGames = await getGamesByStatus(GAME_STATUS.PENDING);
-      debugger;
       const allGamesOfInterest = activeGames.concat(pendingGames);
       //TODO might be able to get it in props
       const currentUser = await Auth.currentCredentials();

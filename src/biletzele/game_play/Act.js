@@ -28,11 +28,11 @@ export default function Act(props) {
     if(wordsLeft.length === 0){
       return;
     }
-    wordsLeft.splice(turn.wordIndex, 1);
-    const newWordIndex  = Math.floor(Math.random() * wordsLeft.length);
+    const newWordsLeft = wordsLeft.slice(0, turn.wordIndex).concat(wordsLeft.slice(turn.wordIndex + 1));
+    const newWordIndex = Math.floor(Math.random() * newWordsLeft.length);
     await nextWordToGuess(props.game.gameId, turn.turnNo, props.round.roundNo, props.teamTurn, turn.wordIndex, newWordIndex);
     setTurn({...turn, wordIndex: newWordIndex});
-    setWordsLeft(wordsLeft);
+    setWordsLeft(newWordsLeft);
   }
 
   useEffect(() => {
