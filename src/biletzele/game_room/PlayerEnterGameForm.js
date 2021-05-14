@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Auth} from "aws-amplify";
 import Form from 'react-bootstrap/Form';
 import LoaderButton from "../../utils_components/LoaderButton";
@@ -7,13 +7,14 @@ import {useHistory, useParams} from "react-router-dom";
 
 import "./Forms.css";
 import {addPlayerToGame} from "../service/biletzele-websocket-service";
+import websocket from '../service/reconnecting-websocket';
+import {MESSAGE_TYPE} from "../utils/constants";
 
 const NO_WORDS = 5;
 
 export default function PlayerEnterGameForm() {
   let { gameId, teamName } = useParams();
   const history = useHistory();
-  // const noWords = props.noWords ? props.noWords : NO_WORDS;
   const wordFields = Array.from({length: NO_WORDS},(v, k)=>`word${k+1}`);
   const [isLoading, setIsLoading] = useState(false);
   const [playerAlreadyRegistered, setPlayerAlreadyRegistered] = useState(false);
@@ -27,20 +28,38 @@ export default function PlayerEnterGameForm() {
       return false;
     return !wordFields.map(wordField => fields[wordField]).some(word => word.includes(" ")
         || /[A-Z]/.test(word));
-
   }
 
   async function addPlayerAndWords(playerName, words){
     const currentUser = await Auth.currentCredentials();
     return await addPlayerToGame(gameId, teamName, {playerId: currentUser.identityId, playerName}, words);
   }
+  useEffect(() => {
+    function handleMessage(message) {
+      const data = JSON.parse(message);
+      console.log(`message received: ${message}`);
+      switch (data.type){
+        case `${MESSAGE_TYPE.NEW_PLAYER}_FAILURE`:
+        {
+          setIsLoading(false);
+          setPlayerAlreadyRegistered(true);
+          break;
+        }
+        case `${MESSAGE_TYPE.NEW_PLAYER}_SUCCESS`:{
+          history.push(`/biletzele/waiting-room/${gameId}`);
+          break;
+        }
+      }
+    }
+    websocket.on(handleMessage);
+  },[]);
 
   async function handleSubmit(e) {
     e.preventDefault();
     const words = wordFields.map(fieldName => fields[fieldName]);
     try {
+      setIsLoading(true);
       await addPlayerAndWords(fields.playerName, words);
-      history.push(`/biletzele/waiting-room/${gameId}`);
     }
     catch(e){
       debugger;
