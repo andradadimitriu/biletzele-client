@@ -52,14 +52,16 @@ const WaitingRoom = ({setAppLevelGameId}) => {
   },[setAppLevelGameId, gameId]);
 
   useEffect(() => {
-    function handleMessage(message) {
+    function handleMessageOnWaitingRoom(message) {
       const data = JSON.parse(message);
       console.log(`message received: ${message}`);
       if (data.type === MESSAGE_TYPE.NEW_PLAYER) {
         setGame(data.game);
       }
     }
-    websocket.on(handleMessage);
+    websocket.on(handleMessageOnWaitingRoom);
+    return () => websocket.off(handleMessageOnWaitingRoom);
+
   },[]);
 
   useEffect(() => {

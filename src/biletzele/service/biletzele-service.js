@@ -36,13 +36,6 @@ export async function newTurn(gameId, turnNo, startTime, wordIndex) {
     return turn;
 }
 
-export async function nextWordToGuess(gameId, turnNo, roundNo, teamTurn, oldWordIndex, newWordIndex) {
-    return await API.post(API_NAME, `/biletzele/wordtoguess/${gameId}`, {
-        body: {
-            roundNo, turnNo, oldWordIndex, newWordIndex, teamTurn
-        }});
-}
-
 export async function deleteGame(gameId) {
     return await API.post(API_NAME, `/biletzele/deleteone/${gameId}`);
 }

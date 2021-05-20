@@ -38,3 +38,9 @@ export async function endGame(gameId, roundNo, turnNo) {
             turnNo
         }}));
 }
+
+export async function nextWordToGuess(gameId, turnNo, roundNo, teamTurn, oldWordIndex, newWordIndex, wordGuessed) {
+    return await websocket.send(JSON.stringify({ action: "wordtoguess", data: {
+            gameId, roundNo, turnNo, oldWordIndex, newWordIndex, teamTurn, wordGuessed
+        }}));
+}

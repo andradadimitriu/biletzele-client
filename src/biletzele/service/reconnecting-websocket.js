@@ -22,7 +22,7 @@ function ReconnectingSocket(url) {
     }
 
     function off(fn) {
-        messageListeners = messageListeners.filter(l => l !== fn);
+        messageListeners = messageListeners.filter(l => l.name !== fn.name);
     }
 
     function onStateChange(fn) {

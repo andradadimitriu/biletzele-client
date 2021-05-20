@@ -3,14 +3,15 @@ import {GAME_PLAY_REFRESH_MESSAGES, GAME_STATUS} from "../utils/constants";
 import {useParams} from "react-router-dom";
 import {Auth} from "aws-amplify";
 import {getGame} from "../service/biletzele-service";
-import {myTurnToAct, myTurnToGuess, who_sTurnToAct} from "./utils/turns";
+import {myTurnToAct, who_sTurnToAct} from "./utils/turns";
 import Act from "./Act";
 import Loading from "../../utils_components/Loading";
 import {getRound} from "./utils/rounds";
 import RoundRest from "./RoundRest";
 import CouldNotFindGame from "../utils/CouldNotFindGame";
-import {Row} from "react-bootstrap";
+import {Badge, Row} from "react-bootstrap";
 import websocket from '../service/reconnecting-websocket';
+import NoAct from "./NoAct";
 
 export default function GamePlay({setAppLevelGameId}) {
   const [round, setRound] = useState(undefined);
@@ -43,16 +44,15 @@ export default function GamePlay({setAppLevelGameId}) {
   }, [gameId]);
 
   useEffect(() => {
-    function handleMessage(message) {
+    function handleMessageOnGamePlay(message) {
       const data = JSON.parse(message);
       console.log(`message received: ${message}`);
-      debugger;
       if (GAME_PLAY_REFRESH_MESSAGES.includes(data.type)) {
-        debugger;
         setGame(data.game);
       }
     }
-    websocket.on(handleMessage);
+    websocket.on(handleMessageOnGamePlay);
+    return () => websocket.off(handleMessageOnGamePlay);
   },[]);
 
   useEffect(() => {
@@ -68,26 +68,19 @@ export default function GamePlay({setAppLevelGameId}) {
     })();
   }, [game]);
 
-  return (user && game && round) ?
-          game.gameNotFound ? <CouldNotFindGame/> :
+  return (user && game) ?
+          game.gameNotFound ? <CouldNotFindGame/> : (round?
               (round.roundStatus === GAME_STATUS.ACTIVE ?
             <div>
-              <Row style={{margin: 10}}>Player turn: {playerTurn.playerName}</Row>
+              <Row style={{margin: 20}}>
+                <h5>Player turn <Badge variant="info">{playerTurn.playerName}</Badge></h5> </Row>
               {myTurnToAct(playerTurn, user) ?
               <Act game={game} round={round} reloadGame={reloadGame} teamTurn={teamTurn}/>:
-              myTurnToGuess(game.teams[teamTurn], user) ?
-                  <Guess/>:
-                  <Standby/>
-              }
+                  <NoAct team={game.teams[teamTurn]} user={user} turn={game.turn}/>}
             </div>:
             <RoundRest round={round} game={game} reloadGame={reloadGame}/>):
+              <Loading/>) :
       <Loading/>;
 }
 
-function Guess() {
-  return <Row style={{margin: 10}}>Time to guess</Row>;
-}
 
-function Standby() {
-  return <Row style={{margin: 10}}>The other team is playing. Pay attention to them.</Row>;
-}

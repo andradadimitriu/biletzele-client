@@ -1,6 +1,16 @@
 export const mockedUser={
   "identityId": "eu-west-2:1ce41008-3355-4013-aa65-dd7b393d661e",
 };
+export const otherTeamPlayingMockedUser={
+  "identityId": "eu-west-2:1ce41008-3355-4013-aa65-dd7b393d661e",
+};
+export const guessingMockedUser={
+  "identityId": "eu-west-2:93a24318-132b-4188-86ca-b8e96208cb4f",
+};
+export const myTurnMockedUser={
+  "identityId": "eu-west-2:8ba9fc93-ed09-4a54-bf83-3a6d1108aa78",
+};
+
 export const mockGameId = "AAAA";
 export const nonExistentGame = {gameNotFound: true};
 export const mockedGame = {

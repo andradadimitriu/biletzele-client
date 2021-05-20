@@ -18,11 +18,11 @@ function useMessages() {
     const [messages, setMessages] = useState([]);
 
     useEffect(() => {
-        function handleMessage(message) {
+        function handleMessageOnApp(message) {
             setMessages([...messages, message]);
         }
-        websocket.on(handleMessage);
-        return () => websocket.off(handleMessage);
+        websocket.on(handleMessageOnApp);
+        return () => websocket.off(handleMessageOnApp);
     }, [messages, setMessages]);
 
     return messages;

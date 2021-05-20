@@ -60,6 +60,7 @@ describe('<WaitingRoom/> tests', () => {
   expect(wrapper.container.querySelectorAll("table").item(1).textContent).toContain(Object.keys(mockedGame.teams)[1]);
 
  });
+
  it('test play', async () => {
   getGameMock.mockImplementation(() => mockedGame);
   credentialsMock.mockImplementation(

@@ -29,7 +29,6 @@ export default function RoundRest(props) {
 
 function ScoreTable({game}){
     const endedRounds = game.rounds.filter(round => round.roundStatus === GAME_STATUS.ENDED);
-    debugger;
     return <div style={{margin: 20}}>
         <table className="table">
             <thead>

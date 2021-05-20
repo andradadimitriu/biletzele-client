@@ -35,7 +35,7 @@ export default function PlayerEnterGameForm() {
     return await addPlayerToGame(gameId, teamName, {playerId: currentUser.identityId, playerName}, words);
   }
   useEffect(() => {
-    function handleMessage(message) {
+    function handleMessageOnEnterGameForm(message) {
       const data = JSON.parse(message);
       console.log(`message received: ${message}`);
       switch (data.type){
@@ -49,10 +49,13 @@ export default function PlayerEnterGameForm() {
           history.push(`/biletzele/waiting-room/${gameId}`);
           break;
         }
+        default:
       }
     }
-    websocket.on(handleMessage);
-  },[]);
+    websocket.on(handleMessageOnEnterGameForm);
+    return () => websocket.off(handleMessageOnEnterGameForm);
+
+  },[gameId, history]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -62,7 +65,6 @@ export default function PlayerEnterGameForm() {
       await addPlayerAndWords(fields.playerName, words);
     }
     catch(e){
-      debugger;
       console.log(`e: ${e}`);
       if(e.response.status === 520) {
         setPlayerAlreadyRegistered(true);
