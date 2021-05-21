@@ -13,7 +13,6 @@ export default function RoundRest(props) {
               throw e;
           }
       }
-      // props.reloadGame();
   }
   return <div>
       {props.round.roundNo === props.game.noRounds ?

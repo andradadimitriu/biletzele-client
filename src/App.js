@@ -106,7 +106,7 @@ return (
         <Routes setAppLevelGameId={setAppLevelGameId}/>
           <div>
               <h1>Websocket {isConnected ? 'Connected' : 'Disconnected'}</h1>
-              {messages.map(m => <p>{JSON.stringify(m, null, 2)}</p>)}
+              {messages.map((m, k) => <p key={k}>{JSON.stringify(m, null, 2)}</p>)}
           </div>
       </AppContext.Provider>
     </>

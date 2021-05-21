@@ -29,12 +29,14 @@ export default function NewGame() {
       const createdGame = await createGame(fields.gameName,
           fields.team1Name,
           fields.team2Name);
+      setIsLoading(false);
+
       //TODO error message if created game does not exist
       history.push(`/biletzele/new-player/${createdGame}/${fields.selectedTeam}`);
     } catch (e) {
+      setIsLoading(false);
       onError(e);
     }
-    setIsLoading(false);
 
   }
 
@@ -70,10 +72,10 @@ export default function NewGame() {
             <Form.Label>Choose your team:</Form.Label>
             <Form.Group controlId="selectedTeam">
               <Form.Control as="select"
+                            defaultValue={0}
                             onChange={handleFieldChange}
                             >
-              {/*TODO fix warning here for selected. there is an issue when using the suggested with bootstrap form.control */}
-                <option selected disabled>Select a team to play in</option>
+                <option disabled value={0}>Select a team to play in</option>
                 {fields.team1Name && <option>{fields.team1Name}</option>}
                 {fields.team2Name && <option>{fields.team2Name}</option>}
               </Form.Control>

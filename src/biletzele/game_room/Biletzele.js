@@ -6,7 +6,6 @@ import {MyGames} from "./MyGames";
 export class Biletzele extends React.Component {
   constructor(props) {
     super(props);
-    // Don't call this.setState() here!
     this.state = { value: "join" };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -14,20 +13,26 @@ export class Biletzele extends React.Component {
       this.setState({value});
   }
 
+  tabSwitch(param) {
+        switch(param) {
+            case "new":
+                return <NewGame/>;
+            case "mine":
+                return <MyGames/>;
+            default:
+                return <PendingGames/>;
+        }
+  }
+
   render() {
       return (
-
       <div className="margin">
           <ToggleButtonGroup type="radio" value={this.state.value} name="radioAll" onChange={this.handleChange}>
                         <ToggleButton variant="light" name="radio1" value={"join"}>Join Game</ToggleButton>
                         <ToggleButton variant="light" name="radio2" value={"mine"}>My Games</ToggleButton>
                         <ToggleButton variant="light" name="radio3" value={"new"}>New Game</ToggleButton>
           </ToggleButtonGroup>
-          {
-              //TODO there needs to be a better way; change this
-              (this.state.value === "new") ? <NewGame/> :
-                   ((this.state.value === "mine") ?  <MyGames/> : <PendingGames/>)}
-
+          {this.tabSwitch(this.state.value)}
        </div>);
   }
 
