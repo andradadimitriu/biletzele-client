@@ -1,19 +1,15 @@
-//TODO change to each env on one file
-// configure prod
-// Default to local if not set
-
 const config = {
-  websocketHostname: "wss://a2d765ch40.execute-api.eu-west-2.amazonaws.com/dev",
+  websocketHostname: process.env.REACT_APP_WEBSOCKET_HOSTNAME,
   apiGateway: {
-    API_NAME: "dev-biletzele-api",
-    REGION: "eu-west-2",
-    URL: "https://gghofhd4lk.execute-api.eu-west-2.amazonaws.com/dev"
+    API_NAME: process.env.REACT_APP_API_NAME,
+    REGION: process.env.REACT_APP_REGION,
+    URL: process.env.REACT_APP_API_URL
   },
   cognito: {
-    REGION: "eu-west-2",
-    USER_POOL_ID: "eu-west-2_8kanfICZV",
-    APP_CLIENT_ID: "7h5je0q4b87c2b8dptt20e73in", //TODO change to new client id
-    IDENTITY_POOL_ID: "eu-west-2:5416aaa4-6fa6-45f4-8572-ac619bb524bb"
+    REGION: process.env.REACT_APP_REGION,
+    USER_POOL_ID: process.env.REACT_APP_USER_POOL_ID,
+    APP_CLIENT_ID: process.env.REACT_APP_APP_CLIENT_ID,
+    IDENTITY_POOL_ID: process.env.REACT_APP_IDENTITY_POOL_ID
   }
 };
 export default {
