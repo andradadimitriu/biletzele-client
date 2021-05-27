@@ -11,6 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSpinner} from '@fortawesome/free-solid-svg-icons';
 import websocket from './biletzele/service/reconnecting-websocket';
+import config from "./config";
 
 library.add( faSpinner);
 
@@ -105,8 +106,8 @@ return (
       >
         <Routes setAppLevelGameId={setAppLevelGameId}/>
           <div>
-              <h1>Websocket {isConnected ? 'Connected' : 'Disconnected'}</h1>
-              {messages.map((m, k) => <p key={k}>{JSON.stringify(m, null, 2)}</p>)}
+              {config.env !== "prod" && <h1>Websocket {isConnected ? 'Connected' : 'Disconnected'}</h1>}
+              {config.env !== "prod" && messages.map((m, k) => <p key={k}>{JSON.stringify(m, null, 2)}</p>)}
           </div>
       </AppContext.Provider>
     </>

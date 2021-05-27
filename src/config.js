@@ -1,4 +1,5 @@
 const config = {
+  env: process.env.REACT_APP_ENV,
   websocketHostname: process.env.REACT_APP_WEBSOCKET_HOSTNAME,
   apiGateway: {
     API_NAME: process.env.REACT_APP_API_NAME,
