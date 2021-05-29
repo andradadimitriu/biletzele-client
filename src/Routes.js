@@ -43,7 +43,6 @@ export default function Routes({setAppLevelGameId, websocket}) {
           <Redirect to="/biletzele" />
       </Route>
 
-      {/* Finally, catch all unmatched routes */}
       <Route>
         <NotFound />
       </Route>

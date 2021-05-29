@@ -12,6 +12,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSpinner} from '@fortawesome/free-solid-svg-icons';
 import websocket from './biletzele/service/reconnecting-websocket';
 import config from "./config";
+import Help from "./biletzele/utils/Help";
 
 library.add( faSpinner);
 
@@ -34,6 +35,7 @@ function App() {
     const [isAuthenticating, setIsAuthenticating] = useState(true);
     const [isAuthenticated, userHasAuthenticated] = useState(false);
     const [gameId, setGameId] = useState(undefined);
+    const [showHelp, setShowHelp] = useState(false);
 
     const messages = useMessages();
     const [isConnected, setIsConnected] = useState(websocket.isConnected());
@@ -78,6 +80,7 @@ function App() {
       userHasAuthenticated(false);
       history.push("/login");
     }
+
 return (
   !isAuthenticating && (
     <>
@@ -90,7 +93,8 @@ return (
               <Nav className="justify-content-end">
                 {isAuthenticated ? (
                               <>
-                                <Nav.Item onClick={handleLogout}>Logout</Nav.Item>
+                                  <Nav.Link onClick={()=>setShowHelp(true)}>Help</Nav.Link>
+                                  <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
                               </>
                             ) : (
                               <>
@@ -104,6 +108,7 @@ return (
       <AppContext.Provider
         value={{ isAuthenticated, userHasAuthenticated }}
       >
+          <Help show={showHelp} setShow={setShowHelp}/>
         <Routes setAppLevelGameId={setAppLevelGameId}/>
           <div>
               {config.env !== "prod" && <h1>Websocket {isConnected ? 'Connected' : 'Disconnected'}</h1>}
