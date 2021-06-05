@@ -13,6 +13,85 @@ export const myTurnMockedUser={
 
 export const mockGameId = "AAAA";
 export const nonExistentGame = {gameNotFound: true};
+export const mockedRoundsFirstActive = [
+  {
+    "roundNo": 1,
+    "roundType": "DESCRIBE",
+    "roundStatus": "Active",
+    "score": {
+      "team 1": 18,
+      "team 2": 0
+    },
+    "wordsLeft": [
+      "hmm1",
+      "hmm2"]
+  },
+  {
+    "roundNo": 2,
+    "roundType": "MIME",
+    "roundStatus": "Pending",
+    "score": {
+      "team 1": 0,
+      "team 2": 0
+    }
+  },
+  {
+    "roundStatus": "Pending",
+    "score": {
+      "team 2": 0,
+      "team 1": 0
+    },
+    "roundNo": 3,
+    "roundType": "WORD",
+  },
+  {
+    "roundStatus": "Pending",
+    "score": {
+      "team 2": 0,
+      "team 1": 0
+    },
+    "roundNo": 4,
+    "roundType": "SOUNDS",
+
+  }];
+export const mockedRoundsGameEnded = [
+  {
+    "roundNo": 1,
+    "roundType": "DESCRIBE",
+    "roundStatus": "Ended",
+    "score": {
+      "team 1": 18,
+      "team 2": 2
+    },
+  },
+  {
+    "roundNo": 2,
+    "roundType": "MIME",
+    "roundStatus": "Ended",
+    "score": {
+      "team 1": 12,
+      "team 2": 10
+    }
+  },
+  {
+    "roundStatus": "Ended",
+    "score": {
+      "team 2": 20,
+      "team 1": 0
+    },
+    "roundNo": 3,
+    "roundType": "WORD",
+  },
+  {
+    "roundStatus": "Ended",
+    "score": {
+      "team 2": 10,
+      "team 1": 10
+    },
+    "roundNo": 4,
+    "roundType": "SOUNDS",
+
+  }];
 export const mockedGame = {
   gameStatus: "Active",
       creator: "eu-west-2:93a24318-132b-4188-86ca-b8e96208cb4f",
@@ -34,6 +113,7 @@ export const mockedGame = {
     "rounds": [
   {
     "roundNo": 1,
+    "roundType": "DESCRIBE",
     "roundStatus": "Ended",
     "score": {
       "team 1": 20,
@@ -42,6 +122,7 @@ export const mockedGame = {
   },
   {
     "roundNo": 2,
+    "roundType": "MIME",
     "roundStatus": "Active",
     "score": {
       "team 1": 0,
@@ -74,7 +155,8 @@ export const mockedGame = {
       "team 2": 0,
       "team 1": 0
     },
-    "roundNo": 3
+    "roundNo": 3,
+    "roundType": "WORD",
   },
   {
     "roundStatus": "Pending",
@@ -82,7 +164,9 @@ export const mockedGame = {
       "team 2": 0,
       "team 1": 0
     },
-    "roundNo": 4
+    "roundNo": 4,
+    "roundType": "SOUNDS",
+
   }
 ],
     "createdAt": 1620141262829,

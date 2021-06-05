@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {GAME_PLAY_REFRESH_MESSAGES, GAME_STATUS} from "../utils/constants";
+import {GAME_PLAY_REFRESH_MESSAGES, GAME_STATUS, ROUNDS} from "../utils/constants";
 import {useParams} from "react-router-dom";
 import {Auth} from "aws-amplify";
 import {getGame} from "../service/biletzele-service";
@@ -12,6 +12,7 @@ import CouldNotFindGame from "../utils/CouldNotFindGame";
 import {Badge, Row} from "react-bootstrap";
 import websocket from '../service/reconnecting-websocket';
 import NoAct from "./NoAct";
+import MinimalCollapsible from "../utils/MinimalCollapsible";
 
 export default function GamePlay({setAppLevelGameId}) {
   const [round, setRound] = useState(undefined);
@@ -67,19 +68,24 @@ export default function GamePlay({setAppLevelGameId}) {
       setRound(round);
     })();
   }, [game]);
-
   return (user && game) ?
           game.gameNotFound ? <CouldNotFindGame/> : (round?
-              (round.roundStatus === GAME_STATUS.ACTIVE ?
+              <div>
+                {round.roundStatus === GAME_STATUS.ACTIVE ?
             <div>
+              <MinimalCollapsible headerText={ROUNDS.find(r => r.type === round.roundType).name} content={ROUNDS.find(r => r.type === round.roundType).description}/>
+
               <Row style={{margin: 20}}>
                 <h5>Player turn <Badge variant="info">{playerTurn.playerName}</Badge></h5> </Row>
+
               {myTurnToAct(playerTurn, user) ?
               <Act game={game} round={round} reloadGame={reloadGame} teamTurn={teamTurn}/>:
                   <NoAct team={game.teams[teamTurn]} user={user} turn={game.turn}/>}
             </div>:
-            <RoundRest round={round} game={game} reloadGame={reloadGame}/>):
-              <Loading/>) :
+            <RoundRest round={round} game={game} reloadGame={reloadGame}/>}
+              </div>:
+              <Loading/>)
+                :
       <Loading/>;
 }
 

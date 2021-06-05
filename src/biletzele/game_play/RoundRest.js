@@ -1,12 +1,12 @@
 import React from "react";
 import {Row, Button} from "react-bootstrap";
 import {newRound} from "../service/biletzele-websocket-service";
-import {GAME_STATUS} from "../utils/constants";
+import {GAME_STATUS, ROUNDS} from "../utils/constants";
 
-export default function RoundRest(props) {
+export default function RoundRest({round, game}) {
   async function startRound(){
       try {
-          await newRound(props.game.gameId, props.round.roundNo + 1);
+          await newRound(game.gameId, round.roundNo + 1);
       }
       catch(e) {
           if (e.response.status !== 520) {
@@ -14,17 +14,21 @@ export default function RoundRest(props) {
           }
       }
   }
+  function getNewRound(){
+      return game.rounds.find(r => r.roundNo === round.roundNo + 1)
+  }
   return <div>
-      {props.round.roundNo === props.game.noRounds ?
+      {round.roundNo === game.noRounds ?
           <div style={{margin: 20}}>Game ended</div>:
           <div style={{margin: 20}}>
-              <Row style={{margin: 10}}>Round {props.round.roundNo} ended.</Row>
-              <Row style={{margin: 10}}><Button onClick={startRound}> Start round {props.round.roundNo + 1}</Button></Row>
+              <p style={{textAlign: "center"}}>Round <strong>{ROUNDS.find(r=> r.type === round.roundType).name}</strong> ended.</p>
+              <Row style={{margin: 10}}><Button onClick={startRound}> Start round: <strong>{ROUNDS.find(r=> r.type === getNewRound().roundType).name}</strong></Button></Row>
           </div>}
-      <ScoreTable game={props.game}/>
-      {(props.round.roundNo === props.game.noRounds) && <WinnerMessage game={props.game}/>}
+      <ScoreTable game={game}/>
+      {(round.roundNo === game.noRounds) && <WinnerMessage game={game}/>}
   </div>;
 }
+
 
 function ScoreTable({game}){
     const endedRounds = game.rounds.filter(round => round.roundStatus === GAME_STATUS.ENDED);
@@ -76,5 +80,5 @@ function WinnerMessage({game}){
         return <div className="centered-content"> It's a tie! </div>;
     }
     const winnerTeam = teamsScore[0] > teamsScore[1] ? teams[0] : teams[1];
-    return <div className="centered-content"> <p>Team <strong> {` ${winnerTeam} `} </strong> has won!</p></div>;
+    return <div className="centered-content"> <p>Team <strong>{` ${winnerTeam} `}</strong> has won!</p></div>;
 }

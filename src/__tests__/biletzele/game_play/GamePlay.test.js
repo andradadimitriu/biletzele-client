@@ -3,9 +3,10 @@ import { shallow } from 'enzyme';
 import  {faLib} from "../../mocks/fontawesomeMocks";
 
 import GamePlay from "../../../biletzele/game_play/GamePlay";
-import {act, cleanup, render, waitForElement} from '@testing-library/react';
+import {act, cleanup, fireEvent, render, waitForElement} from '@testing-library/react';
 import {
   mockedGame,
+  mockedRoundsFirstActive,
   mockedUser,
   mockGameId,
   nonExistentGame,
@@ -64,6 +65,38 @@ describe('<GamePlay />', () => {
     });
 
     expect(wrapper.getByText(/other team/i).textContent).toBe("The other team is playing. Pay attention to them.");
+  });
+
+  it("shows correct round - Mime", async () => {
+    getGameMock.mockImplementation(() => mockedGame);
+    credentialsMock.mockImplementation(
+        () => otherTeamPlayingMockedUser);
+    let wrapper;
+    await act(async () => {
+      wrapper = render(<GamePlay setAppLevelGameId={()=>undefined}/>);
+    });
+    expect(wrapper.getByText(/Round/i)).toBeTruthy();
+    expect(wrapper.getByText(/Mime the word/i).textContent).toBe("Mime the word");
+    fireEvent.click(wrapper.getByText(/Mime the word/i));
+    expect(wrapper.container.textContent).toContain("Use your body and face to make people think of the word to be guessed. Do not use your voice, do not point at existing objects!");
+
+  });
+
+  it("shows correct round - Describe", async () => {
+
+    const mockedGameCorrectRound = {...mockedGame, rounds: mockedRoundsFirstActive}
+    getGameMock.mockImplementation(() => mockedGameCorrectRound);
+    credentialsMock.mockImplementation(
+        () => otherTeamPlayingMockedUser);
+    let wrapper;
+    await act(async () => {
+      wrapper = render(<GamePlay setAppLevelGameId={()=>undefined}/>);
+    });
+    expect(wrapper.getByText(/Round/i)).toBeTruthy();
+    expect(wrapper.getByText(/Describe/i).textContent).toBe("Describe the word");
+    fireEvent.click(wrapper.getByText(/Describe the word/i));
+    expect(wrapper.container.textContent).toContain("Describe the word to be guessed, without saying the word or any derivatives of the word.");
+
   });
 
   it("guessing turn", async () => {

@@ -13,3 +13,16 @@ export function useFormFields(initialState) {
     }
   ];
 }
+
+export function useCheckboxFormFields(initialState) {
+  const [fields, setValues] = useState(initialState);
+  return [
+    fields,
+    function(event) {
+      setValues({
+        ...fields,
+        [event.target.id]: !fields[event.target.id]
+      });
+    }
+  ];
+}

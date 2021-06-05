@@ -12,12 +12,13 @@ export async function getGamesByStatus(status){
     return await API.get(API_NAME, `/biletzele/getgames/${status}`);
 }
 
-export async function createGame(gameName, team1Name, team2Name) {
+export async function createGame(gameName, team1Name, team2Name, rounds) {
     return await API.post(API_NAME, "/biletzele/create", {
         body: {
             gameName,
             team1Name,
-            team2Name
+            team2Name,
+            rounds
         }});
 }
 

@@ -9,12 +9,13 @@ import { useHistory } from "react-router-dom";
 import { onError } from "./libs/errorLib";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faSpinner} from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faChevronDown, faChevronRight} from '@fortawesome/free-solid-svg-icons';
+
 import websocket from './biletzele/service/reconnecting-websocket';
 import config from "./config";
 import Help from "./biletzele/utils/Help";
 
-library.add( faSpinner);
+library.add( faSpinner, faChevronDown, faChevronRight);
 
 function useMessages() {
     const [messages, setMessages] = useState([]);

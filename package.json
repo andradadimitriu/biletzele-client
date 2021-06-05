@@ -32,7 +32,8 @@
   },
   "jest": {
     "watchPathIgnorePatterns": [
-      "src/__tests__/mocks"
+      "src/__tests__/mocks",
+      "src/__tests__/utils"
     ]
   },
   "eslintConfig": {

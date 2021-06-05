@@ -2,12 +2,12 @@
 import React, { useState } from "react";
 import Form from 'react-bootstrap/Form';
 import LoaderButton from "../../utils_components/LoaderButton";
-import { useFormFields } from "../../libs/hooksLib";
+import {useCheckboxFormFields, useFormFields} from "../../libs/hooksLib";
 import { onError } from "../../libs/errorLib";
 import "./NewGame.css";
 import {useHistory} from "react-router-dom";
 import {createGame} from "../service/biletzele-service";
-
+import {ROUNDS} from "../utils/constants";
 export default function NewGame() {
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
@@ -17,8 +17,15 @@ export default function NewGame() {
     team2Name: "",
     selectedTeam: undefined
   });
+  const [roundCheckboxes, handleRoundCheckboxes] = useCheckboxFormFields({  ...ROUNDS.reduce((roundTypes,round)=>{
+      roundTypes[round.type] = true;
+      return roundTypes;
+    },{})});
   function validateForm() {
-    return fields.gameName.length > 0 && fields.team1Name.length > 0 && fields.team2Name.length > 0;
+    return fields.gameName.length > 0
+        && fields.team1Name.length > 0
+        && fields.team2Name.length > 0
+    &&Object.keys(roundCheckboxes).filter(checkbox => roundCheckboxes[checkbox] === true).length > 0;
   }
 
   async function handleSubmit(event) {
@@ -28,7 +35,9 @@ export default function NewGame() {
     try {
       const createdGame = await createGame(fields.gameName,
           fields.team1Name,
-          fields.team2Name);
+          fields.team2Name,
+          Object.keys(roundCheckboxes).filter((roundType) => roundCheckboxes[roundType] === true)
+      );
       setIsLoading(false);
 
       //TODO error message if created game does not exist
@@ -80,11 +89,24 @@ export default function NewGame() {
                 {fields.team2Name && <option>{fields.team2Name}</option>}
               </Form.Control>
           </Form.Group>
+            <Form.Label>Rounds to play: </Form.Label>
+            {
+              ROUNDS.map((round, key) =>
+              <Form.Check
+                  key={key}
+                checked={roundCheckboxes[round.type]}
+                onChange={handleRoundCheckboxes}
+                label={round.name}
+                  id={round.type}
+                type="checkbox"
+            />)
+            }
           <LoaderButton
             block
             disabled={!validateForm()}
             type="submit"
             isLoading={isLoading}
+            style={{margin: 20}}
           >
             Create Game
           </LoaderButton>
