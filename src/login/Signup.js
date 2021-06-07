@@ -87,7 +87,7 @@ export default function Signup() {
   }
 
   return (
-    <div className="Signup">
+    <div className="Signup center-form">
       {newUser === null ? renderForm() : <Confirm email={fields.email} password={fields.password}/>}
     </div>
   );
