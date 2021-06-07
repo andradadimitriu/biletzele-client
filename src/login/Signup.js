@@ -4,7 +4,6 @@ import Form from 'react-bootstrap/Form';
 import LoaderButton from "../utils_components/LoaderButton";
 import { useFormFields } from "../libs/hooksLib";
 import Confirm from './Confirm';
-import "./Signup.css";
 
 export default function Signup() {
   const [fields, handleFieldChange] = useFormFields({

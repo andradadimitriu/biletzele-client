@@ -6,7 +6,6 @@ import LoaderButton from "../utils_components/LoaderButton";
 import { useAppContext } from "../libs/contextLib";
 import { useFormFields } from "../libs/hooksLib";
 import { onError } from "../libs/errorLib";
-import "./Signup.css";
 import Button from "react-bootstrap/Button";
 import {Alert} from "react-bootstrap";
 
