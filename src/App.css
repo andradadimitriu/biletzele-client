@@ -1,9 +1,21 @@
 .bar{
-   margin-down: 15px;
+   margin-bottom: 15px;
 }
 input:-webkit-autofill {
     -webkit-box-shadow: 0 0 0 1000px white inset !important;
 }
 .margin{
    margin: 20px;
+}
+html, body{
+    height: 100%;
+}
+#root, .horizontalflex{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.occupy-all-available{
+    flex: 1 1 auto;
 }

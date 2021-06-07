@@ -22,22 +22,30 @@ export default function NoAct({team, user, turn}) {
 
   },[]);
 
-  return <>
-    {myTurnToGuess(team, user) ?
-    <Guess/>:
-    <Standby/>
-    }
-    {lastWordGuessed && <div style={{margin: 40}}>
-      <Row className="justify-content-md-center" style={{margin: 10}}>Last word guessed:</Row>
+  function WhatToDo(){
+    return <div style={{textAlign: "center"}}>{myTurnToGuess(team, user) ?
+        <Guess/>:
+        <Standby/>}
+    </div>;
+  }
+
+  return <div style={{marginTop: 40, fontSize: "8vw"}}>
+    {lastWordGuessed && <div >
+      <Row className="justify-content-md-center " style={{margin: 10}}>Last word guessed:</Row>
       <Row className="justify-content-md-center" style={{margin: 10, color: "green", fontWeight: "bold"}}>{lastWordGuessed}</Row>
     </div>}
-    </>
+    <WhatToDo />
+  </div>
 }
 
+
 function Guess() {
-  return <Row className="justify-content-md-center" style={{margin: 10}}><h3>Time to guess</h3></Row>;
+  return <p>Time to guess</p>;
 }
 
 function Standby() {
-  return <Row className="justify-content-md-center" style={{margin: 10}}><h3>The other team is playing. Pay attention to them.</h3></Row>;
+  return <div>
+    <p>The other team is playing.</p>
+    <p>Pay attention to them.</p>
+  </div>;
 }

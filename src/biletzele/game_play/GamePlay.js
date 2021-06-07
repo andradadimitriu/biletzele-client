@@ -68,25 +68,29 @@ export default function GamePlay({setAppLevelGameId}) {
       setRound(round);
     })();
   }, [game]);
-  return (user && game) ?
+  return <div className="occupy-all-available">{(user && game) ?
           game.gameNotFound ? <CouldNotFindGame/> : (round?
-              <div>
+              <>
                 {round.roundStatus === GAME_STATUS.ACTIVE ?
             <div>
+
+              <Row style={{margin: 5}}>
+                <h5>Player turn <Badge variant="info">{playerTurn.playerName}</Badge></h5>
+              </Row>
+
               <MinimalCollapsible headerText={ROUNDS.find(r => r.type === round.roundType).name} content={ROUNDS.find(r => r.type === round.roundType).description}/>
 
-              <Row style={{margin: 20}}>
-                <h5>Player turn <Badge variant="info">{playerTurn.playerName}</Badge></h5> </Row>
 
               {myTurnToAct(playerTurn, user) ?
               <Act game={game} round={round} reloadGame={reloadGame} teamTurn={teamTurn}/>:
                   <NoAct team={game.teams[teamTurn]} user={user} turn={game.turn}/>}
             </div>:
             <RoundRest round={round} game={game} reloadGame={reloadGame}/>}
-              </div>:
+              </>:
               <Loading/>)
                 :
-      <Loading/>;
+      <Loading/>}
+  </div>;
 }
 
 
