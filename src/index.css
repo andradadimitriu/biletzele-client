@@ -20,3 +20,13 @@ input.form-control {
 input[type=file] {
   width: 100%;
 }
+
+.card-styling{
+  margin: 20px !important;
+  width: 24rem;
+}
+
+
+.mr-sm-2, .mx-sm-2 {
+  margin-right: 20px !important;
+}

@@ -10,7 +10,7 @@ const teamColors = (id) => id % 2 === 0 ? "primary" : "info";
 
 export default function GameTile (props)  {
 return (
-    <Card className="margin" style={{ width: '24rem'}}>
+    <Card className="card-styling">
       <Card.Body>
         <Row>
           <Col xs={8}><Card.Title style={{paddingRight: 0}}>{props.game.gameName}</Card.Title></Col>

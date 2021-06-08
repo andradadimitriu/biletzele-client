@@ -68,7 +68,7 @@ export default function GamePlay({setAppLevelGameId}) {
       setRound(round);
     })();
   }, [game]);
-  return <div className="occupy-all-available">{(user && game) ?
+  return <div>{(user && game) ?
           game.gameNotFound ? <CouldNotFindGame/> : (round?
               <>
                 {round.roundStatus === GAME_STATUS.ACTIVE ?
