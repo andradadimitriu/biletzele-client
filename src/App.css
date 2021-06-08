@@ -8,7 +8,10 @@ input:-webkit-autofill {
    margin: 20px;
 }
 
-.horizontalflex{
-    display: flex;
-    flex-direction: column;
+@media screen and (min-width: 700px) {
+    .horizontalflex{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 }
