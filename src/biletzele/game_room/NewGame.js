@@ -1,10 +1,8 @@
-
 import React, { useState } from "react";
 import Form from 'react-bootstrap/Form';
 import LoaderButton from "../../utils_components/LoaderButton";
 import {useCheckboxFormFields, useFormFields} from "../../libs/hooksLib";
 import { onError } from "../../libs/errorLib";
-import "./NewGame.css";
 import {useHistory} from "react-router-dom";
 import {createGame} from "../service/biletzele-service";
 import {ROUNDS} from "../utils/constants";
@@ -51,7 +49,7 @@ export default function NewGame() {
 
 
   return (
-      <div className="NewGame">
+      <div className="center-form" style={{width: "100%"}}>
         <Form onSubmit={handleSubmit}>
           <Form.Label>Game Name</Form.Label>
           <Form.Group controlId="gameName">
