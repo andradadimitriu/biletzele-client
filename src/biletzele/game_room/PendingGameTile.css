@@ -1,8 +1,9 @@
 .game-button {
     color: white;
-    margin-right: 10px;
 }
-
+.card-link+.card-link {
+    margin-left: 0rem !important;
+}
 .game-button .card-link{
     color: white;
 }

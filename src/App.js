@@ -7,13 +7,13 @@ import { AppContext } from "./libs/contextLib";
 import { Auth } from "aws-amplify";
 import { useHistory } from "react-router-dom";
 import { onError } from "./libs/errorLib";
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSpinner, faChevronDown, faChevronRight} from '@fortawesome/free-solid-svg-icons';
 
 import websocket from './biletzele/service/reconnecting-websocket';
 import config from "./config";
 import Help from "./biletzele/utils/Help";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 library.add( faSpinner, faChevronDown, faChevronRight);
 

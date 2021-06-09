@@ -28,8 +28,6 @@ input[type=file] {
 
 @media screen and (max-width: 700px) {
 .card-styling{
-  margin-left: 5px !important;
-  margin-right: 5px !important;
   width: 95%;
 }
 }

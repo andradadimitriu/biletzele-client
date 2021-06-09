@@ -31,12 +31,10 @@ export class MyGames extends React.Component {
 
   }
 
-  async
-
   render() {
       return (
-      <div>
-          <Form.Control style={{margin: 20,  width: '24rem'}} type="text" placeholder="Search" value={this.state.searchText} className="mr-sm-2" onChange={(event)=>this.setState({searchText: event.target.value})}
+      <div className="horizontalflex">
+          <Form.Control type="text" placeholder="Search" value={this.state.searchText} className="mr-sm-2 card-styling" onChange={(event)=>this.setState({searchText: event.target.value})}
           />
         {this.state.isLoading ? <Loading/> : this.state.filteredGames.map((game, id) => <GameTile key={id} game={game} user={this.state.currentUser}/>)}
       </div>

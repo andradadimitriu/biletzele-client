@@ -8,7 +8,7 @@ import {isPlayerInGame} from "../utils/playerUtils";
 import {GAME_STATUS} from "../utils/constants";
 const teamColors = (id) => id % 2 === 0 ? "primary" : "info";
 
-export default function GameTile (props)  {
+export default function GameTile(props)  {
 return (
     <Card className="card-styling">
       <Card.Body>
@@ -33,7 +33,7 @@ return (
           <Card.Text>
           Choose your team.
         </Card.Text>
-        <div>
+        <div style={{display: "flex", flexWrap: "wrap", justifyContent: "space-between"}}>
             {Object.keys(props.game.teams).map((teamName, id) =>
                 <TeamDisplay key={id} gameId={props.game.gameId} teamName={teamName} team={props.game.teams[teamName]} teamColor={teamColors(id)}/>
                 )}
@@ -48,8 +48,8 @@ return (
 };
 
 function TeamDisplay({gameId, teamName, team, teamColor}){
-    return <Card.Link href={`/biletzele/new-player/${gameId}/${teamName}`}>
-        <Button variant={teamColor} className="game-button">
+    return <Card.Link style={{paddingBottom: 10}} href={`/biletzele/new-player/${gameId}/${teamName}`}>
+        <Button variant={teamColor}  className="game-button">
             {`${teamName} `}
             <span className="bordered-box">{team.members.length}/10</span>
         </Button>
