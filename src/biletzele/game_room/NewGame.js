@@ -104,7 +104,7 @@ export default function NewGame() {
             disabled={!validateForm()}
             type="submit"
             isLoading={isLoading}
-            style={{margin: 20}}
+            style={{marginTop: 20}}
           >
             Create Game
           </LoaderButton>
