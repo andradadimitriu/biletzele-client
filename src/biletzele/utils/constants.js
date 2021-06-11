@@ -42,9 +42,12 @@ export const COLOR_CODES = {
     info: {
         color: "green"
     },
+    warning: {
+        color: "orange",
+        threshold: 8
+    },
     alert: {
-        color: "red",
-        threshold: 5
+        color: "red"
     },
     waiting: {
         color: "grey"
