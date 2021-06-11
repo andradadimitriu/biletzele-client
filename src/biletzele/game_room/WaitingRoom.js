@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import { useHistory, useParams } from "react-router-dom";
 import {Auth} from "aws-amplify";
 import Button from "react-bootstrap/Button";
@@ -108,7 +107,7 @@ const WaitingRoom = ({setAppLevelGameId}) => {
               </div>
               <Row style={{margin: 10}}>Creator: {getCreatorPlayerName()}</Row>
               <div style={{display: "flex", justifyContent: "space-between", flexWrap: "wrap"}}>
-                {//TODO add loading screen when game is still loading
+                {
                    Object.keys(game.teams).map((teamName, id) =>
                       <TeamTable key={id} teamName={teamName} team={game.teams[teamName]}/>)
                 }

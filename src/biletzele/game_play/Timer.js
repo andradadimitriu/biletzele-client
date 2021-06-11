@@ -31,12 +31,14 @@ export default function Timer({startTime, setOutOfTime, content}) {
   }, [countDown, startTime, setOutOfTime], timerAnimationStarted);
 
   useEffect(() => {
+    debugger;
     if(innerOutOfTime){
       setTimeout(()=>{
         setOutOfTime(true);
       }, 2000);
     }
-  }, [innerOutOfTime]);
+  }, [innerOutOfTime, setOutOfTime]);
+
     function calculateTimeFraction() {
       if(innerOutOfTime){
         return 1;
