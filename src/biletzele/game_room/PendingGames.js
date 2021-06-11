@@ -31,9 +31,11 @@ export class PendingGames extends React.Component {
   render() {
       return (
       <div className="horizontalflex">
-          <Form.Control type="text" placeholder="Search" value={this.state.searchText} className="mr-sm-2 card-styling" onChange={(event)=>this.setState({searchText: event.target.value})}
-          />
-        {this.state.isLoading ? <Loading/> : this.state.filteredGames.map((game, id) => <GameTile key={id} game={game} user={this.state.currentUser}/>)}
+          {this.state.isLoading ? <Loading/>:
+              <React.Fragment>
+                <Form.Control type="text" placeholder="Search" value={this.state.searchText} className="mr-sm-2 card-styling" onChange={(event)=>this.setState({searchText: event.target.value})}/>
+                {this.state.filteredGames.map((game, id) => <GameTile key={id} game={game} user={this.state.currentUser}/>)}
+              </React.Fragment>}
       </div>
       );
   }
