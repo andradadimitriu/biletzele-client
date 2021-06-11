@@ -42,14 +42,14 @@ export default function Timer({startTime, setOutOfTime, content}) {
         return 1;
       }
       const timeFraction = countDown/ COUNTDOWN_SECONDS;
-      // const smoothedTimeFraction =  timeFraction - (1 / timeFraction) * (1 - timeFraction);
+      // const smoothedTimeFraction =  timeFraction - (1 / COUNTDOWN_SECONDS) * (1 - timeFraction);
 
       return startTime ? timeFraction : 0;
   }
 
   function decideColor() {
     if(!startTime){
-      return undefined;
+      return "";
     }
     if(innerOutOfTime){
       return COLOR_CODES.alert.color;
@@ -62,7 +62,7 @@ export default function Timer({startTime, setOutOfTime, content}) {
     <svg className="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
       <g className="base-timer__circle">
         <circle className="base-timer__path-elapsed" cx="50" cy="50" r="45"/>
-        <path
+        {startTime && <path
             strokeDasharray={`${(
             calculateTimeFraction() * FULL_DASH_ARRAY
         ).toFixed(0)} 283`}
@@ -73,7 +73,7 @@ export default function Timer({startTime, setOutOfTime, content}) {
           a 45,45 0 1,0 90,0
           a 45,45 0 1,0 -90,0
         "
-        ></path>
+        ></path>}
       </g>
     </svg>
     <span id="base-timer-label" className="base-timer__label">

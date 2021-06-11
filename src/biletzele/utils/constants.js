@@ -44,7 +44,7 @@ export const COLOR_CODES = {
     },
     warning: {
         color: "orange",
-        threshold: 8
+        threshold: 10
     },
     alert: {
         color: "red"
