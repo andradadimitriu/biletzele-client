@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 
 import {getTurn} from "./utils/turns";
-import {Row, Col, Button, Alert} from "react-bootstrap";
+import {Button, Alert} from "react-bootstrap";
 import {newTurn} from "../service/biletzele-service";
 import moment from "moment";
 import Timer, {getCountDown} from "./Timer";
@@ -75,15 +75,25 @@ export default function Act(props) {
     return () => websocket.off(handleWhenAct);
     },[turn, newWordIndex, wordsLeft]);
 
+  function getContent(){
+   return <div className="horizontalflex" style={{margin: 5, position: "absolute"}}>
+     {
+     (turn && (turn.wordIndex !== undefined)) ? <React.Fragment>
+           <div>{wordsLeft[turn.wordIndex]}</div>
+           <div><Button onClick={nextWord}> Next </Button></div>
+         </React.Fragment>
+         :
+        <Button onClick={startGuessing}>Start</Button>
+     }
+     <div>
+
+     </div>
+   </div>;
+  }
   return <div>
     {wordsLeft.length > 0 ?
         <div>
-      <Row style={{margin: 10}}>
-        <Col> {(turn && (turn.wordIndex !== undefined)) ? <Button onClick={nextWord}> Next </Button>:
-            <Button onClick={startGuessing}> Start </Button> }</Col>
-        <Col>{turn && (turn.wordIndex !== undefined) && wordsLeft[turn.wordIndex]}</Col>
-        <Col> {startTime && <Timer startTime={startTime} setOutOfTime={setOutOfTime} outOfTime={outOfTime}/>}</Col>
-      </Row>
+         {<Timer startTime={startTime} setOutOfTime={setOutOfTime} content={getContent()}/>}
           {errorOnNext &&  <Alert variant="danger" className="p-1" style={{fontSize: "0.8rem"}}>
             Oops! Something went wrong. Please try again.
           </Alert>}

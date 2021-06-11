@@ -37,3 +37,16 @@ export const ROUNDS = [{
         name: "Sounds",
         description: "Make sounds, hum a little song. Do not speak any words and do not use miming as a means of expression. Better yet, close your camera!",
     },];
+
+export const COLOR_CODES = {
+    info: {
+        color: "green"
+    },
+    alert: {
+        color: "red",
+        threshold: 5
+    },
+    waiting: {
+        color: "grey"
+    }
+};
