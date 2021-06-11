@@ -107,14 +107,12 @@ const WaitingRoom = ({setAppLevelGameId}) => {
                 </Row>
               </div>
               <Row style={{margin: 10}}>Creator: {getCreatorPlayerName()}</Row>
-              <Row>
+              <div style={{display: "flex", justifyContent: "space-between", flexWrap: "wrap"}}>
                 {//TODO add loading screen when game is still loading
                    Object.keys(game.teams).map((teamName, id) =>
-                  <Col key={id}>
-                      <TeamTable teamName={teamName} team={game.teams[teamName]}/>
-                  </Col>)
+                      <TeamTable key={id} teamName={teamName} team={game.teams[teamName]}/>)
                 }
-              </Row>
+              </div>
               <div className="centered-content">
                 {
                   game.gameStatus ? ( isPlayerInGame(game, user) ?
@@ -141,7 +139,7 @@ const WaitingRoom = ({setAppLevelGameId}) => {
 }
 
 function TeamTable({teamName, team}){
-  return <div>
+  return <div style={{flex: "auto",  padding:5 }}>
     <table className="table">
     <thead className="thead-dark">
     <tr>
