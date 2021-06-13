@@ -18,11 +18,13 @@ function ReconnectingSocket(url) {
     let stateChangeListeners = [];
 
     function on(fn) {
+        debugger;
         messageListeners.push(fn);
     }
 
     function off(fn) {
-        messageListeners = messageListeners.filter(l => l.name !== fn.name);
+        debugger;
+        messageListeners = messageListeners.filter(l => l.originalName !== fn.originalName);
     }
 
     function onStateChange(fn) {

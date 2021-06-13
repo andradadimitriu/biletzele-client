@@ -71,6 +71,7 @@ export default function Act(props) {
         default:
       }
     }
+    handleWhenAct.originalName = handleWhenAct;
     websocket.on(handleWhenAct);
     return () => websocket.off(handleWhenAct);
     },[turn, newWordIndex, wordsLeft]);

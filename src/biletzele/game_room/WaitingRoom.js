@@ -58,6 +58,7 @@ const WaitingRoom = ({setAppLevelGameId}) => {
         setGame(data.game);
       }
     }
+    handleMessageOnWaitingRoom.originalName="handleMessageOnWaitingRoom";
     websocket.on(handleMessageOnWaitingRoom);
     return () => websocket.off(handleMessageOnWaitingRoom);
 

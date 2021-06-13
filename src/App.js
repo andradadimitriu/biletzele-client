@@ -25,6 +25,7 @@ function useMessages() {
             setMessages([...messages, message]);
         }
         websocket.on(handleMessageOnApp);
+        handleMessageOnApp.originalName = "handleMessageOnApp";
         return () => websocket.off(handleMessageOnApp);
     }, [messages, setMessages]);
 

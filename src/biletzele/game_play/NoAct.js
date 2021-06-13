@@ -17,6 +17,7 @@ export default function NoAct({team, user, turn}) {
         setLastWordGuessed(data.lastWordGuessed);
       }
     }
+    handleMessageOnNoAct.originalName="handleMessageOnNoAct"
     websocket.on(handleMessageOnNoAct);
     return () => websocket.off(handleMessageOnNoAct);
 

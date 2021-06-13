@@ -52,6 +52,7 @@ export default function PlayerEnterGameForm() {
         default:
       }
     }
+    handleMessageOnEnterGameForm.originalName="handleMessageOnEnterGameForm";
     websocket.on(handleMessageOnEnterGameForm);
     return () => websocket.off(handleMessageOnEnterGameForm);
 

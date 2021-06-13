@@ -31,7 +31,6 @@ export default function Timer({startTime, setOutOfTime, content}) {
   }, [countDown, startTime, setOutOfTime], timerAnimationStarted);
 
   useEffect(() => {
-    debugger;
     if(innerOutOfTime){
       setTimeout(()=>{
         setOutOfTime(true);
@@ -59,7 +58,6 @@ export default function Timer({startTime, setOutOfTime, content}) {
     return countDown <= COLOR_CODES.warning.threshold ? COLOR_CODES.warning.color : COLOR_CODES.info.color;
   }
 
-  debugger;
   return <div className="base-timer">
     <svg className="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
       <g className="base-timer__circle">

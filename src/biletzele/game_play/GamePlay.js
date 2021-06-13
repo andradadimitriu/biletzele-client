@@ -49,9 +49,11 @@ export default function GamePlay({setAppLevelGameId}) {
       const data = JSON.parse(message);
       console.log(`message received: ${message}`);
       if (GAME_PLAY_REFRESH_MESSAGES.includes(data.type)) {
+        debugger;
         setGame(data.game);
       }
     }
+    handleMessageOnGamePlay.originalName = "fhandleMessageOnGamePlay";
     websocket.on(handleMessageOnGamePlay);
     return () => websocket.off(handleMessageOnGamePlay);
   },[]);
