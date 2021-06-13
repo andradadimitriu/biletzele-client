@@ -27,5 +27,5 @@ export default function JoinGame({setAppLevelGameId}) {
         })();
     },[currentUser, gameId]);
 
-  return game && currentUser ? (game.gameNotFound ? <CouldNotFindGame/> : <GameTile game={game} user={currentUser}/>) : <Loading/>;
+  return game && currentUser ? (game.gameNotFound ? <CouldNotFindGame/> : <div className="horizontalflex"><GameTile game={game} user={currentUser}/></div>) : <Loading/>;
 }
