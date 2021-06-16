@@ -2,13 +2,14 @@ import React, {useEffect, useState} from "react";
 import {Auth} from "aws-amplify";
 import Form from 'react-bootstrap/Form';
 import LoaderButton from "../../utils_components/LoaderButton";
-import {useFormFields} from "../../libs/hooksLib";
 import {useHistory, useParams} from "react-router-dom";
 
 import "./Forms.css";
 import {addPlayerToGame} from "../service/biletzele-websocket-service";
 import websocket from '../service/reconnecting-websocket';
 import {MESSAGE_TYPE} from "../utils/constants";
+import {ErrorMessage, Formik} from 'formik';
+import * as yup from 'yup';
 
 const NO_WORDS = 5;
 
@@ -18,17 +19,16 @@ export default function PlayerEnterGameForm() {
   const wordFields = Array.from({length: NO_WORDS},(v, k)=>`word${k+1}`);
   const [isLoading, setIsLoading] = useState(false);
   const [playerAlreadyRegistered, setPlayerAlreadyRegistered] = useState(false);
-  const [fields, handleFieldChange] = useFormFields({
-    playerName: "",
-    ...wordFields.reduce((map, word) => {map[word]= ""; return map;},{})
-  });
 
-  function validateForm() {
-    if(Object.values(fields).some(field => field.length === 0))
-      return false;
-    return !wordFields.map(wordField => fields[wordField]).some(word => word.includes(" ")
-        || /[A-Z]/.test(word));
-  }
+  const formSchema = yup.object().shape({
+    playerName: yup.string().required("Player name is required"),
+    ...wordFields.reduce((map, word) => {
+      map[word]= yup.string().required("All words are required")
+          .matches(/^[\S]+$/, "No spaces")
+          .matches(/[a-z]+$/, "Only word characters")
+          .matches(/^[a-z]+$/g, "No proper nouns (no upper case)");
+      return map;},{})
+  });
 
   async function addPlayerAndWords(playerName, words){
     const currentUser = await Auth.currentCredentials();
@@ -58,12 +58,12 @@ export default function PlayerEnterGameForm() {
 
   },[gameId, history]);
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    const words = wordFields.map(fieldName => fields[fieldName]);
+  async function handleSubmit(values) {
+    debugger;
+    const words = wordFields.map(fieldName => values[fieldName]);
     try {
       setIsLoading(true);
-      await addPlayerAndWords(fields.playerName, words);
+      await addPlayerAndWords(values.playerName, words);
     }
     catch(e){
       console.log(`e: ${e}`);
@@ -73,27 +73,66 @@ export default function PlayerEnterGameForm() {
       }
     }
   }
-
+debugger;
   return (
     <div className="center-form">
+
+      <Formik
+          validationSchema={formSchema}
+          onSubmit={handleSubmit}
+          initialValues={{
+            playerName: "",
+            ...wordFields.reduce((map, word) => {map[word]= ""; return map;},{})
+          }}
+      >
+        {({
+            handleSubmit,
+            handleChange,
+            handleBlur,
+            values,
+            touched,
+            isValid,
+            dirty,
+            errors,
+          }) => (
       <Form onSubmit={handleSubmit}>
           <Form.Label>Player Name</Form.Label>
             <Form.Group controlId="playerName">
               <Form.Control
-                value={fields.playerName}
-                onChange={handleFieldChange}
-                type="text"
+                  type="text"
+                  name="playerName"
+                  value={values.firstName}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  isInvalid={touched.playerName && errors.playerName}
               />
+              <Form.Control.Feedback type="invalid" tooltip>
+                Each player needs a name
+              </Form.Control.Feedback>
           </Form.Group>
           <Form.Label>Words</Form.Label>
-          {wordFields.map((wordField, id) =>
+          <Form.Text className="text-muted">
+            Please enter a single noun or adjective per field.
+          </Form.Text>
+        {wordFields.map((wordField, id) =>
             <Form.Group key={id} controlId={wordField}>
               <Form.Control
-                autoFocus
-                type="text"
-                value={fields[wordField]}
-                onChange={handleFieldChange}
+                // autoFocus
+                  type="text"
+                  name={wordField}
+                  value={values[wordField]}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  isInvalid={touched[wordField] && errors[wordField]}
               />
+              <ErrorMessage name={wordField}>
+                {msg =>
+                <Form.Control.Feedback type="invalid">
+                  {msg}
+                </Form.Control.Feedback>}
+              </ErrorMessage>
+
+
             </Form.Group>
             )
           }
@@ -101,13 +140,14 @@ export default function PlayerEnterGameForm() {
         <LoaderButton
           block
           type="submit"
-          disabled={!validateForm()}
+          disabled={!(isValid && dirty)}
           isLoading={isLoading}
         >
           Submit
         </LoaderButton>
 
-      </Form>
+      </Form>  )}
+      </Formik>
     </div>
   );
 }

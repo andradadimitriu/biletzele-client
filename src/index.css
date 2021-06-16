@@ -29,6 +29,8 @@ input[type=file] {
 @media screen and (max-width: 500px) {
 .card-styling{
   width: 95%;
+  max-width: 24rem;
+
 }
 }
 .mr-sm-2, .mx-sm-2 {

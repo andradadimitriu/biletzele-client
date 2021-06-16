@@ -18,12 +18,10 @@ function ReconnectingSocket(url) {
     let stateChangeListeners = [];
 
     function on(fn) {
-        debugger;
         messageListeners.push(fn);
     }
 
     function off(fn) {
-        debugger;
         messageListeners = messageListeners.filter(l => l.originalName !== fn.originalName);
     }
 

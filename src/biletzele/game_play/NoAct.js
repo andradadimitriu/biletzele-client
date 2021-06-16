@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 
 import {myTurnToGuess} from "./utils/turns";
-import {Row} from "react-bootstrap";
 import {MESSAGE_TYPE} from "../utils/constants";
 import websocket from "../service/reconnecting-websocket";
 
