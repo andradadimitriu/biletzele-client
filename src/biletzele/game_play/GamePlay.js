@@ -12,7 +12,7 @@ import CouldNotFindGame from "../utils/CouldNotFindGame";
 import {Badge, Row} from "react-bootstrap";
 import websocket from '../service/reconnecting-websocket';
 import NoAct from "./NoAct";
-import MinimalCollapsible from "../utils/MinimalCollapsible";
+import RoundCollapsible from "../utils/RoundCollapsible";
 
 export default function GamePlay({setAppLevelGameId}) {
   const [round, setRound] = useState(undefined);
@@ -80,7 +80,7 @@ export default function GamePlay({setAppLevelGameId}) {
                 <h5>Player turn <Badge variant="info">{playerTurn.playerName}</Badge></h5>
               </Row>
 
-              <MinimalCollapsible headerText={ROUNDS.find(r => r.type === round.roundType).name} content={ROUNDS.find(r => r.type === round.roundType).description}/>
+              <RoundCollapsible headerText={ROUNDS.find(r => r.type === round.roundType).name} content={ROUNDS.find(r => r.type === round.roundType).description}/>
 
 
               {myTurnToAct(playerTurn, user) ?

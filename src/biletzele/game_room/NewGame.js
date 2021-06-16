@@ -6,6 +6,7 @@ import { onError } from "../../libs/errorLib";
 import {useHistory} from "react-router-dom";
 import {createGame} from "../service/biletzele-service";
 import {ROUNDS} from "../utils/constants";
+import RoundSelectCollapsible from "../utils/RoundSelectCollapsible";
 export default function NewGame() {
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
@@ -92,12 +93,17 @@ export default function NewGame() {
               ROUNDS.map((round, key) =>
               <Form.Check
                   key={key}
-                checked={roundCheckboxes[round.type]}
-                onChange={handleRoundCheckboxes}
-                label={round.name}
-                  id={round.type}
-                type="checkbox"
-            />)
+            >
+                  <Form.Check.Input type="checkbox"
+                                    id={round.type}
+                                    checked={roundCheckboxes[round.type]}
+                                    onChange={handleRoundCheckboxes}
+
+                  />
+                  <Form.Check.Label>
+                    <RoundSelectCollapsible headerText={round.name} content={round.description}/>
+                  </Form.Check.Label>
+              </Form.Check>)
             }
           <LoaderButton
             block

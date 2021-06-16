@@ -106,7 +106,7 @@ debugger;
                   onBlur={handleBlur}
                   isInvalid={touched.playerName && errors.playerName}
               />
-              <Form.Control.Feedback type="invalid" tooltip>
+              <Form.Control.Feedback type="invalid">
                 Each player needs a name
               </Form.Control.Feedback>
           </Form.Group>
