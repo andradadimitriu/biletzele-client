@@ -5,8 +5,18 @@ export async function addPlayerToGame(gameId, teamName, player, words) {
         gameId,
         teamName,
         player,
-        words
+        words,
+        ready: false
     }}));
+}
+
+export async function playerReady(gameId, {teamName, playerId, ready}){
+    return await websocket.send(JSON.stringify({action: "playerready", data:{
+            gameId,
+            playerId,
+            teamName,
+            ready,
+        }}));
 }
 
 export async function endTurn(gameId, turnNo) {

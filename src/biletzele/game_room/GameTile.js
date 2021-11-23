@@ -51,7 +51,7 @@ function TeamDisplay({gameId, teamName, team, teamColor}){
     return <Card.Link style={{paddingBottom: 10}} href={`/biletzele/new-player/${gameId}/${teamName}`}>
         <Button variant={teamColor}  className="game-button">
             {`${teamName} `}
-            <span className="bordered-box">{team.members.length}/10</span>
+            <span className="bordered-box">{Object.keys(team.members).length}/10</span>
         </Button>
     </Card.Link>;
 }

@@ -5,6 +5,7 @@ export const GAME_STATUS = {
 };
 export const MESSAGE_TYPE = {
     NEXT_WORD: "NEXT_WORD",
+    PLAYER_READY: "PLAYER_READY",
     NEW_PLAYER: "NEW_PLAYER",
     END_OF_TURN: "END_OF_TURN",
     END_OF_ROUND: "END_OF_ROUND",
@@ -16,6 +17,15 @@ export const GAME_PLAY_REFRESH_MESSAGES = [MESSAGE_TYPE.END_OF_TURN,
     MESSAGE_TYPE.END_OF_ROUND,
     MESSAGE_TYPE.END_OF_GAME,
     MESSAGE_TYPE.NEW_ROUND];
+
+export const READINESS={
+    READY: "Ready",
+    NOT_READY: "Wait"
+}
+export const STATUS_COLOR = {
+    Ready: "#00b300",
+    Wait: "#ffc107"
+};
 
 export const ROUNDS = [{
     type: "DESCRIBE",

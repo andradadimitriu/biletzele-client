@@ -59,7 +59,6 @@ export default function PlayerEnterGameForm() {
   },[gameId, history]);
 
   async function handleSubmit(values) {
-    debugger;
     const words = wordFields.map(fieldName => values[fieldName]);
     try {
       setIsLoading(true);
@@ -73,7 +72,6 @@ export default function PlayerEnterGameForm() {
       }
     }
   }
-debugger;
   return (
     <div className="center-form">
 

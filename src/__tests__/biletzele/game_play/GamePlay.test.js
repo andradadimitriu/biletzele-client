@@ -64,7 +64,8 @@ describe('<GamePlay />', () => {
       wrapper = render(<GamePlay setAppLevelGameId={()=>undefined}/>);
     });
 
-    expect(wrapper.getByText(/other team/i).textContent).toBe("The other team is playing. Pay attention to them.");
+    expect(wrapper.getByText(/other team/i).textContent).toBe("The other team is playing.");
+    expect(wrapper.getByText(/attention/i).textContent).toBe("Pay attention to them.");
   });
 
   it("shows correct round - Mime", async () => {
@@ -120,7 +121,7 @@ describe('<GamePlay />', () => {
       wrapper = render(<GamePlay setAppLevelGameId={()=>undefined}/>);
     });
 
-    expect(wrapper.getByText(/Start/i).textContent).toBe(" Start ");
+    expect(wrapper.getByText(/Start/i).textContent).toBe("Start");
   });
 
 });
