@@ -2,10 +2,13 @@ import React, {useEffect, useState} from "react";
 import moment from "moment";
 import "./timer.css";
 import {COLOR_CODES} from "../utils/constants";
-
+import alarm from "../../resources/sound/alarm.mp3";
+import stopWatch from "../../resources/sound/stopwatch.mp3";
 const FULL_DASH_ARRAY = 285;
 const COUNTDOWN_SECONDS = 60;
 const TIMER_UPDATE_PERIOD = 1000;
+const alarmSound = new Audio(alarm);
+const stopWatchSound = new Audio(stopWatch);
 export default function Timer({startTime, setOutOfTime, content}) {
   const [innerOutOfTime, setInnerOutOfTime] = useState(false);
   const [countDown, setCountDown] = useState(getCountDown(startTime));
@@ -16,7 +19,12 @@ export default function Timer({startTime, setOutOfTime, content}) {
     function updateCountDown(){
         return setInterval(() => {
           if (countDown <= 0) {
+            stopWatchSound.pause();
+            alarmSound.play();
             setInnerOutOfTime(true);
+          }
+          else if(countDown <= COLOR_CODES.warning.threshold){
+            stopWatchSound.play();
           }
           setCountDown(getCountDown(startTime));
         }, TIMER_UPDATE_PERIOD);
@@ -62,7 +70,7 @@ export default function Timer({startTime, setOutOfTime, content}) {
     <svg className="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
       <g className="base-timer__circle">
         <circle className="base-timer__path-elapsed" cx="50" cy="50" r="45"/>
-        {startTime && <path
+        {startTime && 28<path
             strokeDasharray={`${(
             calculateTimeFraction() * FULL_DASH_ARRAY
         ).toFixed(0)} 283`}

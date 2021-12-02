@@ -9,7 +9,6 @@ import {mockedGame, mockedUser, mockGameId, nonExistentGame} from "../../mocks/G
 import {shallow} from "enzyme";
 
 const credentialsMock = jest.spyOn(Auth, "currentCredentials");
-
 const getGameMock = jest.spyOn(dataService, "getGame");
 
 afterEach(cleanup);

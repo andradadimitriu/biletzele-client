@@ -58,6 +58,6 @@ function TeamDisplay({gameId, teamName, team, teamColor}){
 
 function chooseTeam(teams){
     return Object.keys(teams).reduce((smallestTeamName, teamName) =>
-        teams[teamName].members.length < teams[smallestTeamName].members.length ? teamName : smallestTeamName
+        Object.keys(teams[teamName].members).length < Object.keys(teams[smallestTeamName].members).length ? teamName : smallestTeamName
         , Object.keys(teams)[0]);
 }
