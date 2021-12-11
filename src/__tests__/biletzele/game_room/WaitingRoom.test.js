@@ -11,7 +11,7 @@ import {
     mockGameId,
     nonExistentGame,
     pendingGame,
-    currentMockedUser
+    currentMockedUser, otherTeamPlayingMockedUser2
 } from "../../mocks/GameMocks";
 import {shallow} from "enzyme";
 
@@ -68,6 +68,7 @@ describe('<WaitingRoom/> tests', () => {
     });
     describe('switch team button', () => {
 
+        const switchTeamButtonText = "switch team";
         test('shows change team button next to current player when game is pending', async () => {
             getGameMock.mockImplementation(() => pendingGame);
             credentialsMock.mockImplementation(
@@ -81,8 +82,31 @@ describe('<WaitingRoom/> tests', () => {
             const table = wrapper.container.querySelectorAll("table").item(0);
 
             const currentUserRow = within(table).getByText(currentPlayerName).closest("td");
-            const switchTeamsButton = within(currentUserRow).getByText("switch team").closest("button");
+            const switchTeamsButton = within(currentUserRow).getByText(switchTeamButtonText).closest("button");
             expect(switchTeamsButton).not.toBeDisabled();
+        });
+
+        test('no change team button next to other players', async () => {
+            getGameMock.mockImplementation(() => pendingGame);
+            credentialsMock.mockImplementation(
+                () => currentMockedUser);
+
+            let wrapper;
+            await act(async () => {
+                wrapper = render(<WaitingRoom setAppLevelGameId={() => undefined}/>);
+            });
+            const sameTeamPlayerName = Object.values(pendingGame.teams.team1.members).find(player => player.playerId === otherTeamPlayingMockedUser2.identityId).playerName;
+            const otherTeamPlayerName = Object.values(pendingGame.teams.team2.members).find(player => player.playerId === mockedUser.identityId).playerName;
+            const table1 = wrapper.container.querySelectorAll("table").item(0);
+            const table2 = wrapper.container.querySelectorAll("table").item(1);
+
+            const sameTeamPlayerNameRow = within(table1).getByText(sameTeamPlayerName).closest("td");
+            const otherTeamPlayerNameRow = within(table2).getByText(otherTeamPlayerName).closest("td");
+            const switchTeamsButtonSameTeamPlayer = within(sameTeamPlayerNameRow).queryByText(switchTeamButtonText);
+            const switchTeamsButtonOtherTeamPlayer = within(otherTeamPlayerNameRow).queryByText(switchTeamButtonText);
+            expect(switchTeamsButtonSameTeamPlayer).not.toBeInTheDocument();
+            expect(switchTeamsButtonOtherTeamPlayer).not.toBeInTheDocument();
+
         });
     });
 });

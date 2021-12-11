@@ -4,6 +4,9 @@ export const mockedUser = {
 export const otherTeamPlayingMockedUser = {
     "identityId": "eu-west-2:1ce41008-3355-4013-aa65-dd7b393d661e",
 };
+export const otherTeamPlayingMockedUser2 = {
+    "identityId": "eu-west-2:b4a9a74d-434d-4664-9f5a-5c1e524863c5",
+};
 export const guessingMockedUser = {
     "identityId": "eu-west-2:93a24318-132b-4188-86ca-b8e96208cb4f",
 };
