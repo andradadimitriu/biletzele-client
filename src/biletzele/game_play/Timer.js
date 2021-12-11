@@ -70,7 +70,7 @@ export default function Timer({startTime, setOutOfTime, content}) {
     <svg className="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
       <g className="base-timer__circle">
         <circle className="base-timer__path-elapsed" cx="50" cy="50" r="45"/>
-        {startTime && 28<path
+        {startTime && <path
             strokeDasharray={`${(
             calculateTimeFraction() * FULL_DASH_ARRAY
         ).toFixed(0)} 283`}

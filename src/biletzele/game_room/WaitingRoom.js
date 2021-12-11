@@ -12,7 +12,7 @@ import LoaderButton from "../../utils_components/LoaderButton";
 import {isPlayerCurrentUser, isPlayerInGame} from "../utils/playerUtils";
 import CouldNotFindGame from "../utils/CouldNotFindGame";
 import websocket from '../service/reconnecting-websocket';
-import {playerReady} from "../service/biletzele-websocket-service";
+import {switchTeam, playerReady} from "../service/biletzele-websocket-service";
 import Switch from "react-switch";
 import {Card} from "react-bootstrap";
 
@@ -31,7 +31,7 @@ const WaitingRoom = ({setAppLevelGameId}) => {
     function getCreatorPlayerName() {
         const playerIdIndex = game.players.ids.findIndex(player => player === game.creator);
         if (playerIdIndex === -1) {
-            return "The creator of this game did not join yet. Wait for them to start the game.";
+            return "The creator of this game did not join.";
         }
         return game.players.playerNames[playerIdIndex];
     }
@@ -63,6 +63,7 @@ const WaitingRoom = ({setAppLevelGameId}) => {
             console.log(`message received: ${message}`);
             switch (data.type) {
                 case MESSAGE_TYPE.NEW_PLAYER:
+                case MESSAGE_TYPE.PLAYER_SWITCHED_TEAM:
                 case MESSAGE_TYPE.PLAYER_READY:
                     setGame(data.game);
                     break;
@@ -133,7 +134,7 @@ const WaitingRoom = ({setAppLevelGameId}) => {
     }
 
     function TeamTable({teamName, team, user}) {
-        return <div style={{flex: "auto", padding: 5}}>
+        return <div style={{flex: "auto", padding: 5, minWidth: "50%"}}>
             <table className="table room">
                 <thead className="thead-dark">
                 <tr>
@@ -147,7 +148,15 @@ const WaitingRoom = ({setAppLevelGameId}) => {
                 <tbody>
                 {
                     team && Object.values(team.members).map((player, id) => <tr key={id}>
-                        <td>{player.playerName}</td>
+                        <td>
+                            <div className="text-center">
+                                <span style={{marginRight: 10}}>{player.playerName}</span>
+                                {canDoChanges(user, player, game) &&
+                                <Button
+                                    onClick={() => switchTeam(game, teamName, user.identityId)}
+                                    className="changing-button" variant="warning">switch team</Button>}
+                            </div>
+                        </td>
                         <td>
                             <Status player={player} user={user} teamName={teamName}/>
                         </td>
@@ -172,6 +181,7 @@ const WaitingRoom = ({setAppLevelGameId}) => {
                                 </Row>
                             </div>
                             <Row style={{margin: 10}}>Creator: {getCreatorPlayerName()}</Row>
+
                             <div style={{display: "flex", justifyContent: "space-between", flexWrap: "wrap"}}>
                                 {
                                     Object.keys(game.teams).map((teamName, id) =>
@@ -214,4 +224,6 @@ function readySwitch(readiness) {
     }}>{readiness}</div>
 }
 
-
+function canDoChanges(user, player, game) {
+    return isPlayerCurrentUser(player, user) && game.gameStatus === GAME_STATUS.PENDING;
+}

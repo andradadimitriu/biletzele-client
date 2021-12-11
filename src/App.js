@@ -13,7 +13,6 @@ import { faSpinner, faChevronDown, faChevronRight} from '@fortawesome/free-solid
 import websocket from './biletzele/service/reconnecting-websocket';
 import config from "./config";
 import Help from "./biletzele/utils/Help";
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 library.add( faSpinner, faChevronDown, faChevronRight);
 

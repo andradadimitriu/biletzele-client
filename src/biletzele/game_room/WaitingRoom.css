@@ -3,3 +3,12 @@
     text-align: center;
 
 }
+.room.table td, .room.table th{
+    vertical-align:middle !important;
+    width: 50%;
+}
+.changing-button.btn-warning:hover, .changing-button.btn-warning:focus, .changing-button.btn-warning:active, .changing-button.btn-warning.active, .changing-button.open>.dropdown-toggle.btn-warning {
+        color: #fff !important;
+        background-color: red !important;
+        border-color: #00b3db !important; /*set the color you want here*/
+}
