@@ -41,6 +41,7 @@ export default function Timer({startTime, setOutOfTime, content}) {
   useEffect(() => {
     if(innerOutOfTime){
       setTimeout(()=>{
+        alarmSound.pause();
         setOutOfTime(true);
       }, 2000);
     }
@@ -81,7 +82,7 @@ export default function Timer({startTime, setOutOfTime, content}) {
           a 45,45 0 1,0 90,0
           a 45,45 0 1,0 -90,0
         "
-        ></path>}
+        />}
       </g>
     </svg>
     <span id="base-timer-label" className="base-timer__label">
