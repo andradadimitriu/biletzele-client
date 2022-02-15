@@ -2,29 +2,38 @@ import React, {useEffect, useState} from "react";
 import moment from "moment";
 import "./timer.css";
 import {COLOR_CODES} from "../utils/constants";
-import alarm from "../../resources/sound/alarm.mp3";
-import stopWatch from "../../resources/sound/stopwatch.mp3";
+import { Storage } from "aws-amplify";
+
 const FULL_DASH_ARRAY = 285;
 const COUNTDOWN_SECONDS = 60;
 const TIMER_UPDATE_PERIOD = 1000;
-const alarmSound = new Audio(alarm);
-const stopWatchSound = new Audio(stopWatch);
 export default function Timer({startTime, setOutOfTime, content}) {
+  const [sounds, setSounds]=useState(undefined);
   const [innerOutOfTime, setInnerOutOfTime] = useState(false);
   const [countDown, setCountDown] = useState(getCountDown(startTime));
   const [timerAnimationStarted, setTimerAnimationStarted] = useState(false);
+  useEffect( () => {
+    (async function getSounds() {
+      const alarmSoundLink = await Storage.get("alarm.mp3");
+      const stopWatchSoundLink = await Storage.get("stopwatch.mp3");
+      const alarmSound = new Audio(alarmSoundLink);
+      const stopWatchSound = new Audio(stopWatchSoundLink);
+      setSounds({alarmSound,stopWatchSound});
+      debugger;
+  })();
+  }, []);
   useEffect(() => {
     if(!startTime)
       return;
     function updateCountDown(){
         return setInterval(() => {
           if (countDown <= 0) {
-            stopWatchSound.pause();
-            alarmSound.play();
+            sounds.stopWatchSound.pause();
+            sounds.alarmSound.play();
             setInnerOutOfTime(true);
           }
           else if(countDown <= COLOR_CODES.warning.threshold){
-            stopWatchSound.play();
+            sounds.stopWatchSound.play();
           }
           setCountDown(getCountDown(startTime));
         }, TIMER_UPDATE_PERIOD);
@@ -41,7 +50,7 @@ export default function Timer({startTime, setOutOfTime, content}) {
   useEffect(() => {
     if(innerOutOfTime){
       setTimeout(()=>{
-        alarmSound.pause();
+        sounds.alarmSound.pause();
         setOutOfTime(true);
       }, 2000);
     }
