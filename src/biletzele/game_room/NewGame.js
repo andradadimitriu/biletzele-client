@@ -48,7 +48,6 @@ export default function NewGame() {
 
   }
 
-
   return (
       <div className="center-form" style={{width: "100%"}}>
         <Form onSubmit={handleSubmit}>

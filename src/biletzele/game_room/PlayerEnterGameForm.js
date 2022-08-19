@@ -8,27 +8,27 @@ import "./Forms.css";
 import {addPlayerToGame} from "../service/biletzele-websocket-service";
 import websocket from '../service/reconnecting-websocket';
 import {MESSAGE_TYPE} from "../utils/constants";
-import {ErrorMessage, Formik} from 'formik';
+import {Formik} from 'formik';
 import * as yup from 'yup';
 
 const NO_WORDS = 5;
+const wordFields = Array.from({length: NO_WORDS},(v, k)=>`word${k+1}`);
+const formSchema = yup.object().shape({
+  playerName: yup.string().required("Player name is required"),
+  ...wordFields.reduce((map, word) => {
+    map[word]= yup.string().required("All words are required")
+        .matches(/^[\S]+$/, "No spaces")
+        .matches(/[a-z]+$/, "Only word characters")
+        .matches(/^[a-z]+$/g, "No proper nouns (no upper case)");
+    return map;},{})
+});
 
 export default function PlayerEnterGameForm() {
   let { gameId, teamName } = useParams();
   const history = useHistory();
-  const wordFields = Array.from({length: NO_WORDS},(v, k)=>`word${k+1}`);
   const [isLoading, setIsLoading] = useState(false);
   const [playerAlreadyRegistered, setPlayerAlreadyRegistered] = useState(false);
 
-  const formSchema = yup.object().shape({
-    playerName: yup.string().required("Player name is required"),
-    ...wordFields.reduce((map, word) => {
-      map[word]= yup.string().required("All words are required")
-          .matches(/^[\S]+$/, "No spaces")
-          .matches(/[a-z]+$/, "Only word characters")
-          .matches(/^[a-z]+$/g, "No proper nouns (no upper case)");
-      return map;},{})
-  });
 
   async function addPlayerAndWords(playerName, words){
     const currentUser = await Auth.currentCredentials();
@@ -99,13 +99,14 @@ export default function PlayerEnterGameForm() {
               <Form.Control
                   type="text"
                   name="playerName"
-                  value={values.firstName}
+                  value={values.playerName}
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  isValid={touched.playerName && !errors.playerName}
                   isInvalid={touched.playerName && errors.playerName}
               />
               <Form.Control.Feedback type="invalid">
-                Each player needs a name
+                {errors.playerName}
               </Form.Control.Feedback>
           </Form.Group>
           <Form.Label>Words</Form.Label>
@@ -121,16 +122,12 @@ export default function PlayerEnterGameForm() {
                   value={values[wordField]}
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  isValid={touched[wordField] && !errors[wordField]}
                   isInvalid={touched[wordField] && errors[wordField]}
               />
-              <ErrorMessage name={wordField}>
-                {msg =>
-                <Form.Control.Feedback type="invalid">
-                  {msg}
-                </Form.Control.Feedback>}
-              </ErrorMessage>
-
-
+              <Form.Control.Feedback type="invalid">
+                {errors[wordField]}
+              </Form.Control.Feedback>
             </Form.Group>
             )
           }

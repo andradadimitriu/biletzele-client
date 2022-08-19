@@ -1,75 +1,48 @@
-import React, { useState } from "react";
-import { Auth } from "aws-amplify";
+import React, {useState} from "react";
+import {Auth} from "aws-amplify";
 import Form from 'react-bootstrap/Form';
-import LoaderButton from "../utils_components/LoaderButton";
-import { useAppContext } from "../libs/contextLib";
-import { useFormFields } from "../libs/hooksLib";
+import {useAppContext} from "../libs/contextLib";
 import "../biletzele/game_room/Forms.css";
+import * as yup from "yup";
+import {getValidations, VALIDATION_KEYS} from "../biletzele/utils/validations";
+import FormikForm from "../utils_components/FormikForm";
 
+const formFields = [
+    {name: "email", type: "email", title: "Email"},
+    {name: "password", type: "password", title: "Password"}];
+const formSchema = yup.object().shape({
+    ...getValidations(VALIDATION_KEYS.EMAIL),
+    password: yup.string().required()
+});
 export default function LoginForm(props) {
-  const { userHasAuthenticated } = useAppContext();
-  const [failedLogin, setFailedLogin] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [fields, handleFieldChange] = useFormFields({
-    email: "",
-    password: ""
-  });
+    const {userHasAuthenticated} = useAppContext();
+    const [failedLogin, setFailedLogin] = useState(false);
 
-  function validateForm() {
-    return fields.email.length > 0 && fields.password.length > 0;
-  }
+    async function handleSubmit(values) {
+        try {
+            await Auth.signIn(values.email, values.password);
+            userHasAuthenticated(true);
+        } catch (e) {
+            if (e.code === "UserNotConfirmedException") {
+                props.setAuthDetails(values);
+                props.setUserUnconfirmed(true);
+            } else {
+                setFailedLogin(true);
+                throw e;
+            }
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-
-    setIsLoading(true);
-
-    try {
-      await Auth.signIn(fields.email, fields.password);
-      userHasAuthenticated(true);
-    } catch (e) {
-      if(e.code === "UserNotConfirmedException"){
-        props.setAuthDetails(fields);
-        props.setUserUnconfirmed(true);
-      }
-      else{
-        setFailedLogin(true);
-      }
-      setIsLoading(false);
+        }
     }
-  }
 
-  return (
-      <div className="center-form">
-        <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="email">
-            <Form.Label>Email</Form.Label>
-            <Form.Control
-                autoFocus
-                type="email"
-                value={fields.email}
-                onChange={handleFieldChange}
+    return (
+        <div className="center-form">
+            <FormikForm schema={formSchema}
+                        submitHandler={handleSubmit}
+                        fields={formFields}
+                        bottomDisplay={failedLogin &&
+                        <Form.Text className="text-danger">Incorrect login details.</Form.Text>}
+                        submitButtonName="Login"
             />
-          </Form.Group>
-          <Form.Group controlId="password">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-                value={fields.password}
-                onChange={handleFieldChange}
-                type="password"
-            />
-          </Form.Group>
-          {failedLogin && <Form.Text className="text-danger">Incorrect login details.</Form.Text>}
-          <LoaderButton
-              block
-              type="submit"
-              disabled={!validateForm()}
-              isLoading={isLoading}
-          >
-            Login
-          </LoaderButton>
-        </Form>
-
-      </div>
-  );
+        </div>
+    );
 }

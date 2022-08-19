@@ -19,7 +19,6 @@ export default function Timer({startTime, setOutOfTime, content}) {
       const alarmSound = new Audio(alarmSoundLink);
       const stopWatchSound = new Audio(stopWatchSoundLink);
       setSounds({alarmSound,stopWatchSound});
-      debugger;
   })();
   }, []);
   useEffect(() => {

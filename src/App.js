@@ -69,7 +69,8 @@ function App() {
       userHasAuthenticated(true);
     }
     catch(e) {
-      if (e !== 'No current user') {
+      //TODO replace this with another type of error
+        if (e !== 'No current user') {
         onError(e);      }
     }
 
