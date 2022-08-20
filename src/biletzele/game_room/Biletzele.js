@@ -13,17 +13,6 @@ export class Biletzele extends React.Component {
       this.setState({value});
   }
 
-  tabSwitch(param) {
-        switch(param) {
-            case "new":
-                return <NewGame/>;
-            case "mine":
-                return <MyGames/>;
-            default:
-                return <PendingGames/>;
-        }
-  }
-
   render() {
       return (
       <div className="horizontalflex margin">
@@ -32,8 +21,18 @@ export class Biletzele extends React.Component {
                         <ToggleButton variant="light" name="radio2" value={"mine"}>My Games</ToggleButton>
                         <ToggleButton variant="light" name="radio3" value={"new"}>New Game</ToggleButton>
           </ToggleButtonGroup>
-          {this.tabSwitch(this.state.value)}
+          <TabSwitch tabSelected={this.state.value}/>
        </div>);
   }
 
+}
+function TabSwitch({tabSelected}) {
+    switch(tabSelected) {
+        case "new":
+            return <NewGame/>;
+        case "mine":
+            return <MyGames/>;
+        default:
+            return <PendingGames/>;
+    }
 }

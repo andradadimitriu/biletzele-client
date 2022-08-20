@@ -44,7 +44,7 @@ export default function Timer({startTime, setOutOfTime, content}) {
     }, 200);
     return () => clearInterval(intervalId);
 
-  }, [countDown, startTime, setOutOfTime], timerAnimationStarted);
+  }, [countDown, startTime, setOutOfTime, sounds], timerAnimationStarted);
 
   useEffect(() => {
     if(innerOutOfTime){
@@ -53,7 +53,7 @@ export default function Timer({startTime, setOutOfTime, content}) {
         setOutOfTime(true);
       }, 2000);
     }
-  }, [innerOutOfTime, setOutOfTime]);
+  }, [innerOutOfTime, setOutOfTime, sounds]);
 
     function calculateTimeFraction() {
       if(innerOutOfTime){

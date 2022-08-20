@@ -1,6 +1,5 @@
-import React, {useState} from "react";
+import React from "react";
 import {Auth} from "aws-amplify";
-import Form from 'react-bootstrap/Form';
 import {useAppContext} from "../libs/contextLib";
 import "../biletzele/game_room/Forms.css";
 import * as yup from "yup";
@@ -16,7 +15,6 @@ const formSchema = yup.object().shape({
 });
 export default function LoginForm(props) {
     const {userHasAuthenticated} = useAppContext();
-    const [failedLogin, setFailedLogin] = useState(false);
 
     async function handleSubmit(values) {
         try {
@@ -27,22 +25,15 @@ export default function LoginForm(props) {
                 props.setAuthDetails(values);
                 props.setUserUnconfirmed(true);
             } else {
-                setFailedLogin(true);
                 throw e;
             }
 
         }
     }
 
-    return (
-        <div className="center-form">
-            <FormikForm schema={formSchema}
+    return <FormikForm schema={formSchema}
                         submitHandler={handleSubmit}
                         fields={formFields}
-                        bottomDisplay={failedLogin &&
-                        <Form.Text className="text-danger">Incorrect login details.</Form.Text>}
                         submitButtonName="Login"
-            />
-        </div>
-    );
+            />;
 }

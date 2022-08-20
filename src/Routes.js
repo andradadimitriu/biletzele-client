@@ -19,7 +19,7 @@ export default function Routes({setAppLevelGameId, websocket}) {
           <Login />
         </UnauthenticatedRoute>
         <UnauthenticatedRoute exact path="/signup">
-          <Signup />
+          <Signup/>
         </UnauthenticatedRoute>
         <AuthenticatedRoute exact path="/biletzele">
             <Biletzele/>

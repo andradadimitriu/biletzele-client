@@ -34,9 +34,7 @@ export default function Confirm({email, password}) {
         } else history.push("/login");
     }
 
-    return (
-        <div className="Signup">
-            <FormikForm
+    return <FormikForm
                 schema={schema}
                 submitHandler={handleConfirmationSubmit}
                 fields={[{name: "confirmationCode", type: "tel", title: "Confirmation Code"}]}
@@ -54,8 +52,5 @@ export default function Confirm({email, password}) {
                     </Alert>}
                 </>}
                 submitButtonName="Verify"
-            />
-
-        </div>
-    );
+            />;
 }
