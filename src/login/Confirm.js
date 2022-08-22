@@ -27,7 +27,7 @@ export default function Confirm({email, password}) {
     }
 
     const handleConfirmationSubmit = async (values) => {
-        await Auth.confirmSignUp(email, values.confirmationCode);
+        await Auth.confirmSignUp(email, values.confirmationCode.trim());
         if (password) {
             await Auth.signIn(email, password);
             userHasAuthenticated(true);

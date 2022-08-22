@@ -89,9 +89,9 @@ export default function GamePlay({setAppLevelGameId}) {
             </div>:
             <RoundRest round={round} game={game} reloadGame={reloadGame}/>}
               </>:
-              <Loading/>)
+              <Loading className="margin"/>)
                 :
-      <Loading/>}
+      <Loading className="margin"/>}
   </div>;
 }
 

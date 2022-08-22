@@ -3,8 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import "./LoaderButton.css";
 
-export default function Loading(){
-  return <div style={{margin: 20, alignSelf:"center", display: "flex", justifyContent: "center"}}>
-    <FontAwesomeIcon icon='spinner' size="6x"  spin />
-  </div>
+export default function Loading({size}){
+  return <FontAwesomeIcon  style={{margin: "0 10"}} icon='spinner' size={size || "6x"}  spin />;
 }
