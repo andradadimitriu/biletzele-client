@@ -1,5 +1,3 @@
-//TODO maybe transform this into a class/hook and delegate more work to it
-
 import {GAME_STATUS} from "../../utils/constants";
 
 export function getRound(game){

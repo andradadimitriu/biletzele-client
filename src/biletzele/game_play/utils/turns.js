@@ -1,4 +1,3 @@
-//TODO maybe transform this into a class/hook and delegate more work to it
 import {isPlayerCurrentUser} from "../../utils/playerUtils";
 
 export function who_sTurnToAct(teams, turn){

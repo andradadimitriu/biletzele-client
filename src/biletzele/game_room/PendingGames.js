@@ -1,42 +1,9 @@
-import React from "react";
-import GameTile from "./GameTile";
-import {GAME_STATUS} from "../utils/constants";
+import React, {useCallback} from "react";
+import GamesList from "./GamesList";
 import {getGamesByStatus} from "../service/biletzele-service";
-import Loading from "../../utils_components/Loading";
-import {Auth} from "aws-amplify";
-import Form from 'react-bootstrap/Form';
+import {GAME_STATUS} from "../utils/constants";
 
-export class PendingGames extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = { pendingGames: [], isLoading: true, currentUser: undefined, searchText: ""};
-  }
-
-  async componentDidMount(){
-      const pendingGames = await getGamesByStatus(GAME_STATUS.PENDING);
-      //TODO might be able to get it in props
-      const currentUser = await Auth.currentCredentials();
-      this.setState({currentUser, pendingGames, isLoading: false, filteredGames: pendingGames});
-  }
-  async componentDidUpdate(prevProps, prevState){
-      if (prevState.searchText !== this.state.searchText) {
-          if(this.state.searchText.length > 0){
-              this.setState({filteredGames: this.state.pendingGames.filter(game => game.gameName.toLowerCase().includes(this.state.searchText.toLowerCase()))});
-          }
-      }
-
-  }
-
-  render() {
-      return (
-      <div className="horizontalflex">
-          {this.state.isLoading ? <Loading className="margin"/>:
-              <React.Fragment>
-                <Form.Control type="text" placeholder="Search" value={this.state.searchText} className="mr-sm-2 card-styling" onChange={(event)=>this.setState({searchText: event.target.value})}/>
-                {this.state.filteredGames.map((game, id) => <GameTile key={id} game={game} user={this.state.currentUser}/>)}
-              </React.Fragment>}
-      </div>
-      );
-  }
+export default function PendingGames(){
+    const getGames = useCallback(  async () => await getGamesByStatus(GAME_STATUS.PENDING), []);
+    return <GamesList getGames={getGames}/>;
 }

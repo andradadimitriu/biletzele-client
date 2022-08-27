@@ -210,7 +210,9 @@ const WaitingRoom = ({setAppLevelGameId}) => {
                             </div>
                         </div>
                 )
-                : <Loading className="margin"/>}
+                : <div className="centered-content">
+                    <Loading className="margin"/>
+                </div>}
         </div>
     );
 }

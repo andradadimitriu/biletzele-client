@@ -16,7 +16,7 @@ export default function LoaderButton({
       disabled={disabled || isLoading}
       {...props}
     >
-      {isLoading && <Loading size={"sx"}/>}
+      {isLoading && <Loading size={"xs"}/>}
       {props.children}
     </Button>
   );

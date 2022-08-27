@@ -1,8 +1,8 @@
 import React from "react";
 import {ToggleButton, ToggleButtonGroup} from "react-bootstrap";
 import NewGame from "./NewGame";
-import {PendingGames} from "./PendingGames";
-import {MyGames} from "./MyGames";
+import PendingGames from "./PendingGames";
+import MyGames from "./MyGames";
 export class Biletzele extends React.Component {
   constructor(props) {
     super(props);
