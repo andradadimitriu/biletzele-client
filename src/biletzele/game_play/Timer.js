@@ -2,21 +2,37 @@ import React, {useEffect, useState} from "react";
 import moment from "moment";
 import "./timer.css";
 import {COLOR_CODES} from "../utils/constants";
+import { Storage } from "aws-amplify";
 
 const FULL_DASH_ARRAY = 285;
 const COUNTDOWN_SECONDS = 60;
 const TIMER_UPDATE_PERIOD = 1000;
 export default function Timer({startTime, setOutOfTime, content}) {
+  const [sounds, setSounds]=useState(undefined);
   const [innerOutOfTime, setInnerOutOfTime] = useState(false);
   const [countDown, setCountDown] = useState(getCountDown(startTime));
   const [timerAnimationStarted, setTimerAnimationStarted] = useState(false);
+  useEffect( () => {
+    (async function getSounds() {
+      const alarmSoundLink = await Storage.get("alarm.mp3");
+      const stopWatchSoundLink = await Storage.get("stopwatch.mp3");
+      const alarmSound = new Audio(alarmSoundLink);
+      const stopWatchSound = new Audio(stopWatchSoundLink);
+      setSounds({alarmSound,stopWatchSound});
+  })();
+  }, []);
   useEffect(() => {
     if(!startTime)
       return;
     function updateCountDown(){
         return setInterval(() => {
           if (countDown <= 0) {
+            sounds.stopWatchSound.pause();
+            sounds.alarmSound.play();
             setInnerOutOfTime(true);
+          }
+          else if(countDown <= COLOR_CODES.warning.threshold){
+            sounds.stopWatchSound.play();
           }
           setCountDown(getCountDown(startTime));
         }, TIMER_UPDATE_PERIOD);
@@ -28,15 +44,23 @@ export default function Timer({startTime, setOutOfTime, content}) {
     }, 200);
     return () => clearInterval(intervalId);
 
-  }, [countDown, startTime, setOutOfTime], timerAnimationStarted);
+  }, [countDown, startTime, setOutOfTime, sounds], timerAnimationStarted);
 
   useEffect(() => {
     if(innerOutOfTime){
       setTimeout(()=>{
+        sounds.alarmSound.pause();
         setOutOfTime(true);
       }, 2000);
     }
-  }, [innerOutOfTime, setOutOfTime]);
+    return () => {
+      //sometimes, if multiple actions are happening at the same time,
+      // (e.g. pressing next a couple of times when the time expires)
+      //the component is unmounted before it gets to stop the sounds
+      if(sounds && innerOutOfTime){
+        sounds.alarmSound.pause();
+        sounds.stopWatchSound.pause();}}
+  }, [innerOutOfTime, setOutOfTime, sounds]);
 
     function calculateTimeFraction() {
       if(innerOutOfTime){
@@ -73,7 +97,7 @@ export default function Timer({startTime, setOutOfTime, content}) {
           a 45,45 0 1,0 90,0
           a 45,45 0 1,0 -90,0
         "
-        ></path>}
+        />}
       </g>
     </svg>
     <span id="base-timer-label" className="base-timer__label">

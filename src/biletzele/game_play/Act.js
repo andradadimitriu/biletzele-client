@@ -80,11 +80,11 @@ export default function Act(props) {
    return <div className="horizontalflex" style={{margin: 5, position: "absolute"}}>
      {
      (turn && (turn.wordIndex !== undefined)) ? <React.Fragment>
-           <div>{wordsLeft[turn.wordIndex]}</div>
-           <div><Button onClick={nextWord}> Next </Button></div>
+           <div style={{marginBottom: 10}}>{wordsLeft[turn.wordIndex]}</div>
+           <div><Button variant="info" size="lg" onClick={nextWord}> Next </Button></div>
          </React.Fragment>
          :
-        <Button onClick={startGuessing}>Start</Button>
+        <Button variant="success" size="lg" onClick={startGuessing}>Start</Button>
      }
      <div>
 

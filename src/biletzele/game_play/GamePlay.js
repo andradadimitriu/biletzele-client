@@ -49,7 +49,6 @@ export default function GamePlay({setAppLevelGameId}) {
       const data = JSON.parse(message);
       console.log(`message received: ${message}`);
       if (GAME_PLAY_REFRESH_MESSAGES.includes(data.type)) {
-        debugger;
         setGame(data.game);
       }
     }
@@ -89,9 +88,9 @@ export default function GamePlay({setAppLevelGameId}) {
             </div>:
             <RoundRest round={round} game={game} reloadGame={reloadGame}/>}
               </>:
-              <Loading/>)
+              <Loading className="margin"/>)
                 :
-      <Loading/>}
+      <Loading className="margin"/>}
   </div>;
 }
 

@@ -1,21 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import "./App.css";
+import "./app.css";
 import Routes from "./Routes";
-import { AppContext } from "./libs/contextLib";
-import { Auth } from "aws-amplify";
-import { useHistory } from "react-router-dom";
-import { onError } from "./libs/errorLib";
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faSpinner, faChevronDown, faChevronRight} from '@fortawesome/free-solid-svg-icons';
+import {AppContext} from "./libs/contextLib";
+import {Auth} from "aws-amplify";
+import {useHistory} from "react-router-dom";
+import {library} from '@fortawesome/fontawesome-svg-core';
+import {faChevronDown, faChevronRight, faSpinner} from '@fortawesome/free-solid-svg-icons';
 
 import websocket from './biletzele/service/reconnecting-websocket';
 import config from "./config";
 import Help from "./biletzele/utils/Help";
-import 'bootstrap/dist/css/bootstrap.min.css';
 
-library.add( faSpinner, faChevronDown, faChevronRight);
+library.add(faSpinner, faChevronDown, faChevronRight);
 
 function useMessages() {
     const [messages, setMessages] = useState([]);
@@ -38,9 +36,9 @@ function App() {
     const [isAuthenticated, userHasAuthenticated] = useState(false);
     const [gameId, setGameId] = useState(undefined);
     const [showHelp, setShowHelp] = useState(false);
-
     const messages = useMessages();
     const [isConnected, setIsConnected] = useState(websocket.isConnected());
+    const helpModal = useCallback(() => setShowHelp(true),[]);
 
     useEffect(() => {
         return websocket.onStateChange(setIsConnected);
@@ -48,78 +46,78 @@ function App() {
 
     useEffect(() => {
 
-        if(!gameId || !websocket) return;
-        if(isConnected) {
+        if (!gameId || !websocket) return;
+        if (isConnected) {
             console.log(`enter room: ${gameId}`);
-            websocket.send(JSON.stringify({ action: "enterroom", data: gameId}));
+            websocket.send(JSON.stringify({action: "enterroom", data: gameId}));
         }
     }, [gameId, isConnected]);
 
-  useEffect(() => {
-    onLoad();
-  }, []);
+    useEffect(() => {
+        onLoad();
+    }, []);
 
-  function setAppLevelGameId(routeGameId){
-      if(gameId) return;
-      setGameId(routeGameId);
-  }
-
-  async function onLoad() {
-    try {
-      await Auth.currentSession();
-      userHasAuthenticated(true);
-    }
-    catch(e) {
-      if (e !== 'No current user') {
-        onError(e);      }
+    function setAppLevelGameId(routeGameId) {
+        if (gameId) return;
+        setGameId(routeGameId);
     }
 
-    setIsAuthenticating(false);
-  }
+    async function onLoad() {
+        try {
+            await Auth.currentSession();
+            userHasAuthenticated(true);
+        } catch (e) {
+            setIsAuthenticating(false);
+        }
+        setIsAuthenticating(false);
+    }
+
     async function handleLogout() {
-      await Auth.signOut();
+        await Auth.signOut();
 
-      userHasAuthenticated(false);
-      history.push("/login");
+        userHasAuthenticated(false);
+        history.push("/login");
     }
-
-return (
-  !isAuthenticating && (
-    <>
-        <div className="bar">
-            <Navbar bg="light" variant="light">
-              <Navbar.Brand href="#home">Biletzele</Navbar.Brand>
-              <Nav className="mr-auto">
-                <Nav.Link href="/biletzele">Home</Nav.Link>
-              </Nav>
-              <Nav className="justify-content-end">
-                {isAuthenticated ? (
-                              <>
-                                  <Nav.Link onClick={()=>setShowHelp(true)}>Help</Nav.Link>
-                                  <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
-                              </>
+    return <>
+        {!isAuthenticating && (
+            <>
+                <div className="bar">
+                    <Navbar bg="light" variant="light">
+                        <Navbar.Brand href="#home">Biletzele</Navbar.Brand>
+                        <Nav className="mr-auto">
+                            <Nav.Link href="/biletzele">Home</Nav.Link>
+                        </Nav>
+                        <Nav className="justify-content-end">
+                            {isAuthenticated ? (
+                                <>
+                                    <Nav.Link onClick={helpModal}>Help</Nav.Link>
+                                    <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+                                </>
                             ) : (
-                              <>
-                                <Nav.Link href="/signup">Signup</Nav.Link>
-                                <Nav.Link href="/login">Login</Nav.Link>
-                              </>
+                                <>
+                                    <Nav.Link onClick={helpModal}>Help</Nav.Link>
+                                    <Nav.Link href="/signup">Signup</Nav.Link>
+                                    <Nav.Link href="/login">Login</Nav.Link>
+                                </>
                             )}
-              </Nav>
-            </Navbar>
-      </div>
-      <AppContext.Provider
-        value={{ isAuthenticated, userHasAuthenticated }}
-      >
-          <Help show={showHelp} setShow={setShowHelp}/>
-        <Routes setAppLevelGameId={setAppLevelGameId}/>
-          <div>
-              {config.env !== "prod" && <h1>Websocket {isConnected ? 'Connected' : 'Disconnected'}</h1>}
-              {config.env !== "prod" && messages.map((m, k) => <p key={k}>{JSON.stringify(m, null, 2)}</p>)}
-          </div>
-      </AppContext.Provider>
-    </>
-  )
-);
+                        </Nav>
+                    </Navbar>
+                </div>
+                <AppContext.Provider
+                    value={{isAuthenticated, userHasAuthenticated}}
+                >
+                    <Help show={showHelp} setShow={setShowHelp}/>
+                    <Routes setAppLevelGameId={setAppLevelGameId}/>
+                    <div>
+                        {config.env !== "prod" && <>
+                            <h1>Websocket {isConnected ? 'Connected' : 'Disconnected'}</h1>
+                            {messages.map((m, k) => <p key={k}>{JSON.stringify(m, null, 2)}</p>)}
+                        </>}
+                    </div>
+                </AppContext.Provider>
+            </>
+        )}
+    </>;
 }
 
 export default App;
