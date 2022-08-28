@@ -51,7 +51,7 @@ export default function NewGame() {
   }
 
   return (
-      <div className="center-form" style={{width: "100%"}}>
+      <div className="center-form">
         <Form onSubmit={handleSubmit}>
           <Form.Label>Game Name</Form.Label>
           <Form.Group controlId="gameName">
