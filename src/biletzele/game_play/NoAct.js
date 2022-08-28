@@ -11,7 +11,6 @@ export default function NoAct({team, user, turn}) {
     function handleMessageOnNoAct(message) {
       const data = JSON.parse(message);
       console.log(`message received: ${message}`);
-      debugger;
       if(data.type === MESSAGE_TYPE.NEXT_WORD) {
         setLastWordGuessed(data.lastWordGuessed);
       }

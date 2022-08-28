@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import "./app.css";
@@ -12,7 +12,6 @@ import {faChevronDown, faChevronRight, faSpinner} from '@fortawesome/free-solid-
 import websocket from './biletzele/service/reconnecting-websocket';
 import config from "./config";
 import Help from "./biletzele/utils/Help";
-import {ErrorAlert} from "./utils_components/Alerts";
 
 library.add(faSpinner, faChevronDown, faChevronRight);
 
@@ -37,10 +36,9 @@ function App() {
     const [isAuthenticated, userHasAuthenticated] = useState(false);
     const [gameId, setGameId] = useState(undefined);
     const [showHelp, setShowHelp] = useState(false);
-    const [error, setError] = useState(undefined);
-
     const messages = useMessages();
     const [isConnected, setIsConnected] = useState(websocket.isConnected());
+    const helpModal = useCallback(() => setShowHelp(true),[]);
 
     useEffect(() => {
         return websocket.onStateChange(setIsConnected);
@@ -69,10 +67,8 @@ function App() {
             await Auth.currentSession();
             userHasAuthenticated(true);
         } catch (e) {
-            setError(e);
             setIsAuthenticating(false);
         }
-
         setIsAuthenticating(false);
     }
 
@@ -82,7 +78,6 @@ function App() {
         userHasAuthenticated(false);
         history.push("/login");
     }
-    debugger;
     return <>
         {!isAuthenticating && (
             <>
@@ -95,11 +90,12 @@ function App() {
                         <Nav className="justify-content-end">
                             {isAuthenticated ? (
                                 <>
-                                    <Nav.Link onClick={() => setShowHelp(true)}>Help</Nav.Link>
+                                    <Nav.Link onClick={helpModal}>Help</Nav.Link>
                                     <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
                                 </>
                             ) : (
                                 <>
+                                    <Nav.Link onClick={helpModal}>Help</Nav.Link>
                                     <Nav.Link href="/signup">Signup</Nav.Link>
                                     <Nav.Link href="/login">Login</Nav.Link>
                                 </>
@@ -121,7 +117,6 @@ function App() {
                 </AppContext.Provider>
             </>
         )}
-        {error && <ErrorAlert>{error}</ErrorAlert>}
     </>;
 }
 

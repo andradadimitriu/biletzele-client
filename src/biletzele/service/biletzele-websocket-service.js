@@ -17,7 +17,6 @@ export async function switchTeam(game, oldTeamName, playerId) {
     const data={
         gameId: game.gameId, oldTeamName, newTeamName: getTheOtherTeam(game,oldTeamName), playerId
     };
-    debugger;
 
     return await websocket.send(JSON.stringify({
         action: "switchteam", data

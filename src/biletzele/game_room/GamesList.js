@@ -28,7 +28,6 @@ export default function GamesList({getGames}) {
                 .includes(searchText.toLowerCase())));
         }
     }, [searchText, games])
-debugger;
     return (
         <div className="horizontalflex">
             {isLoading ? <Loading className="margin"/> :
