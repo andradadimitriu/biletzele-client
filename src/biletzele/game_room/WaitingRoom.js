@@ -7,7 +7,7 @@ import {getGame, startGame} from "../service/biletzele-service";
 import Loading from "../../utils_components/Loading";
 import {READINESS, STATUS_COLOR, GAME_STATUS, MESSAGE_TYPE} from "../utils/constants";
 import "../utils/utils.css";
-import "./WaitingRoom.css";
+import "./waitingRoom.css";
 import LoaderButton from "../../utils_components/LoaderButton";
 import {isPlayerCurrentUser, isPlayerInGame} from "../utils/playerUtils";
 import CouldNotFindGame from "../utils/CouldNotFindGame";

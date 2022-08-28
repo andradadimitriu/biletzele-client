@@ -3,7 +3,7 @@ import {Card} from 'react-bootstrap';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
-import "./PendingGameTile.css";
+import "./pendingGameTile.css";
 import {isPlayerInGame} from "../utils/playerUtils";
 import {GAME_STATUS} from "../utils/constants";
 const teamColors = (id) => id % 2 === 0 ? "primary" : "info";

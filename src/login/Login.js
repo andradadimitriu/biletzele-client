@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import LoginForm from "./LoginForm"
-import "../biletzele/game_room/Forms.css";
+import "../biletzele/game_room/forms.css";
 import Confirm from "./Confirm";
 
 export default function Login() {

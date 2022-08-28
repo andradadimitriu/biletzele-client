@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import "./App.css";
+import "./app.css";
 import Routes from "./Routes";
 import {AppContext} from "./libs/contextLib";
 import {Auth} from "aws-amplify";

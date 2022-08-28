@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 
-import "./LoaderButton.css";
+import "./loaderButton.css";
 import Loading from "./Loading";
 
 export default function LoaderButton({

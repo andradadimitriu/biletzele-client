@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import LoaderButton from "../../utils_components/LoaderButton";
 import {useHistory, useParams} from "react-router-dom";
 
-import "./Forms.css";
+import "./forms.css";
 import {addPlayerToGame} from "../service/biletzele-websocket-service";
 import websocket from '../service/reconnecting-websocket';
 import {MESSAGE_TYPE} from "../utils/constants";
@@ -28,10 +28,6 @@ export default function PlayerEnterGameForm() {
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
   const [playerAlreadyRegistered, setPlayerAlreadyRegistered] = useState(false);
-  // const formFields = [
-  //   {name: "playerName", type: "text", title: "Player Name"},
-  //   ...wordFields.map((field) => ({name: field, type: "text" }))
-  // ];
 
   async function addPlayerAndWords(playerName, words){
     const currentUser = await Auth.currentCredentials();
@@ -119,7 +115,6 @@ export default function PlayerEnterGameForm() {
         {wordFields.map((wordField, id) =>
             <Form.Group key={id} controlId={wordField}>
               <Form.Control
-                // autoFocus
                   type="text"
                   name={wordField}
                   value={values[wordField]}

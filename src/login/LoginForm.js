@@ -1,7 +1,7 @@
 import React from "react";
 import {Auth} from "aws-amplify";
 import {useAppContext} from "../libs/contextLib";
-import "../biletzele/game_room/Forms.css";
+import "../biletzele/game_room/forms.css";
 import * as yup from "yup";
 import {getValidations, VALIDATION_KEYS} from "../biletzele/utils/validations";
 import FormikForm from "../utils_components/FormikForm";
