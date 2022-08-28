@@ -53,6 +53,13 @@ export default function Timer({startTime, setOutOfTime, content}) {
         setOutOfTime(true);
       }, 2000);
     }
+    return () => {
+      //sometimes, if multiple actions are happening at the same time,
+      // (e.g. pressing next a couple of times when the time expires)
+      //the component is unmounted before it gets to stop the sounds
+      if(sounds && innerOutOfTime){
+        sounds.alarmSound.pause();
+        sounds.stopWatchSound.pause();}}
   }, [innerOutOfTime, setOutOfTime, sounds]);
 
     function calculateTimeFraction() {
