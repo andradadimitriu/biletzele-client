@@ -36,7 +36,6 @@ function ReconnectingSocket(url) {
         if(isConnected) {
            return client.send(params);
         }
-        //TODO not sure this is needed given or if you are not getting into more issues
         setTimeout(conditionalStart, CONNECTION_DELAY);
         sendWithReconnect(params);
     }

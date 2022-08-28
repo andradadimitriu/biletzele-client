@@ -28,7 +28,10 @@ export default function PlayerEnterGameForm() {
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
   const [playerAlreadyRegistered, setPlayerAlreadyRegistered] = useState(false);
-
+  // const formFields = [
+  //   {name: "playerName", type: "text", title: "Player Name"},
+  //   ...wordFields.map((field) => ({name: field, type: "text" }))
+  // ];
 
   async function addPlayerAndWords(playerName, words){
     const currentUser = await Auth.currentCredentials();

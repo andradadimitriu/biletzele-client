@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import Form from 'react-bootstrap/Form';
 import {Formik} from "formik";
-import {Alert} from "react-bootstrap";
 import LoaderButton from "./LoaderButton";
+import {ErrorAlert} from "./Alerts";
 
 export default function FormikForm({schema, submitHandler, fields, bottomDisplay, submitButtonName}) {
     const [submitError, setSubmitError] = useState(undefined);
@@ -40,7 +40,7 @@ export default function FormikForm({schema, submitHandler, fields, bottomDisplay
                 <Form onSubmit={handleSubmit}>
                     {fields.map((fieldDetails, key) =>
                         <Form.Group key={key} controlId={fieldDetails.name}>
-                            <Form.Label>{fieldDetails.title}</Form.Label>
+                            {fieldDetails.title && <Form.Label>{fieldDetails.title}</Form.Label>}
                             <Form.Control
                                 autoFocus={key === 0}
                                 type={fieldDetails.type}
@@ -60,8 +60,7 @@ export default function FormikForm({schema, submitHandler, fields, bottomDisplay
                         </Form.Group>
                     )}
                     {bottomDisplay}
-                    {submitError && <Alert variant="danger" className="p-1"
-                                           style={{marginTop: 10, fontSize: "0.8rem"}}>{submitError.message}</Alert>}
+                    {submitError && <ErrorAlert>{submitError}</ErrorAlert>}
                     <div className="centered-content">
                         <LoaderButton
                             disabled={!isValid}

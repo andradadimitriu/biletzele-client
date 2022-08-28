@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import Form from 'react-bootstrap/Form';
 import LoaderButton from "../../utils_components/LoaderButton";
 import {useCheckboxFormFields, useFormFields} from "../../libs/hooksLib";
-import { onError } from "../../libs/errorLib";
 import {useHistory} from "react-router-dom";
 import {createGame} from "../service/biletzele-service";
 import {ROUNDS} from "../utils/constants";
 import RoundSelectCollapsible from "../utils/RoundSelectCollapsible";
+import {ErrorAlert} from "../../utils_components/Alerts";
+
 export default function NewGame() {
   const history = useHistory();
+  const [error, setError] = useState(undefined);
   const [isLoading, setIsLoading] = useState(false);
   const [fields, handleFieldChange] = useFormFields({
     gameName: "",
@@ -43,7 +45,7 @@ export default function NewGame() {
       history.push(`/biletzele/new-player/${createdGame}/${fields.selectedTeam}`);
     } catch (e) {
       setIsLoading(false);
-      onError(e);
+      setError(e);
     }
 
   }
@@ -104,6 +106,7 @@ export default function NewGame() {
                   </Form.Check.Label>
               </Form.Check>)
             }
+          {error && <ErrorAlert>{error}</ErrorAlert>}
           <LoaderButton
             block
             disabled={!validateForm()}
