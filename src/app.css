@@ -4,10 +4,12 @@
 input:-webkit-autofill {
     -webkit-box-shadow: 0 0 0 1000px white inset !important;
 }
-.margin{
+.margin-full{
    margin: 20px;
 }
-
+.margin-half{
+    margin: 10px;
+}
 .horizontalflex{
     display: flex;
     flex-direction: column;

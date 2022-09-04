@@ -15,7 +15,7 @@ export class Biletzele extends React.Component {
 
   render() {
       return (
-      <div className="horizontalflex margin">
+      <div className="horizontalflex margin-full">
           <ToggleButtonGroup type="radio" value={this.state.value} name="radioAll" onChange={this.handleChange}>
                         <ToggleButton variant="light" name="radio1" value={"join"}>Join Game</ToggleButton>
                         <ToggleButton variant="light" name="radio2" value={"mine"}>My Games</ToggleButton>

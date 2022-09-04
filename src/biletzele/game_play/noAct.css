@@ -1,0 +1,16 @@
+.big-sized-text {
+    font-size: 8vw;
+}
+
+.medium-sized-text {
+    font-size: 3vw;
+}
+
+.last-word-guessed {
+    color: green;
+    font-weight: bold;
+}
+.no-act{
+    margin-top: 40px;
+    text-align: center;
+}
