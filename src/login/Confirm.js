@@ -5,7 +5,7 @@ import {useAppContext} from "../libs/contextLib";
 import Button from "react-bootstrap/Button";
 import FormikForm from "../utils_components/FormikForm";
 import * as yup from "yup";
-import Alert from "../utils_components/Alerts";
+import CustomisedAlert from "../utils_components/Alerts";
 
 const codeSchemaMessage = "The confirmation code should be six digits."
 const schema = yup.object().shape({
@@ -44,12 +44,12 @@ export default function Confirm({email, password}) {
                             email</Button>
                     </p>
                     {emailResent.resent &&
-                    <Alert type="success">
+                    <CustomisedAlert type="success">
                         A new code has been sent to your email.
-                    </Alert>}
-                    {emailResent.error && <Alert type="danger">
+                    </CustomisedAlert>}
+                    {emailResent.error && <CustomisedAlert type="danger">
                         Something went wrong when trying to resend code. Please try again.
-                    </Alert>}
+                    </CustomisedAlert>}
                 </>}
                 submitButtonName="Verify"
             />;

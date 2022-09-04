@@ -8,7 +8,7 @@ import Timer, {getCountDown} from "./Timer";
 import {endGame, endRound, endTurn, nextWordToGuess} from "../service/biletzele-websocket-service";
 import {MESSAGE_TYPE} from "../utils/constants";
 import websocket from "../service/reconnecting-websocket";
-import Alert from "../../utils_components/Alerts";
+import CustomisedAlert from "../../utils_components/Alerts";
 
 export default function Act(props) {
 
@@ -96,9 +96,9 @@ export default function Act(props) {
     {wordsLeft.length > 0 ?
         <div>
          {<Timer startTime={startTime} setOutOfTime={setOutOfTime} content={getContent()}/>}
-          {errorOnNext &&  <Alert type="danger">
+          {errorOnNext &&  <CustomisedAlert type="danger">
             Oops! Something went wrong. Please try again.
-          </Alert>}
+          </CustomisedAlert>}
         </div>:
         <div>Round ended</div>
     }
