@@ -6,7 +6,7 @@ import {useHistory} from "react-router-dom";
 import {createGame} from "../service/biletzele-service";
 import {ROUNDS} from "../utils/constants";
 import RoundSelectCollapsible from "../utils/RoundSelectCollapsible";
-import {ErrorAlert} from "../../utils_components/Alerts";
+import Alert from "../../utils_components/Alerts";
 
 export default function NewGame() {
   const history = useHistory();
@@ -106,7 +106,7 @@ export default function NewGame() {
                   </Form.Check.Label>
               </Form.Check>)
             }
-          {error && <ErrorAlert>{error}</ErrorAlert>}
+          {error && <Alert type="danger">{error}</Alert>}
           <LoaderButton
             block
             disabled={!validateForm()}
