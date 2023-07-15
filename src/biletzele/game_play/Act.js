@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from "react";
 
 import {getTurn} from "./utils/turns";
-import {Button, Alert} from "react-bootstrap";
+import {Button} from "react-bootstrap";
 import {newTurn} from "../service/biletzele-service";
 import moment from "moment";
 import Timer, {getCountDown} from "./Timer";
-import {endTurn, endRound, endGame, nextWordToGuess} from "../service/biletzele-websocket-service";
+import {endGame, endRound, endTurn, nextWordToGuess} from "../service/biletzele-websocket-service";
 import {MESSAGE_TYPE} from "../utils/constants";
 import websocket from "../service/reconnecting-websocket";
+import CustomisedAlert from "../../utils_components/Alerts";
 
 export default function Act(props) {
 
@@ -95,9 +96,9 @@ export default function Act(props) {
     {wordsLeft.length > 0 ?
         <div>
          {<Timer startTime={startTime} setOutOfTime={setOutOfTime} content={getContent()}/>}
-          {errorOnNext &&  <Alert variant="danger" className="p-1" style={{fontSize: "0.8rem"}}>
+          {errorOnNext &&  <CustomisedAlert type="danger">
             Oops! Something went wrong. Please try again.
-          </Alert>}
+          </CustomisedAlert>}
         </div>:
         <div>Round ended</div>
     }

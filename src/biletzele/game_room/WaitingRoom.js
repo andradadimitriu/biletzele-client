@@ -167,11 +167,11 @@ const WaitingRoom = ({setAppLevelGameId}) => {
     }
 
     return (
-        <div style={{margin: 10}}>
+        <div className="margin-half">
             {game ?
                 (game.gameNotFound ? <CouldNotFindGame/> :
                         <div>
-                            <div style={{margin: 20}}>
+                            <div className="margin-full">
                                 <Row className="centered-content"><strong>Game link</strong></Row>
                                 <Row className="centered-content">
                                     <span className="center-text-vertically">{joinGameLink}</span>
@@ -180,7 +180,7 @@ const WaitingRoom = ({setAppLevelGameId}) => {
                                     }}>Copy</Button>
                                 </Row>
                             </div>
-                            <Row style={{margin: 10}}>Creator: {getCreatorPlayerName()}</Row>
+                            <Row className="margin-half">Creator: {getCreatorPlayerName()}</Row>
 
                             <div style={{display: "flex", justifyContent: "space-between", flexWrap: "wrap"}}>
                                 {
@@ -211,7 +211,7 @@ const WaitingRoom = ({setAppLevelGameId}) => {
                         </div>
                 )
                 : <div className="centered-content">
-                    <Loading className="margin"/>
+                    <Loading className="margin-full"/>
                 </div>}
         </div>
     );

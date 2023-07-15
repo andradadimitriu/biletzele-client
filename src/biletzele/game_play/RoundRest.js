@@ -19,10 +19,10 @@ export default function RoundRest({round, game}) {
   }
   return <div>
       {round.roundNo === game.noRounds ?
-          <div style={{margin: 20}}>Game ended</div>:
-          <div style={{margin: 20}}>
+          <div className="margin-full">Game ended</div>:
+          <div className="margin-full">
               <p style={{textAlign: "center"}}>Round <strong>{ROUNDS.find(r=> r.type === round.roundType).name}</strong> ended.</p>
-              <Row style={{margin: 10}}><Button onClick={startRound}> Start round: <strong>{ROUNDS.find(r=> r.type === getNewRound().roundType).name}</strong></Button></Row>
+              <Row className="margin-half"><Button onClick={startRound}> Start round: <strong>{ROUNDS.find(r=> r.type === getNewRound().roundType).name}</strong></Button></Row>
           </div>}
       <ScoreTable game={game}/>
       {(round.roundNo === game.noRounds) && <WinnerMessage game={game}/>}
@@ -32,7 +32,7 @@ export default function RoundRest({round, game}) {
 
 function ScoreTable({game}){
     const endedRounds = game.rounds.filter(round => round.roundStatus === GAME_STATUS.ENDED);
-    return <div style={{margin: 20}}>
+    return <div className="margin-full">
         <table className="table">
             <thead>
             <tr>

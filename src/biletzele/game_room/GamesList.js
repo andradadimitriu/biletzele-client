@@ -30,7 +30,7 @@ export default function GamesList({getGames}) {
     }, [searchText, games])
     return (
         <div className="horizontalflex">
-            {isLoading ? <Loading className="margin"/> :
+            {isLoading ? <Loading className="margin-full"/> :
                 <React.Fragment>
                     <Form.Control type="text" placeholder="Search" value={searchText}
                                   className="mr-sm-2 card-styling"

@@ -3,9 +3,9 @@ import {Auth} from "aws-amplify";
 import {useHistory} from "react-router-dom";
 import {useAppContext} from "../libs/contextLib";
 import Button from "react-bootstrap/Button";
-import {Alert} from "react-bootstrap";
 import FormikForm from "../utils_components/FormikForm";
 import * as yup from "yup";
+import CustomisedAlert from "../utils_components/Alerts";
 
 const codeSchemaMessage = "The confirmation code should be six digits."
 const schema = yup.object().shape({
@@ -44,12 +44,12 @@ export default function Confirm({email, password}) {
                             email</Button>
                     </p>
                     {emailResent.resent &&
-                    <Alert variant="success" className="p-1" style={{fontSize: "0.8rem"}}>
+                    <CustomisedAlert type="success">
                         A new code has been sent to your email.
-                    </Alert>}
-                    {emailResent.error && <Alert variant="danger" className="p-1" style={{fontSize: "0.8rem"}}>
+                    </CustomisedAlert>}
+                    {emailResent.error && <CustomisedAlert type="danger">
                         Something went wrong when trying to resend code. Please try again.
-                    </Alert>}
+                    </CustomisedAlert>}
                 </>}
                 submitButtonName="Verify"
             />;
